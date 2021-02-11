@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import './App.scss';
+import Sidebar from "./common/sidebar";
+import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { withRouter } from "react-router";
+
+import Career from "./career/career"
+import NoMatch from "./NoMatch"
+
+const SidebarWithRouter = withRouter(Sidebar);
 
 function App() {
+  const viewHeight = window.innerHeight;
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className="App" fluid>
+      <Router>
+        <Row style={{ height: viewHeight }} className="main-content"  noGutters>
+          <Col lg={2}>
+            <SidebarWithRouter/>
+          </Col>
+          <Col lg={10}>
+            <Switch>
+              <Route exact path="/"/>
+              <Route path="/career" component={Career}/>
+              <Route path="/workshop"/>
+              <Route component={NoMatch} />
+            </Switch>
+          </Col>
+        </Row>
+      </Router>
+    </Container>
   );
 }
 

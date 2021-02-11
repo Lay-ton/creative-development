@@ -1,0 +1,63 @@
+.section-title {
+    text-decoration: underline;
+    text-align: center;
+    margin: auto;
+}
+
+.section-sub-title {
+    padding-left: 3px;
+    text-decoration: underline;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    font-weight: 300;
+}
+
+.section-sub-title-center {
+    text-decoration: underline;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.content-item {
+    padding: 0 3px;
+    font-size: 22px;
+}
+
+.grad-date, .gpa-num {
+    text-align: right;
+}
+
+.social-link {
+    padding: 3px;
+}
+
+.social-logo {
+    padding-top: 5px;
+    max-width: 32px;
+}
+
+.skills-table {
+    margin: auto;
+    justify-content: center;
+
+    .col-primary {
+        padding-left: 50px;
+        padding-right: 0;
+    }
+
+    .col-remaining {
+        padding-left: 0px;
+    }
+}
+
+.skill-list {
+    font-size: 12px;
+    list-style-type: none;
+    justify-content: center;
+
+    li.container {
+        padding: 0;
+    }
+}
