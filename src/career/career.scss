@@ -1,3 +1,4 @@
+//General
 .section-title {
     text-decoration: underline;
     text-align: center;
@@ -20,13 +21,18 @@
     text-align: center;
 }
 
+.content {
+    padding: 20px 0;
+}
+
 .content-item {
     padding: 0 3px;
     font-size: 22px;
 }
 
-.grad-date, .gpa-num {
-    text-align: right;
+//Contacts & Social
+.contacts-profile {
+    max-width: 115px;
 }
 
 .social-link {
@@ -38,6 +44,7 @@
     max-width: 32px;
 }
 
+// Skills
 .skills-table {
     margin: auto;
     justify-content: center;
@@ -60,4 +67,9 @@
     li.container {
         padding: 0;
     }
+}
+
+//Education
+.grad-date, .gpa-num {
+    text-align: right;
 }
