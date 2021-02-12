@@ -104,9 +104,7 @@ function Career(props) {
                         </Container>
                     </Container>
                 </Container>
-                {/* For the skills section comeback and write a component for these lists */}
                 <Skills skills={info.skills}/>
-                
             </Container>
             <Container as={Row} className="education-info" noGutters>
                 <h2 className="section-title">Education</h2>
