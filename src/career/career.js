@@ -5,6 +5,8 @@ import Row from 'react-bootstrap/Row'
 import Image from 'react-bootstrap/Image'
 
 import Skills from './skills'
+import Experience from './experience'
+import Projects from './projects'
 import Profile from '../imgs/IMG_3378.png'
 import Github from '../imgs/github-logo.svg'
 import Linkedin from '../imgs/LinkedIn_logo_In-Black.svg'
@@ -88,7 +90,6 @@ function Career(props) {
                 <Container as={Col} lg={6} className="contact-info">
                     <h2 className="section-title">Contacts & Socials</h2>
                     <Container as={Row} className="content contacts-content">
-                        {/* Add a profile picture that sit to the left of all the content */}
                         <Container as={Col} xs={1} fluid>
                             <Image src={Profile} className="contacts-profile" roundedCircle/>
                         </Container>
@@ -122,12 +123,8 @@ function Career(props) {
                     <Container className="content-item coursework">Discrete Mathematics, Data Structures, Object Oriented Programming, Computer Architecture, Operating Systems, Virtualization, Algorithms, Cloud Computing, Compilers, Ethical Hacking, Symbolic Programming, Contemporary Issues in Computer Science, Intro to Security</Container>
                 </Container>
             </Container>
-            <Container as={Row} noGutters>
-                <h2 className="section-title">Experience</h2>
-            </Container>
-            <Container as={Row} noGutters>
-                <h2 className="section-title">Projects</h2>
-            </Container>
+            <Experience jobs={info.experience}/>
+            <Projects projects={info.projects}/>
         </Container>
     )
 }
