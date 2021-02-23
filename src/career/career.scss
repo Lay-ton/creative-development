@@ -6,7 +6,6 @@
 }
 
 .section-sub-title {
-    padding-left: 3px;
     text-decoration: underline;
     padding-bottom: 0px;
     margin-bottom: 0px;
@@ -26,22 +25,39 @@
 }
 
 .content-item {
-    padding: 0 3px;
+    padding: 0;
     font-size: 22px;
 }
 
+.content-list {
+    margin: 0;
+    padding-left: 50px;
+}
+
+.grad-date, .gpa-num, .date-range {
+    text-align: right;
+}
+
 //Contacts & Social
-.contacts-profile {
-    max-width: 115px;
-}
+.contacts-content {
+    .contacts-profile {
+        max-width: 115px;
+    }
+    
+    .social-link {
+        padding: 3px;
+    }
+    
+    .social-logo {
+        padding-top: 5px;
+        max-width: 32px;
+    }
 
-.social-link {
-    padding: 3px;
-}
-
-.social-logo {
-    padding-top: 5px;
-    max-width: 32px;
+    @include sm {
+        .contacts-profile {
+            margin-right: 0;
+        }
+    }
 }
 
 // Skills
@@ -55,7 +71,7 @@
     }
 
     .col-remaining {
-        padding-left: 0px;
+        padding-left: 20px;
     }
 }
 
@@ -70,6 +86,6 @@
 }
 
 //Education
-.grad-date, .gpa-num {
-    text-align: right;
+.coursework {
+    padding: 0;
 }

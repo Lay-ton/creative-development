@@ -5,15 +5,14 @@ import Row from 'react-bootstrap/Row'
 
 function Experience(props) {
 
-    console.log(props.jobs)
     //Generates the job positions
     const jobs = props.jobs.map((job) =>
-        <Container as={Row} className="experience-content">
-            <Container as={Row}>
-                <Container as={Col} className="experience_place-position"><b>{job.name}</b> - {job.position}; {job.location}</Container>
-                <Container as={Col} className="experience_date-range">{job.dates}</Container>
+        <Container className="content experience-content">
+            <Container as={Row} noGutters fluid>
+                <Container as={Col} xs={8} className="content-item place-position"><b>{job.name}</b> - {job.position}; {job.location}</Container>
+                <Container as={Col} xs={4} className="content-item date-range">{job.dates}</Container>
             </Container>
-            <Container as="ul" className="experience-list" fluid>
+            <Container as="ul" className="content-item content-list experience-list" fluid>
                 <Container as={Row} className="experience-table" fluid>
                     <>
                     {job.tasks.map((task) => {
@@ -28,7 +27,7 @@ function Experience(props) {
     )
     
     return (
-        <Container as={Row} noGutters>
+        <Container as={Row} className="experience-info" noGutters>
             <h2 className="section-title">Experience</h2>
             {jobs}
         </Container>

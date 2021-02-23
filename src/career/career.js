@@ -86,11 +86,11 @@ const info = {
 function Career(props) {
     return (
         <Container className="career-body page">
-            <Container as={Row}>
+            <Container as={Row} noGutters fluid>
                 <Container as={Col} lg={6} className="contact-info">
                     <h2 className="section-title">Contacts & Socials</h2>
-                    <Container as={Row} className="content contacts-content">
-                        <Container as={Col} xs={1} fluid>
+                    <Container as={Row} className="content contacts-content" noGutters>
+                        <Container as={Col} xs={1} className="contacts-profile__wrapper" fluid>
                             <Image src={Profile} className="contacts-profile" roundedCircle/>
                         </Container>
                         <Container as={Col} xs={4} fluid>
@@ -111,16 +111,16 @@ function Career(props) {
                 <h2 className="section-title">Education</h2>
                 <Container className="content education-content">
                     <Container as={Row} noGutters fluid>
-                        <Container as={Col} className="content-item degree-name">Bachelor of Science in Computer Science</Container>
-                        <Container as={Col} className="content-item grad-date">December 2020</Container>
+                        <Container as={Col} sm={6} className="content-item degree-name">Bachelor of Science in Computer Science</Container>
+                        <Container as={Col} sm={6} className="content-item grad-date">December 2020</Container>
                     </Container>
                     <Container as={Row} noGutters fluid>
-                        <Container as={Col} className="content-item school-name"><i>University of Texas at Austin,</i> Austin, Texas</Container>
-                        <Container as={Col} className="content-item gpa-num">GPA: 3.58</Container>
+                        <Container as={Col} sm={6} className="content-item school-name"><i>University of Texas at Austin,</i> Austin, Texas</Container>
+                        <Container as={Col} sm={6} className="content-item gpa-num">GPA: 3.58</Container>
                     </Container>
                      {/* Need to add a header for course work right here */}
                      <h4 className="section-sub-title">Coursework</h4>
-                    <Container className="content-item coursework">Discrete Mathematics, Data Structures, Object Oriented Programming, Computer Architecture, Operating Systems, Virtualization, Algorithms, Cloud Computing, Compilers, Ethical Hacking, Symbolic Programming, Contemporary Issues in Computer Science, Intro to Security</Container>
+                    <Container className="content-item education-coursework">Discrete Mathematics, Data Structures, Object Oriented Programming, Computer Architecture, Operating Systems, Virtualization, Algorithms, Cloud Computing, Compilers, Ethical Hacking, Symbolic Programming, Contemporary Issues in Computer Science, Intro to Security</Container>
                 </Container>
             </Container>
             <Experience jobs={info.experience}/>

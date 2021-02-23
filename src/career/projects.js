@@ -7,13 +7,13 @@ function Projects(props) {
 
     //Generates the job positions
     const projects = props.projects.map((project) =>
-        <Container as={Row} className="experience-content">
-            <Container as={Row}>
-                <Container as={Col} className="experience_place-position"><b>{project.name} ({project.tech})</b></Container>
-                <Container as={Col} className="experience_date-range">{project.date}</Container>
+        <Container className="content project-content">
+            <Container as={Row} noGutters fluid>
+                <Container as={Col} xs={8} className="content-item place-position"><b>{project.name} ({project.tech})</b></Container>
+                <Container as={Col} xs={4} className="content-item date-range">{project.date}</Container>
             </Container>
-            <Container as="ul" className="experience-list" fluid>
-                <Container as={Row} className="experience-table" fluid>
+            <Container as="ul" className="content-item content-list project-list" fluid>
+                <Container as={Row} className="project-table" fluid>
                     <>
                     {project.tasks.map((task) => {
                         return (
@@ -27,7 +27,7 @@ function Projects(props) {
     )
     
     return (
-        <Container as={Row} noGutters>
+        <Container as={Row} className="project-info" noGutters>
             <h2 className="section-title">Projects</h2>
             {projects}
         </Container>
