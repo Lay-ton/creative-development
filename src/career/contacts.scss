@@ -1,0 +1,28 @@
+//Contacts & Social
+.contacts-content {
+    margin: auto;
+    justify-content: center;
+
+    .contacts-profile-wrapper {
+        margin: 0;
+        min-width: 115px;
+
+        .contacts-profile {
+            max-width: 115px;
+        }
+    }
+    
+    .contacts-social-wrapper {
+        margin: 0 20px;
+        max-width: 200px;
+        
+        .social-link {
+            padding: 3px;
+        }
+        
+        .social-logo {
+            padding-top: 5px;
+            max-width: 32px;
+        }
+    }
+}

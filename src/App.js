@@ -20,10 +20,10 @@ function App() {
     <Container className="App" fluid>
       <Router>
         <Row style={{ height: viewHeight }} className="main-content"  noGutters>
-          <Col lg={2}>
+          <Col lg={2} md={12}>
             <SidebarWithRouter/>
           </Col>
-          <Col lg={10}>
+          <Col lg={10} md={12}>
             <Switch>
               <Route exact path="/"/>
               <Route path="/career" component={Career}/>

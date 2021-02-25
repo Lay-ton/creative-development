@@ -2,15 +2,12 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import Image from 'react-bootstrap/Image'
 
 import Skills from './skills'
-import Experience from './experience'
-import Projects from './projects'
-import Profile from '../imgs/IMG_3378.png'
-import Github from '../imgs/github-logo.svg'
-import Linkedin from '../imgs/LinkedIn_logo_In-Black.svg'
+import Listing from './listings'
+import Contact from './contacts'
 import './career.scss'
+import './contacts.scss'
 
 const info = {
     skills: {
@@ -19,9 +16,8 @@ const info = {
     },
     experience: [
         {
-            name: "VMware",
-            position: "Software Engineer Intern, VM Kernel I/O Team",
-            location: "Remote",
+            bold: "VMware",
+            none: " - Software Engineer Intern, VM Kernel I/O Team; Remote",
             dates: "May 2020 - August 2020",
             tasks: [
                 "Designed and engineered a database/interface for an internal tool used to maintain driver test data",
@@ -31,9 +27,8 @@ const info = {
             ]
         },
         {
-            name: "UT Austin: Center for Media Engagement",
-            position: "Web Developer",
-            location: "Austin, Texas",
+            bold: "UT Austin: Center for Media Engagement",
+            none: " - Web Developer; Austin, Texas",
             dates: "June 2019 - December 2020",
             tasks: [
                 "Help journalism research by developing web-based experiments",
@@ -44,10 +39,9 @@ const info = {
     ],
     projects: [
         {
-            name: "Payne Employee Website",
-            tech: "React/SCSS/Javascript",
-            type: "Personal Project",
-            date: "December 2020",
+            bold: "Payne Employee Website (React/SCSS/Javascript)",
+            none: "",
+            dates: "December 2020",
             tasks: [
                 "A web app for employees to pick out company uniforms",
                 "Utilized React and Bootstrap to keep a mobile first approach when designing the layout",
@@ -57,10 +51,9 @@ const info = {
             ]
         },
         {
-            name: "Bill Paying Software/Script",
-            tech: "Python, SQL, Selenium",
-            type: "Personal Project",
-            date: "Summer 2019",
+            bold: "Bill Paying Software/Script (Python, SQL, Selenium)",
+            none: "",
+            dates: "Summer 2019",
             tasks: [
                 "Script that stores billing statements from email account in an SQL database and once all bills for that month are in, request confirmation via text and pay bills",
                 "Utilizes Gmail API to get billing statements",
@@ -69,10 +62,9 @@ const info = {
             ]
         },
         {
-            name: "Multithreading Test Script",
-            tech: "Python",
-            type: "Personal Project",
-            date: "Spring 2019",
+            bold: "Multithreading Test Script (Python)",
+            none: "",
+            dates: "Spring 2019",
             tasks: [
                 "A python script that finds four Computer Science lab computer with the lowest load, then concurrently ssh's onto them and runs the designated number of tests for my Operating Systems course",
                 "Scraped a university website to find machines using BeautifulSoup",
@@ -87,24 +79,7 @@ function Career(props) {
     return (
         <Container className="career-body page">
             <Container as={Row} noGutters fluid>
-                <Container as={Col} lg={6} className="contact-info">
-                    <h2 className="section-title">Contacts & Socials</h2>
-                    <Container as={Row} className="content contacts-content" noGutters>
-                        <Container as={Col} xs={1} className="contacts-profile__wrapper" fluid>
-                            <Image src={Profile} className="contacts-profile" roundedCircle/>
-                        </Container>
-                        <Container as={Col} xs={4} fluid>
-                            <Container className="content-item full-name">Layton Seal</Container>
-                            <Container className="content-item email">laytonseal@gmail.com</Container>
-                            <Container as="a" href="https://www.linkedin.com/in/layton-seal/" className="social-link">
-                                <Image src={Linkedin} className="social-logo"/>
-                            </Container>
-                            <Container as="a" href="https://github.com/Lay-ton" className="social-link">
-                                <Image src={Github} className="social-logo" />
-                            </Container>
-                        </Container>
-                    </Container>
-                </Container>
+                <Contact/>
                 <Skills skills={info.skills}/>
             </Container>
             <Container as={Row} className="education-info" noGutters>
@@ -123,8 +98,8 @@ function Career(props) {
                     <Container className="content-item education-coursework">Discrete Mathematics, Data Structures, Object Oriented Programming, Computer Architecture, Operating Systems, Virtualization, Algorithms, Cloud Computing, Compilers, Ethical Hacking, Symbolic Programming, Contemporary Issues in Computer Science, Intro to Security</Container>
                 </Container>
             </Container>
-            <Experience jobs={info.experience}/>
-            <Projects projects={info.projects}/>
+            <Listing title="Experience" slug="experience" entries={info.experience}/>
+            <Listing title="Projects" slug="project" entries={info.projects}/>
         </Container>
     )
 }

@@ -1,3 +1,5 @@
+@use "~mixins";
+
 //General
 .section-title {
     text-decoration: underline;
@@ -37,29 +39,6 @@
 .grad-date, .gpa-num, .date-range {
     text-align: right;
 }
-
-//Contacts & Social
-.contacts-content {
-    .contacts-profile {
-        max-width: 115px;
-    }
-    
-    .social-link {
-        padding: 3px;
-    }
-    
-    .social-logo {
-        padding-top: 5px;
-        max-width: 32px;
-    }
-
-    @include sm {
-        .contacts-profile {
-            margin-right: 0;
-        }
-    }
-}
-
 // Skills
 .skills-table {
     margin: auto;
