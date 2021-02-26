@@ -7,6 +7,7 @@ import Image from 'react-bootstrap/Image'
 import Profile from '../imgs/profile.PNG'
 import Github from '../imgs/github-logo.svg'
 import Linkedin from '../imgs/LinkedIn_logo_In-Black.svg'
+import './contacts.scss'
 
 function Contact(props) {
     return (

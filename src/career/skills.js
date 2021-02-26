@@ -3,6 +3,8 @@ import Container from "react-bootstrap/Container";
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
+import './skills.scss'
+
 function Skills(props) {
     let types = {}
     let items = []
@@ -24,7 +26,7 @@ function Skills(props) {
 
     // Generates the skills section, taking each skill type and displaying it accordingly
     const sections = Object.entries(types).map(([keys, skills]) => 
-        <Container as={Col} className="${keys}-skills" fluid>
+        <Container as={Col} xl={6} className={`${keys.toLowerCase()}-skills skills`} fluid>
         <h4 className="section-sub-title-center">{keys}</h4>
         <Container as="ul" className="skill-list" fluid>
             <Container as={Row} className="skills-table" fluid>
@@ -43,9 +45,9 @@ function Skills(props) {
     )
     
     return (
-        <Container as={Col} lg={6} className="skills-info">
+        <Container as={Col} xl={6} className="skills-info">
         <h2 className="section-title">Skills</h2>
-        <Container as={Row} noGutters>
+        <Container as={Row} className="skills-wrapper" fluid noGutters>
             {sections}
         </Container>
     </Container>

@@ -7,7 +7,6 @@ import Skills from './skills'
 import Listing from './listings'
 import Contact from './contacts'
 import './career.scss'
-import './contacts.scss'
 
 const info = {
     skills: {
@@ -86,12 +85,14 @@ function Career(props) {
                 <h2 className="section-title">Education</h2>
                 <Container className="content education-content">
                     <Container as={Row} noGutters fluid>
-                        <Container as={Col} sm={6} className="content-item degree-name">Bachelor of Science in Computer Science</Container>
-                        <Container as={Col} sm={6} className="content-item grad-date">December 2020</Container>
-                    </Container>
-                    <Container as={Row} noGutters fluid>
-                        <Container as={Col} sm={6} className="content-item school-name"><i>University of Texas at Austin,</i> Austin, Texas</Container>
-                        <Container as={Col} sm={6} className="content-item gpa-num">GPA: 3.58</Container>
+                        <Container as={Col} sm={8} fluid>
+                            <Container className="content-item degree-name">Bachelor of Science in Computer Science</Container>
+                            <Container className="content-item school-name"><i>University of Texas at Austin,</i> Austin, Texas</Container>
+                        </Container>
+                        <Container as={Col} sm={4} className="text-sm-right" fluid>
+                            <Container className="content-item grad-date text-xs-right">December 2020</Container>
+                            <Container className="content-item gpa-num text-xs-right">GPA: 3.58</Container>
+                        </Container>
                     </Container>
                      {/* Need to add a header for course work right here */}
                      <h4 className="section-sub-title">Coursework</h4>

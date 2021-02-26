@@ -1,0 +1,49 @@
+// Skills
+.skills-wrapper {
+    justify-content: center;
+
+    .skills {
+        justify-content: center;
+        max-width: 300px;
+        min-width: 235px;
+        margin:  0 auto;
+    }
+
+    .section-sub-title-center {
+        margin: auto;
+        max-width: 240px;
+    }
+
+    .skills-table {
+        max-width: 300px;
+        margin: auto;
+        // justify-content: center;
+
+        .col {
+            max-width: 150px;
+            min-width: 125px;
+        }
+
+        .col-primary {
+            margin: 0;
+            padding-left: 65px;
+            padding-right: 0;
+        }
+
+        .col-remaining {
+            margin: 0;
+            padding-left: 20px;
+        }
+    }
+
+    .skill-list {
+        font-size: 1em;
+        list-style-type: none;
+        justify-content: center;
+
+        li.container {
+            padding: 0;
+            min-width: 120px;
+        }
+    }
+}
