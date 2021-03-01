@@ -94,8 +94,7 @@ function Career(props) {
                             <Container className="content-item gpa-num text-xs-right">GPA: 3.58</Container>
                         </Container>
                     </Container>
-                     {/* Need to add a header for course work right here */}
-                     <h4 className="section-sub-title">Coursework</h4>
+                        <h4 className="section-sub-title">Coursework</h4>
                     <Container className="content-item education-coursework">Discrete Mathematics, Data Structures, Object Oriented Programming, Computer Architecture, Operating Systems, Virtualization, Algorithms, Cloud Computing, Compilers, Ethical Hacking, Symbolic Programming, Contemporary Issues in Computer Science, Intro to Security</Container>
                 </Container>
             </Container>

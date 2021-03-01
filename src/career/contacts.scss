@@ -5,6 +5,7 @@
 
     .contacts-profile-wrapper {
         margin: 0;
+        max-width: 115px;
         min-width: 115px;
 
         .contacts-profile {
@@ -13,8 +14,9 @@
     }
     
     .contacts-social-wrapper {
-        margin: 0 20px;
-        max-width: 200px;
+        margin: 0 0;
+        margin-left: 20px;
+        max-width: 160px;
         
         .social-link {
             padding: 3px;

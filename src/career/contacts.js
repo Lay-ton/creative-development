@@ -11,7 +11,7 @@ import './contacts.scss'
 
 function Contact(props) {
     return (
-        <Container as={Col} lg={6} className="contact-info">
+        <Container as={Col} xl={6} className="contact-info">
             <h2 className="section-title">Contacts & Socials</h2>
             <Container as={Row} className="content contacts-content" noGutters>
                 <Container as={Col} lg={3} xs={2} className="contacts-profile-wrapper" fluid>
