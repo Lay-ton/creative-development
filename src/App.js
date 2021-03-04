@@ -7,8 +7,12 @@ import Row from 'react-bootstrap/Row'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { withRouter } from "react-router";
 
+import Home from './home/home'
+import Photography from './shops/photography'
 import Career from "./career/career"
 import NoMatch from "./NoMatch"
+
+import Poster from "./shops/poster"
 
 const SidebarWithRouter = withRouter(Sidebar);
 
@@ -25,7 +29,8 @@ function App() {
           </Col>
           <Col lg={10} md={12}>
             <Switch>
-              <Route exact path="/"/>
+              <Route exact path="/" component={Poster}/>
+              <Route exact path="/posters" component={Photography}/>
               <Route path="/career" component={Career}/>
               <Route path="/workshop"/>
               <Route component={NoMatch} />

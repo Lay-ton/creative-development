@@ -17,6 +17,7 @@ function Sidebar(props) {
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav activeKey={location.pathname} className="mr-auto flex-lg-column">
               <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/posters">Photos/Posters</Nav.Link>
               <Nav.Link href="/career">Experience</Nav.Link>
               <Nav.Link href="/workshop">Workshop</Nav.Link>
             </Nav>

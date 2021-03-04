@@ -82,7 +82,7 @@ function Career(props) {
                 <Skills skills={info.skills}/>
             </Container>
             <Container as={Row} className="education-info" noGutters>
-                <h2 className="section-title">Education</h2>
+                <h2 className="section-title-center">Education</h2>
                 <Container className="content education-content">
                     <Container as={Row} noGutters fluid>
                         <Container as={Col} sm={8} fluid>

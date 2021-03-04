@@ -32,7 +32,7 @@ function Listing(props) {
     
     return (
         <Container as={Row} className={`${props.slug}-info`} noGutters>
-            <h2 className="section-title">{props.title}</h2>
+            <h2 className="section-title-center">{props.title}</h2>
             {jobs}
         </Container>
     )

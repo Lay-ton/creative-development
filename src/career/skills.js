@@ -10,7 +10,7 @@ function Skills(props) {
     let items = []
 
     // Breaks down the array of skills into the desired 6 per a col format
-    // Note: Maybe come back here and clean this up to make it very responsive
+    // Note: Maybe come back here and clean this up to make it responsive
     let rows = Object.entries(props.skills).map(([type, skill]) => (
     items = skill.reduce(function (rows, key, index) { 
         return (index % 6 == 0 ? rows.push([<Container as="li">{key}</Container>]) 
@@ -46,7 +46,7 @@ function Skills(props) {
     
     return (
         <Container as={Col} xl={6} className="skills-info">
-        <h2 className="section-title">Skills</h2>
+        <h2 className="section-title-center">Skills</h2>
         <Container as={Row} className="skills-wrapper" fluid noGutters>
             {sections}
         </Container>
