@@ -1,0 +1,1 @@
+CREATE TABLE photography (photo_id int NOT NULL AUTO_INCREMENT, title varchar(255), slug varchar(255), description text, image_name varchar(255), PRIMARY KEY (photo_id));

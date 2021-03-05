@@ -7,17 +7,16 @@ import Tab from 'react-bootstrap/Tab';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Nav from 'react-bootstrap/Nav'
 
-import Test from '../imgs/0000809_0000809-R1-006-1A.JPG';
 import './poster.scss';
 
 const prices = {
-    "14\"X11\"": "$11.00",
-    "12\"X12\"": "$13.00",
-    "18\"X12\"": "$14.00",
-    "20\"X8\"": "$14.00",
-    "20\"X16\"": "$18.00",
-    "30\"X20\"": "$25.00",
-    "36\"X24\"": "$30.00",
+    "14x11": "$11.00",
+    "12x12": "$13.00",
+    "18x12": "$14.00",
+    "20x8": "$14.00",
+    "20x16": "$18.00",
+    "30x20": "$25.00",
+    "36x24": "$30.00",
 }
 
 const sizes = {
@@ -33,32 +32,33 @@ const sizes = {
 const poster = {
     image: "0000809_0000809-R1-006-1A",
     title: "Between Reynolds Mt. and Fusillade Mt.",
-    summary: "A few miles into our hike towards Gunsight Pass in Glacier National Park, Montana. This shot is directed towards the mountain that sits behind the Twin Lakes.",
+    desc: "A few miles into our hike towards Gunsight Pass in Glacier National Park, Montana. This shot is directed towards the mountain that sits behind the Twin Lakes.",
     price_range: "$10-$25"
 }
 
 function Poster(props) {
-    const imgs = require.context('../imgs', true);
-    const [size, setSize] = useState("11\"X14\"")
+    const img_path = `../imgs/posters/${poster.image}`
+    const imgs = require.context('../imgs/posters/', true);
+    const [size, setSize] = useState("14x11")
 
-    const images = Object.keys(sizes).map((dim) =>
-        <Tab.Pane eventKey={dim}>
-            <Image src={imgs(`./${poster.image}.JPG`).default} />
+    const images = Object.values(sizes).map((dim) =>
+        <Tab.Pane className="poster-img__wrapper" eventKey={dim}>
+            <Image className={`poster-img img-dim_${dim}`} src={imgs(`./${poster.image}/${poster.image}_${dim}.jpg`).default} />
         </Tab.Pane>
     )
 
-    const options = Object.keys(sizes).map((dim) =>
+    const options = Object.entries(sizes).map(([key, dim]) =>
         <Nav.Item as={Col} lg={4}>
-            <Nav.Link eventKey={dim} onClick={() => setSize(dim)}>{dim}</Nav.Link>
+            <Nav.Link eventKey={dim} onClick={() => setSize(dim)}>{key}</Nav.Link>
         </Nav.Item>
     )
 
     return (
         <Container className="poster-body page">
             <h2 className="section-title">{poster.title}</h2>
-            <Tab.Container id="left-tabs-example" defaultActiveKey={"11\"X14\""}>
+            <Tab.Container id="left-tabs-example" defaultActiveKey={"14x11"}>
                 <Container as={Row} noGutters>
-                    <Tab.Content as={Col} lg={7}>
+                    <Tab.Content className="" as={Col} lg={7}>
                         {images}
                     </Tab.Content>
                     <Container as={Col} lg={5}>
@@ -72,7 +72,10 @@ function Poster(props) {
                         </Container>
                     </Container>
                 </Container>
-            </Tab.Container>            
+            </Tab.Container>
+            <Container as={Row}>
+                {poster.desc}
+            </Container>            
         </Container>
     );
 }

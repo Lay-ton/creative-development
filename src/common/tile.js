@@ -5,17 +5,16 @@ import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import Card from 'react-bootstrap/Card'
 
-import Test from "../imgs/0000809_0000809-R1-006-1A.JPG";
 import './tile.scss'
 
 
 function Tile(props) {
 
-    const images = require.context('../imgs', true);
+    const images = require.context(`../imgs/posters/${props.image}`, true);
     
     return (
         <Card border="dark" className={`tile-type-${props.type}`}>
-            <Card.Img className="tile-image" variant="top" src={images(`./${props.image}.JPG`).default} />
+            <Card.Img className="tile-image" variant="top" src={images(`./${props.image}.jpg`).default} />
             <Card.Body>
                 <Card.Title>{props.title}</Card.Title>
                 <Card.Text>
