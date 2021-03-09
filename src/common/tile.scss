@@ -1,7 +1,9 @@
-.tile-type-thumbnail {
-    max-width: 300px;
+.tile_wrapper {
+    .tile-type-thumbnail {
+        max-width: 300px;
 
-    .tile-image {
-        width: 298px;
+        .tile-image {
+            width: 298px;
+        }
     }
 }

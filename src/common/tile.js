@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 import Container from "react-bootstrap/Container"
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -8,21 +9,23 @@ import Card from 'react-bootstrap/Card'
 import './tile.scss'
 
 
-function Tile(props) {
-
-    const images = require.context(`../imgs/posters/${props.image}`, true);
-    
+function Tile({link, type, id, title, image_context, image, price}) {    
     return (
-        <Card border="dark" className={`tile-type-${props.type}`}>
-            <Card.Img className="tile-image" variant="top" src={images(`./${props.image}.jpg`).default} />
+        <Card border="dark" className={`tile_wrapper tile-type-${type}`}>
+            <Link to={{
+                pathname: link,
+                search: `?photo_id=${id}`
+            }}>
+            <Card.Img className="tile-image" variant="top" src={`/imgs/${image_context}/${image}/${image}.jpg`} />
             <Card.Body>
-                <Card.Title>{props.title}</Card.Title>
+                <Card.Title>{title}</Card.Title>
                 <Card.Text>
                     <small className="text-muted">
-                        {props.price}
+                        {price}
                     </small>
                 </Card.Text>
             </Card.Body>
+            </Link>
         </Card>
     )
 }

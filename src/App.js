@@ -9,6 +9,7 @@ import { withRouter } from "react-router";
 
 import Home from './home/home'
 import Photography from './shops/photography'
+import Tiles from './common/tiles'
 import Career from "./career/career"
 import NoMatch from "./NoMatch"
 
@@ -29,8 +30,10 @@ function App() {
           </Col>
           <Col lg={10} md={12}>
             <Switch>
-              <Route exact path="/" component={Poster}/>
-              <Route exact path="/posters" component={Photography}/>
+              <Route exact path="/" component={Home}/>
+              <Route exact path="/photography" component={Photography}/>
+              <Route exact path="/photography/photos" component={Tiles}/>
+              <Route exact path="/photography/poster" component={Poster}/>
               <Route path="/career" component={Career}/>
               <Route path="/workshop"/>
               <Route component={NoMatch} />

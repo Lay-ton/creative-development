@@ -1,58 +1,58 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button'
 import CardDeck from 'react-bootstrap/CardDeck'
+import Slider from '../common/slider';
 
 import Tile from '../common/tile';
-
-const products = [
-    {
-        image: "0000809_0000809-R1-006-1A",
-        title: "Between Reynolds Mt. and Fusillade Mt.",
-        summary: "A few miles into our hike towards Gunsight Pass in Glacier National Park, Montana. This shot is directed towards the mountain that sits behind the Twin Lakes.",
-        price_range: "$10-$25"
-    },
-    {
-        image: "0000809_0000809-R1-018-7A",
-        title: "Hungry Horse Dam",
-        summary: "15 miles from the west entrance of Glacier National Park, Montana.",
-        price_range: "$10-$25"
-    },
-    {
-        image: "0000809_0000809-R1-024-10A",
-        title: "Sawtooth National Forest",
-        summary: "Hiking a couple miles south of Redfish Lake in Idaho's Sawtooth National Forest",
-        price_range: "$10-$25"
-    },
-    {
-        image: "0000810_0000810-R1-035-16",
-        title: "Going-to-the-Sun Mt.",
-        summary: "Aproaching Gunsight Lake, looking back at Going-to-the-Sun Mt. in Glacier Park, Montana",
-        price_range: "$10-$25"
-    },
-]
+import './photography.scss';
 
 function Photography(props) {
-    let rows = []
+    let rows = [];
+    const [photos, setPhotos] = useState([])
 
-    const items = products.reduce(function (rows, tile, index) { 
-        return (index % 3 == 0 ? rows.push([<Tile type="thumbnail" image={tile.image} title={tile.title} price={tile.price_range} />]) 
-                : rows[rows.length-1].push(<Tile type="thumbnail" image={tile.image} title={tile.title} price={tile.price_range} />)) && rows;
-      }, []);
-    
-    const tiles = items.map((item) => 
-       <Container as={Row}>
-           {item}
-       </Container>
-    )
+    useEffect(() => {
+        fetch("/photography?time=new&limit=3").then(response => 
+            response.json().then(data => {
+                setPhotos(data.photos);
+            })
+        );
+    }, [])
 
+    console.log(photos)
+    const tiles = photos.map((photo) => {
+        return (
+            <Tile link="/photography/poster" type="thumbnail" id={photo.photo_id} image_context="posters" image={photo.image_name} title={photo.title} />
+        )
+    })
     
+    // const items = photos.reduce(function (rows, photo, index) { 
+    //     return (index % 3 == 0 ? rows.push([<Tile type="thumbnail" id={photo.photo_id} image={photo.image_name} title={photo.title} />]) 
+    //             : rows[rows.length-1].push(<Tile type="thumbnail" id={photo.photo_id} image={photo.image_name} title={photo.title} />)) && rows;
+    //   }, []);
+    
+    // const tiles = items.map((item) => 
+    //    <Container as={Row}>
+    //        {item}
+    //    </Container>
+    //)
+
     return (
-        <Container>
-            <CardDeck>
-                {tiles}
-            </CardDeck>
+        <Container className="photography-body page">
+            <Slider api_url='/photography?random=3' image_context="posters" />
+            <Container className="new-additions_wrapper">
+                <h2 className="new-additions_header">Newest Additions</h2>
+                <CardDeck className="new-additions_tiles">
+                    {tiles}
+                </CardDeck>
+            </Container>
+            <Link to={{pathname: "photography/photos",
+                       search: "?page=1"}}>
+            <Button className="view-more_btn" variant="dark">
+                <h4 className="view-more_text">All Photos</h4>
+            </Button>
+            </Link>
         </Container>
     )
 }

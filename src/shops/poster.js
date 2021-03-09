@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -37,13 +37,22 @@ const poster = {
 }
 
 function Poster(props) {
-    const img_path = `../imgs/posters/${poster.image}`
-    const imgs = require.context('../imgs/posters/', true);
     const [size, setSize] = useState("14x11")
+    const [poster, setPoster] = useState([])
+    const query = props.location.search;
 
+    useEffect(() => {
+        fetch(`/photography${query}`).then(response => 
+            response.json().then(data => {
+                setPoster(data.photos[0]);
+            })
+        );
+    }, [])
+
+    console.log(poster)
     const images = Object.values(sizes).map((dim) =>
         <Tab.Pane className="poster-img__wrapper" eventKey={dim}>
-            <Image className={`poster-img img-dim_${dim}`} src={imgs(`./${poster.image}/${poster.image}_${dim}.jpg`).default} />
+            <Image className={`poster-img img-dim_${dim}`} src={`/imgs/posters/${poster.image_name}/${poster.image_name}_${dim}.jpg`} />
         </Tab.Pane>
     )
 
@@ -74,7 +83,7 @@ function Poster(props) {
                 </Container>
             </Tab.Container>
             <Container as={Row}>
-                {poster.desc}
+                {poster.description}
             </Container>            
         </Container>
     );
