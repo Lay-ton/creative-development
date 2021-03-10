@@ -11,11 +11,11 @@ function Sidebar(props) {
 
   return (
     <Container className="site-nav" fluid>
-        <Navbar bg="dark" variant="dark" expand="sm" className="flex-lg-column">
+        <Navbar bg="dark" variant="dark" expand="sm">
             <Navbar.Brand href="/">Layton</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-            <Nav activeKey={location.pathname} className="mr-auto flex-lg-column">
+            <Nav activeKey={"/" + window.location.pathname.split('/')[1]} className="mr-auto ">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/photography">Photos/Posters</Nav.Link>
               <Nav.Link href="/career">Experience</Nav.Link>

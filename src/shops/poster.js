@@ -44,7 +44,7 @@ function Poster(props) {
     useEffect(() => {
         fetch(`/photography${query}`).then(response => 
             response.json().then(data => {
-                setPoster(data.photos[0]);
+                setPoster(data.data[0]);
             })
         );
     }, [])

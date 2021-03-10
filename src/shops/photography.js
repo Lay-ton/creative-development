@@ -1,29 +1,28 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button'
-import CardDeck from 'react-bootstrap/CardDeck'
+import Button from 'react-bootstrap/Button';
+import CardDeck from 'react-bootstrap/CardDeck';
 import Slider from '../common/slider';
 
 import Tile from '../common/tile';
 import './photography.scss';
 
 function Photography(props) {
-    let rows = [];
-    const [photos, setPhotos] = useState([])
+    const [data, setData] = useState([])
 
     useEffect(() => {
         fetch("/photography?time=new&limit=3").then(response => 
             response.json().then(data => {
-                setPhotos(data.photos);
+                setData(data.data);
             })
         );
     }, [])
 
-    console.log(photos)
-    const tiles = photos.map((photo) => {
+    console.log(data)
+    const tiles = data.map((item) => {
         return (
-            <Tile link="/photography/poster" type="thumbnail" id={photo.photo_id} image_context="posters" image={photo.image_name} title={photo.title} />
+            <Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />
         )
     })
     
@@ -48,7 +47,8 @@ function Photography(props) {
                 </CardDeck>
             </Container>
             <Link to={{pathname: "photography/photos",
-                       search: "?page=1"}}>
+                       search: "?page=0",
+                    }}>
             <Button className="view-more_btn" variant="dark">
                 <h4 className="view-more_text">All Photos</h4>
             </Button>

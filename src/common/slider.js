@@ -5,24 +5,24 @@ import './slider.scss';
 
 
 function Slider({api_url, image_context}) {
-    const [photos, setPhotos] = useState([]);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         fetch(api_url).then(response =>
             response.json().then(data => {
-                setPhotos(data.photos);
+                setData(data.data);
             }) 
         )
     }, [])
 
     return (
         <Carousel fade hover>
-            {photos.map(photo => {
+            {data.map(data => {
                 return (
                 <Carousel.Item className="slider-item">
-                    <img className="slider-image" src={`/imgs/${image_context}/${photo.image_name}/${photo.image_name}_20x8.jpg`} alt={photo.title}/>
+                    <img className="slider-image" src={`/imgs/${image_context}/${data.image_name}/${data.image_name}_20x8.jpg`} alt={data.title}/>
                     <Carousel.Caption>
-                        <h3>{photo.title}</h3>
+                        <h3>{data.title}</h3>
                     </Carousel.Caption>
                 </Carousel.Item>
                 );

@@ -24,11 +24,11 @@ function App() {
   return (
     <Container className="App" fluid>
       <Router>
-        <Row style={{ height: viewHeight }} className="main-content"  noGutters>
-          <Col lg={2} md={12}>
-            <SidebarWithRouter/>
-          </Col>
-          <Col lg={10} md={12}>
+        <Row className="main-content_wrapper"  noGutters>
+          {/* <Col lg={2} md={12}> */}
+          <SidebarWithRouter/>
+          {/* </Col> */}
+          <Container as={Col} lg={10} md={12} className="main-content_body">
             <Switch>
               <Route exact path="/" component={Home}/>
               <Route exact path="/photography" component={Photography}/>
@@ -38,7 +38,7 @@ function App() {
               <Route path="/workshop"/>
               <Route component={NoMatch} />
             </Switch>
-          </Col>
+          </Container>
         </Row>
       </Router>
     </Container>
