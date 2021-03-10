@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import CardDeck from 'react-bootstrap/CardDeck'
+import CardDeck from 'react-bootstrap/CardDeck';
 
 import Tile from './tile';
 import Paging from './paging';
+import './tiles.scss';
 
 
 function Tiles(props) {
@@ -25,7 +28,6 @@ function Tiles(props) {
     const makeApiCallPage = (pageNum) => {
         fetch(`${api_url}?page=${pageNum}`).then(response => 
             response.json().then(data => {
-                console.log(data)
                 setData(data.data);
                 setPage({
                     prev: (data.page > 0 ? data.page - 1 : null),
@@ -52,22 +54,35 @@ function Tiles(props) {
         }
     }
 
-    console.log(data)
-    console.log(page)
-    console.log(metadata)
+    const items = data.reduce(function (rows, item, index) { 
+        return (index % 3 == 0 ? rows.push([<Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />]) 
+                : rows[rows.length-1].push(<Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />)) && rows;
+      }, []);
+    
+    const tiles = items.map((item) => 
+       <CardDeck className="card_wrapper">
+           {item}
+        </CardDeck>
+    )
 
-    const cards = data.map((item) => {
-        return (
-            <Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />
-        );
-    })
+    // console.log(data)
+    // console.log(page)
+    // console.log(metadata)
+
+    // const cards = data.map((item) => {
+    //     return (
+    //         <Col lg={3}>
+    //             <Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />
+    //         </Col>
+    //     );
+    // })
 
     return (
-        <Container>
+        <Container className="tiles-body page">
             <h1>{api_url}</h1>
-            <CardDeck>
-                {cards}
-            </CardDeck>
+            <Container>
+                {tiles}
+            </Container>
             <Paging page_nums={pageNumbers} current={page.cur} change={makeApiCallPage}/>
         </Container>
     );

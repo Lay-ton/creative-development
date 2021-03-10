@@ -1,9 +1,11 @@
 .tile_wrapper {
-    .tile-type-thumbnail {
-        max-width: 300px;
+    width: 350px;
+    margin: 0;
+    margin-bottom: 30px;
+    padding: 0;
+    vertical-align: center;
 
-        .tile-image {
-            width: 298px;
-        }
+    .tile {
+        min-height: 330px;
     }
 }
