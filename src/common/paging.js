@@ -27,7 +27,7 @@ function Paging(props) {
         <Pagination>
             {props.page_nums.map(num =>{
                 return (
-                    <Pagination.Item onClick={props.change(num)} active={props.current == num ? true : false}>{num}</Pagination.Item>
+                    <Pagination.Item onClick={() => props.change(num)} active={props.current == num ? true : false}>{num}</Pagination.Item>
                 )
             })}
         </Pagination>

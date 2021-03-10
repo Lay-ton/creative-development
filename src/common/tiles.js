@@ -6,6 +6,7 @@ import CardDeck from 'react-bootstrap/CardDeck'
 import Tile from './tile';
 import Paging from './paging';
 
+
 function Tiles(props) {
     const [data, setData] = useState([])
     const [page, setPage] = useState({
@@ -22,7 +23,7 @@ function Tiles(props) {
 
     //There is a bunch of extra metadata here that could be useful if I had a lot of entries 
     const makeApiCallPage = (pageNum) => {
-        fetch(`${api_url}?page=${page.next}`).then(response => 
+        fetch(`${api_url}?page=${pageNum}`).then(response => 
             response.json().then(data => {
                 console.log(data)
                 setData(data.data);
@@ -37,11 +38,11 @@ function Tiles(props) {
                     total_pages: data.total_pages
                 })
             })
-        );        
+        );
     }
     
     useEffect(() => {
-        makeApiCallPage(page)
+        makeApiCallPage(1)
     }, []);
 
     const pageNumbers = [];
