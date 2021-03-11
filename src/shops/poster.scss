@@ -1,32 +1,91 @@
-.product-image-active {
-    width: 200px;
+.poster-path_link {
+    color: rgba(255, 255, 255, 0.5);
 }
 
-.product-image {
-    width: 150px;
+.option-cart_outter-wrapper {
+    background-color: rgb(245, 245, 245);
+    box-shadow: 0 0 0.25rem rgb(30, 30, 30 / 30%);
+    border-radius: .25rem;
+    height: 100%;
+
+    .option-cart_inner-wrapper {
+        border: 1px solid rgba(34, 34, 34, 0.125);
+        border-radius: 0.25rem;
+        padding: 20px;
+        height: 100%;
+        justify-content: center;
+
+        .poster-desc_wrapper {
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(34, 34, 34, 0.125);
+        }
+
+        .poster-sizes_header {
+            padding-left: 15px;
+            width: 100%;
+        }
+
+        .poster-sizes_wrapper {
+            margin: auto;
+            padding: 15px 0;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(34, 34, 34, 0.125);
+        
+            .size-item {
+                padding: 10px 15px;
+            
+                .poster-btn {
+                    text-align: center;
+                    border-radius: .25rem;
+                    background-color: white;
+                    border: 1px solid #7c8186;
+                }
+                
+                .poster-btn.active {
+                    background-color: #7c8186;
+                    color: white;
+                }
+                
+                .poster-btn:hover {
+                    background-color: #7c8186;
+                    color: white;
+                }
+            }
+        }
+
+        .poster-price_wrapper {
+            padding-top: 15px;
+            // width: 100%;
+            .poster-price_btn {
+                //float: right;
+                margin: 0;
+                margin-left: auto;
+                width: 110px;
+            }
+        }
+    }
 }
 
-.products-main__thumbnails {
-    width: 500px;
-}
+.new-additions_wrapper {
+    margin: 40px 0;
 
-.small-item {
-    width: 50px;
+    .new-additions_header {
+        text-align: center;
+        text-decoration: underline;
+        margin-bottom: 15px;
+    }
+
+    .new-additions_tiles {
+        justify-content: center;
+    }    
 }
 
 .poster-img__wrapper {
-    width: 200px;
+    max-width: 550px;
+    min-width: 325px;
 
     .poster-img {
-        width: 550px;
-    }
-
-    .img-dim_14x11 {
-        width: 550px;
-    }
-
-    .img-dim_36x24 {
-        width: 550px;
+        width: 100%
     }
 }
 

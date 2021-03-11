@@ -19,27 +19,15 @@ function Photography(props) {
         );
     }, [])
 
-    console.log(data)
     const tiles = data.map((item) => {
         return (
             <Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />
         )
     })
     
-    // const items = photos.reduce(function (rows, photo, index) { 
-    //     return (index % 3 == 0 ? rows.push([<Tile type="thumbnail" id={photo.photo_id} image={photo.image_name} title={photo.title} />]) 
-    //             : rows[rows.length-1].push(<Tile type="thumbnail" id={photo.photo_id} image={photo.image_name} title={photo.title} />)) && rows;
-    //   }, []);
-    
-    // const tiles = items.map((item) => 
-    //    <Container as={Row}>
-    //        {item}
-    //    </Container>
-    //)
-
     return (
         <Container className="photography-body page">
-            <Slider api_url='/photography?random=3' image_context="posters" />
+            <Slider api_url='/photography?random=3&limit=3' image_context="posters" />
             <Container className="new-additions_wrapper">
                 <h2 className="new-additions_header">Newest Additions</h2>
                 <CardDeck className="new-additions_tiles">
@@ -49,9 +37,9 @@ function Photography(props) {
             <Link to={{pathname: "photography/photos",
                        search: "?page=0",
                     }}>
-            <Button className="view-more_btn" variant="dark">
-                <h4 className="view-more_text">All Photos</h4>
-            </Button>
+                <Button className="view-more_btn" variant="dark">
+                    <h4 className="view-more_text">All Photos</h4>
+                </Button>
             </Link>
         </Container>
     )
