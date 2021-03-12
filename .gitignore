@@ -24,4 +24,4 @@ yarn-error.log*
 
 /src/imgs/posters
 /public/imgs/posters
-/api/venv/*
+/api/venv/

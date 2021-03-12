@@ -25,15 +25,13 @@ function App() {
     <Container className="App" fluid>
       <Router>
         <Row className="main-content_wrapper"  noGutters>
-          {/* <Col lg={2} md={12}> */}
           <SidebarWithRouter/>
-          {/* </Col> */}
           <Container as={Col} lg={10} md={12} className="main-content_body">
             <Switch>
               <Route exact path="/" component={Home}/>
               <Route exact path="/photography" component={Photography}/>
-              <Route exact path="/photography/photos" component={Tiles}/>
-              <Route exact path="/photography/poster" component={Poster}/>
+              <Route exact path="/photography/page/:id" component={Tiles}/>
+              <Route exact path="/photography/poster/:id" component={Poster}/>
               <Route path="/career" component={Career}/>
               <Route path="/workshop"/>
               <Route component={NoMatch} />

@@ -1,11 +1,15 @@
 .tile_wrapper {
-    width: 350px;
     margin: 0;
     margin-bottom: 30px;
     padding: 0;
     vertical-align: center;
+    text-align: center;
 
     .tile {
-        min-height: 330px;
+        min-height: 318px;
+
+        .tile-title {
+            margin: 0;
+        }
     }
 }

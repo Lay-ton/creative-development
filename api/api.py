@@ -3,9 +3,11 @@ from flask import Flask
 from flask import jsonify
 from flask import flash, request
 from flaskext.mysql import MySQL
+from flask_restplus import Api, Resource
 
 
 app = Flask(__name__)
+api = Api(app=app)
 
 mysql = MySQL()
 
@@ -17,69 +19,186 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 
-@app.route('/photography', methods=['GET'])
-def photography():
+@api.route('/photography')
+class PhotographyList(Resource):
+    def get(self):
+        """
+        Return all photo entries
 
-    base = "SELECT * FROM photography "
+        Query Arguments:
+        limit: defaults to 100
+        offset: defaults to 0
+        """
+        limit = int(request.args.get('limit')
+                    ) if request.args.get('limit') else 100
+        offset = int(request.args.get('offset')
+                     ) if request.args.get('offset') else 0
 
-    # quries for the entry with the spcified id
-    photo_id = request.args.get('photo_id')
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            clause = "SELECT * FROM photography LIMIT %s OFFSET %s;"
+            cursor.execute(clause, (limit, offset))
+            print(cursor._last_executed)
+            photos = cursor.fetchall()
+            total = getTotal("photography", "photo_id")
+            print(photos)
+            response = jsonify({
+                "data": photos,
+                "total": total,
+                "count": len(photos),
+            })
+            response.status_code = 200
+            return response
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
 
-    # if random is specified with any value, it will get up to a limit of random posts
-    random = request.args.get('random')
 
-    # argument for specifying whether to order posts in DESC or ASC order
-    time = request.args.get('time')
+@api.route('/photography/sorted/<string:order>')
+class PhotographyList(Resource):
+    def get(self, order):
+        """
+        Return all photo entries in ASC or DESC order
 
-    page = request.args.get('page')
+        Query Arguments:
+        limit: defaults to 100
+        offset: defaults to 0
+        """
+        limit = int(request.args.get('limit')
+                    ) if request.args.get('limit') else 100
+        offset = int(request.args.get('offset')
+                     ) if request.args.get('offset') else 0
 
-    # limit on number of posts to be queried for
-    # 20 is temporary default limit if non is specified
-    limit = 9 if not request.args.get(
-        'limit') else int(request.args.get('limit'))
-
-    # offset number for the query. Ex. paging
-    if page:
-        response = jsonify(getPage(linkBase="/photography/photos",
-                                   limit=limit, page=int(page)))
-        response.status_code = 200
-        return response
-
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        if photo_id:
-            clause = "WHERE photo_id = %s ;"
-            cursor.execute(base+clause, (photo_id,))
-        elif random:
-            clause = "ORDER BY RAND() LIMIT %s ;"
-            cursor.execute(base+clause, (limit,))
-        elif time:
-            if time == "old":
-                clause = "ORDER BY photo_id ASC LIMIT %s ;"
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            if order == "ASC":
+                clause = "SELECT * FROM photography ORDER BY photo_id ASC LIMIT %s OFFSET %s;"
             else:
-                clause = "ORDER BY photo_id DESC LIMIT %s ;"
-                cursor.execute(base+clause, (limit,))
-        else:
-            clause = "LIMIT %s OFFSET %s ;"
-            cursor.execute(base+clause, (limit, offset,))
+                clause = "SELECT * FROM photography ORDER BY photo_id DESC LIMIT %s OFFSET %s;"
+            cursor.execute(clause, (limit, offset))
+            print(cursor._last_executed)
+            photos = cursor.fetchall()
+            total = getTotal("photography", "photo_id")
+            print(photos)
+            response = jsonify({
+                "data": photos,
+                "total": total,
+                "count": len(photos),
+            })
+            response.status_code = 200
+            return response
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
 
-        print(cursor._last_executed)
-        photos = cursor.fetchall()
 
-        total = getTotal("photography", "photo_id")
+@api.route('/photography/random')
+class PhotographyList(Resource):
+    def get(self):
+        """
+        Return all photo entries in random order
 
-        response = jsonify({
-            "data": photos,
-            "total": total,
-        })
-        response.status_code = 200
-        return response
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
+        Query Arguments:
+        limit: defaults to 100
+        offset: defaults to 0
+        """
+        limit = int(request.args.get('limit')
+                    ) if request.args.get('limit') else 100
+        offset = int(request.args.get('offset')
+                     ) if request.args.get('offset') else 0
+
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            clause = "SELECT * FROM photography ORDER BY RAND() LIMIT %s OFFSET %s;"
+            cursor.execute(clause, (limit, offset))
+            print(cursor._last_executed)
+            photos = cursor.fetchall()
+            total = getTotal("photography", "photo_id")
+            print(photos)
+            response = jsonify({
+                "data": photos,
+                "total": total,
+                "count": len(photos),
+            })
+            response.status_code = 200
+            return response
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
+
+@api.route('/photography/poster/<int:id>')
+class Photography(Resource):
+    def get(self, id):
+        """
+        Display a photos details
+        """
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            clause = "SELECT * FROM photography WHERE photo_id = %s;"
+            cursor.execute(clause, (id,))
+            print(cursor._last_executed)
+            photos = cursor.fetchone()
+            total = getTotal("photography", "photo_id")
+            response = jsonify({
+                "data": photos,
+            })
+            response.status_code = 200
+            return response
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
+
+@api.route('/photography/page/<int:pageNum>')
+class PhotographyList(Resource):
+    def get(self, pageNum):
+        """
+        Return a page and metadata
+
+        Query Arguments:
+        limit: defaults to 9
+        """
+        limit = int(request.args.get('limit')
+                    ) if request.args.get('limit') else 9
+        offset = (pageNum - 1) * limit
+
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            clause = "SELECT * FROM photography LIMIT %s OFFSET %s;"
+            cursor.execute(clause, (limit, offset))
+            print(cursor._last_executed)
+            photos = cursor.fetchall()
+            total = getTotal("photography", "photo_id")
+            finalPage = int(total / limit) + 1
+            print(photos)
+            response = jsonify({
+                "data": photos,
+                "total": total,
+                "count": len(photos),
+                "current_page": pageNum,
+                "total_pages": finalPage,
+            })
+            response.status_code = 200
+            return response
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
 
 
 # Helps function to get the count and return it
@@ -92,43 +211,6 @@ def getTotal(table, column="*"):
         count = cursor.fetchone()
         print(cursor._last_executed)
         return count[0]
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
-
-
-def getPage(linkBase, limit, page):
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        offset = (page-1) * 9
-        query = "SELECT * FROM photography LIMIT %s OFFSET %s ;"
-        cursor.execute(query, (limit, offset,))
-
-        print(cursor._last_executed)
-        photos = cursor.fetchall()
-
-        total = getTotal("photography", "photo_id")
-        finalPage = int(total / limit) + 1
-
-        links = {
-            "first": f"{linkBase}?page=0",
-            "prev": f"{linkBase}?page={ 0 if not page else page-1 }",
-            "current": f"{linkBase}?page={page}",
-            "next": f"{linkBase}?page={ page if page == finalPage else page+1 }",
-            "last": f"{linkBase}?page={finalPage}",
-        }
-
-        response = {
-            "data": photos,
-            "total_rows": total,
-            "count": len(photos),
-            "current_page": page,
-            "total_pages": finalPage,
-        }
-        return response
     except Exception as e:
         print(e)
     finally:

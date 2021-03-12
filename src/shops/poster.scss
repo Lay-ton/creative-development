@@ -1,5 +1,10 @@
-.poster-path_link {
-    color: rgba(255, 255, 255, 0.5);
+.poster-path_wrapper {
+    margin-top: 15px;
+    margin-bottom: 0;
+
+    .poster-path_link {
+        color: rgba(255, 255, 255, 0.5);
+    }
 }
 
 .option-cart_outter-wrapper {
@@ -55,9 +60,8 @@
 
         .poster-price_wrapper {
             padding-top: 15px;
-            // width: 100%;
+
             .poster-price_btn {
-                //float: right;
                 margin: 0;
                 margin-left: auto;
                 width: 110px;
@@ -80,6 +84,7 @@
     }    
 }
 
+// IMPORTANT: Need to add styling to the images here.
 .poster-img__wrapper {
     max-width: 550px;
     min-width: 325px;

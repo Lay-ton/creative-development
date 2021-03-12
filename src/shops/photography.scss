@@ -1,9 +1,10 @@
 .photography-body {
     justify-content: center;
     text-align: center;
+    margin-bottom: 40px;
 
     .new-additions_wrapper {
-        margin: 25px 0;
+        margin: 25px 0 0 0;
         .new-additions_header {
             text-align: center;
             text-decoration: underline;
@@ -16,7 +17,6 @@
     }
 
     .view-more_btn {
-        margin-top: 15px;
         .view-more_text {
             margin: 4px 0;
         }

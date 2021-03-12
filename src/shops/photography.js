@@ -12,7 +12,7 @@ function Photography(props) {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        fetch("/photography?time=new&limit=3").then(response => 
+        fetch("/photography/sorted/DESC?limit=3").then(response => 
             response.json().then(data => {
                 setData(data.data);
             })
@@ -27,16 +27,14 @@ function Photography(props) {
     
     return (
         <Container className="photography-body page">
-            <Slider api_url='/photography?random=3&limit=3' image_context="posters" />
+            <Slider api_url='/photography/random?limit=3' image_context="posters" />
             <Container className="new-additions_wrapper">
                 <h2 className="new-additions_header">Newest Additions</h2>
                 <CardDeck className="new-additions_tiles">
                     {tiles}
                 </CardDeck>
             </Container>
-            <Link to={{pathname: "photography/photos",
-                       search: "?page=0",
-                    }}>
+            <Link to={{pathname: "photography/page/1"}}>
                 <Button className="view-more_btn" variant="dark">
                     <h4 className="view-more_text">All Photos</h4>
                 </Button>

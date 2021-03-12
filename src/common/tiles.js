@@ -22,11 +22,11 @@ function Tiles(props) {
         total_rows: null,
         total_pages: null,
     })
-    const api_url = "/" + window.location.pathname.split('/')[1];
+    const api_url = window.location.pathname;
 
     //There is a bunch of extra metadata here that could be useful if I had a lot of entries 
-    const makeApiCallPage = (pageNum) => {
-        fetch(`${api_url}?page=${pageNum}`).then(response => 
+    const makeApiCallPage = () => {
+        fetch(`${api_url}`).then(response => 
             response.json().then(data => {
                 setData(data.data);
                 setPage({
@@ -44,8 +44,8 @@ function Tiles(props) {
     }
     
     useEffect(() => {
-        makeApiCallPage(1)
-    }, []);
+        makeApiCallPage()
+    }, [window.location.pathname]);
 
     const pageNumbers = [];
     if (metadata.total_pages !== null && metadata.total_pages > 0) {
@@ -54,6 +54,7 @@ function Tiles(props) {
         }
     }
 
+    //Need to make this dynamic
     const items = data.reduce(function (rows, item, index) { 
         return (index % 3 == 0 ? rows.push([<Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />]) 
                 : rows[rows.length-1].push(<Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />)) && rows;
@@ -65,21 +66,9 @@ function Tiles(props) {
         </CardDeck>
     )
 
-    // console.log(data)
-    // console.log(page)
-    // console.log(metadata)
-
-    // const cards = data.map((item) => {
-    //     return (
-    //         <Col lg={3}>
-    //             <Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />
-    //         </Col>
-    //     );
-    // })
-
     return (
         <Container className="tiles-body page">
-            <h1>{api_url}</h1>
+            <h1>{window.location.pathname.split('/')[1]}</h1>
             <Container>
                 {tiles}
             </Container>

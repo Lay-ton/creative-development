@@ -33,28 +33,30 @@ const sizes = {
 }
 
 function Poster(props) {
-    const [size, setSize] = useState("14\"X11\"")
-    const [selected, setSelected] = useState("14\"X11\"")
-    const [price, setPrice] = useState(prices[size])
-    const [poster, setPoster] = useState([])
-    const [data, setData] = useState([])
-    
-    const query = props.location.search;
+    const [size, setSize] = useState("14\"X11\"");
+    const [selected, setSelected] = useState("14\"X11\"");
+    const [price, setPrice] = useState(prices[size]);
+    const [poster, setPoster] = useState([]);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch(`/photography${query}`).then(response => 
+        fetch(`${props.location.pathname}`).then(response => 
             response.json().then(data => {
-                setPoster(data.data[0]);
+                setPoster(data.data);
             })
         );
-        fetch("/photography?time=new&limit=3").then(response => 
+        window.scrollTo(0, 0)
+    }, [props.location.pathname])
+
+    useEffect(() => {
+        fetch("/photography/sorted/DESC?limit=3").then(response => 
             response.json().then(data => {
                 setData(data.data);
             })
         );
     }, [])
 
-    console.log(poster)
+    
     const images = Object.values(sizes).map((dim) =>
         <Tab.Pane className="poster-img__wrapper" eventKey={dim}>
             <Image className={`poster-img img-dim_${dim}`} src={`/imgs/posters/${poster.image_name}/${poster.image_name}_${dim}.jpg`} />
@@ -79,8 +81,7 @@ function Poster(props) {
                 <Link to={{pathname: "/photography"}}>
                     /Photography
                 </Link>
-                <Link to={{pathname: "/photography/photos",
-                       search: "?page=0",
+                <Link to={{pathname: "/photography/page/1",
                     }}>
                     /Photos
                 </Link>

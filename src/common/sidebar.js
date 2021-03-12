@@ -12,16 +12,18 @@ function Sidebar(props) {
   return (
     <Container className="site-nav" fluid>
         <Navbar bg="dark" variant="dark" expand="sm">
+            <Container className="justify-content-center">
             <Navbar.Brand href="/">Layton</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-            <Nav activeKey={"/" + window.location.pathname.split('/')[1]} className="mr-auto ">
+            <Nav activeKey={"/" + window.location.pathname.split('/')[1]} className="mr-auto">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/photography">Photos/Posters</Nav.Link>
               <Nav.Link href="/career">Experience</Nav.Link>
               <Nav.Link href="/workshop">Workshop</Nav.Link>
             </Nav>
             </Navbar.Collapse>
+            </Container>
         </Navbar>
     </Container>
   );
