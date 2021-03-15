@@ -88,8 +88,8 @@ function Poster(props) {
             </h6>
             <h2 className="section-title">{poster.title}</h2>
             <Tab.Container id="left-tabs-example" defaultActiveKey={"14x11"}>
-                <Container as={Row} noGutters fluid>
-                    <Tab.Content className="" as={Col} lg={7} xs={12}>
+                <Container as={Row} className="poster-main_wrapper" noGutters fluid>
+                    <Tab.Content className="images_wrapper" as={Col} lg={7} xs={12}>
                         {images}
                     </Tab.Content>
                     <Container as={Col} lg={5} xs={12} className="option-cart_outter-wrapper">
