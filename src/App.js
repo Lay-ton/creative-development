@@ -1,19 +1,19 @@
 import React from "react";
 import './App.scss';
-import Sidebar from "./common/sidebar";
+import Sidebar from "./components/common/sidebar";
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { withRouter } from "react-router";
 
-import Home from './home/home'
-import Photography from './shops/photography'
-import Tiles from './common/tiles'
-import Career from "./career/career"
-import NoMatch from "./NoMatch"
+import Home from './components/home/home'
+import Photography from './components/shops/photography'
+import Tiles from './components/common/tiles'
+import Career from "./components/career/career"
+import NoMatch from "./components/common/NoMatch"
 
-import Poster from "./shops/poster"
+import Poster from "./components/shops/poster"
 
 const SidebarWithRouter = withRouter(Sidebar);
 

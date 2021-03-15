@@ -1,0 +1,39 @@
+//General
+
+.section-sub-title {
+    text-decoration: underline;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    font-weight: 300;
+}
+
+.section-sub-title-center {
+    text-decoration: underline;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.content {
+    padding: 20px 0;
+}
+
+.content-item {
+    padding: 0;
+    font-size: 1em;
+}
+
+.content-list {
+    margin: 0;
+    padding-left: 50px;
+}
+
+//Education
+.grad-date, .gpa-num {
+    min-width: 200px;
+}
+
+.coursework {
+    padding: 0;
+}

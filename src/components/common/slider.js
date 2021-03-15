@@ -1,0 +1,34 @@
+import React, { useState, useEffect } from 'react';
+import Carousel from 'react-bootstrap/Carousel';
+
+import './slider.scss';
+
+
+function Slider({api_url, image_context}) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        fetch(api_url).then(response =>
+            response.json().then(data => {
+                setData(data.data);
+            }) 
+        )
+    }, [])
+
+    return (
+        <Carousel fade hover>
+            {data.map(data => {
+                return (
+                <Carousel.Item className="slider-item">
+                    <img className="slider-image" src={`/imgs/${image_context}/${data.image_name}/${data.image_name}_20x8.jpg`} alt={data.title}/>
+                    <Carousel.Caption>
+                        <h3>{data.title}</h3>
+                    </Carousel.Caption>
+                </Carousel.Item>
+                );
+            })}
+        </Carousel>
+    );
+}
+
+export default Slider;
