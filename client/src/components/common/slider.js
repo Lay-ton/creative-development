@@ -20,7 +20,7 @@ function Slider({api_url, image_context}) {
             {data.map(data => {
                 return (
                 <Carousel.Item className="slider-item">
-                    <img className="slider-image" src={`/imgs/${image_context}/${data.image_name}/${data.image_name}_20x8.jpg`} alt={data.title}/>
+                    <img className="slider-image" src={`/imgs/${image_context}/${data.image}/${data.image}_20x8.jpg`} alt={data.title}/>
                     <Carousel.Caption>
                         <h3>{data.title}</h3>
                     </Carousel.Caption>

@@ -3,6 +3,23 @@ import db from '../models/index.js';
 const Photography = db.photography;
 const Op = db.Sequelize.Op;
 
+// HELPERS
+const getPagination = (page, size) => {
+    const limit = size ? +size : 9;
+    const offset = page ? page * limit : 0;
+
+    return { limit, offset };
+}
+
+const getPagingData = (input, page, limit) => {
+    const { count: totalItems, rows: data } = input;
+    const currentPage = page ? +page : 0;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    return { totalItems, data, totalPages, currentPage };
+}
+
+// CONTROLLERS
 // Create a new Photo entry
 export const create = (req, res) => {
     //Validate request
@@ -24,7 +41,7 @@ export const create = (req, res) => {
     // Save Photo to database
     Photography.create(photography)
     .then(data => {
-        res.send(data);
+        res.json(data);
     })
     .catch(err => {
         res.status(500).send({
@@ -35,9 +52,26 @@ export const create = (req, res) => {
 
 // Retrieve all Photos from the database
 export const findAll = (req, res) => {
-    Photography.findAll()
+
+    const page = req.query.page;
+    const size = req.query.size;
+    var order = req.query.order ? req.query.order : null;
+    if (order && order == "rand") {
+        order = db.connection.random();
+    } else {
+        order = ['id', order];
+    }
+
+    const { limit, offset } = getPagination(page, size);
+
+    Photography.findAndCountAll({
+        order: [order,],
+        limit,
+        offset,
+    })
     .then(data => {
-        res.send(data);
+        const response = getPagingData(data, page, limit);
+        res.json(response);
     })
     .catch(err => {
         res.status(500).send({
@@ -52,7 +86,9 @@ export const findOne = (req, res) => {
 
     Photography.findByPk(id)
     .then(data => {
-        res.send(data);
+        res.json({
+            data: data,
+        });
     })
     .catch(err => {
         res.status.send({
@@ -129,14 +165,18 @@ export const deleteAll = (req, res) => {
 
 // Find all published Photos
 export const findAllPublished = (req, res) => {
-    Photography.findAll({ where: { published: true } })
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
+
+    Photography.findAndCountAll({ where: { published: true }, limit, offset })
     .then(data => {
-      res.send(data);
+        const response = getPagingData(data, page, limit);
+        res.send(response);
     })
     .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving Photos."
-      });
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving Photos."
+        });
     });
 };

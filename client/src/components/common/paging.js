@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Pagination from 'react-bootstrap/Pagination'
 
 import './paging.scss';
@@ -8,7 +9,7 @@ function Paging(props) {
         <Pagination className="paging_wrapper">
             {props.page_nums.map(num =>{
                 return (
-                    <Pagination.Item onClick={() => props.change(num)} active={props.current == num ? true : false}>{num}</Pagination.Item>
+                    <Pagination.Item href={`${props.link_base}${num}`} active={props.current == num ? true : false}>{num}</Pagination.Item>
                 )
             })}
         </Pagination>

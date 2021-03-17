@@ -4,7 +4,12 @@ import cors from "cors";
 const app = express();
 import db from './models/index.js';
 
-db.connection.sync({ force: true }).then(() => {
+// This reset and drop the table
+// db.connection.sync({ force: true }).then(() => {
+//     console.log("Drop and re-sync db.");
+// });
+
+db.connection.sync().then(() => {
     console.log("Drop and re-sync db.");
 });
 

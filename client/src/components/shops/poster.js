@@ -40,16 +40,22 @@ function Poster(props) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch(`${props.location.pathname}`).then(response => 
+        var split_url = window.location.pathname.split('/');
+        console.log(split_url);
+        fetch(`/api/${split_url[1]}/${split_url[3]}`).then(response => 
             response.json().then(data => {
+                console.log(data);
                 setPoster(data.data);
             })
         );
-        window.scrollTo(0, 0)
+        setSelected("14\"X11\"");
+        setSize("14\"X11\"");
+        setPrice(prices["14\"X11\""]);
+        window.scrollTo(0, 0);
     }, [props.location.pathname])
 
     useEffect(() => {
-        fetch("/photography/sorted/DESC?limit=3").then(response => 
+        fetch("/api/photography?order=desc&size=3").then(response => 
             response.json().then(data => {
                 setData(data.data);
             })
@@ -59,19 +65,19 @@ function Poster(props) {
     
     const images = Object.values(sizes).map((dim) =>
         <Tab.Pane className="poster-img__wrapper" eventKey={dim}>
-            <Image className={`poster-img img-dim_${dim}`} src={`/imgs/posters/${poster.image_name}/${poster.image_name}_${dim}.jpg`} />
+            <Image className={`poster-img img-dim_${dim}`} src={`/imgs/posters/${poster.image}/${poster.image}_${dim}.jpg`} />
         </Tab.Pane>
     )
 
     const options = Object.entries(sizes).map(([key, dim]) =>
-        <Nav.Item as={Col} lg={4} className="size-item" onMouseEnter={() => setSize(key)} onMouseLeave={() => setSize(selected)}>
-            <Nav.Link className="poster-btn" eventKey={dim} onClick={() => {setSelected(key); setPrice(prices[key])}}>{key}</Nav.Link>
+        <Nav.Item as={Col} lg={4} className="size-item">
+            <Nav.Link className="poster-btn" eventKey={dim} onMouseEnter={() => setSize(key)} onMouseLeave={() => setSize(selected)} onClick={() => {setSelected(key); setPrice(prices[key])}}>{key}</Nav.Link>
         </Nav.Item>
     )
 
     const tiles = data.map((item) => {
         return (
-            <Tile link="/photography/poster" type="thumbnail" id={item.photo_id} image_context="posters" image={item.image_name} title={item.title} />
+            <Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />
         )
     })
 
@@ -87,7 +93,7 @@ function Poster(props) {
                 </Link>
             </h6>
             <h2 className="section-title">{poster.title}</h2>
-            <Tab.Container id="left-tabs-example" defaultActiveKey={"14x11"}>
+            <Tab.Container id="left-tabs-example" activeKey={sizes[selected]}>
                 <Container as={Row} className="poster-main_wrapper" noGutters fluid>
                     <Tab.Content className="images_wrapper" as={Col} lg={7} xs={12}>
                         {images}
