@@ -1,5 +1,10 @@
 import Sequelize from 'sequelize';
+
+//My Files
 import dbConfig from '../configs/db.config.js'
+import Photography from './photography.model.js';
+import Role from './role.model.js';
+import User from './user.model.js';
 
 const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
@@ -17,7 +22,23 @@ const db = {};
 db.Sequelize = Sequelize;
 db.connection = connection;
 
-import Photography from "./photography.model.js";
+// Establish tables
 db.photography = Photography(connection, Sequelize);
+db.role = Role(connection, Sequelize);
+db.user = User(connection, Sequelize);
+
+// Establish relationship
+db.role.belongsToMany(db.user, {
+    through: 'user_roles',
+    foreignKey: 'roleId',
+    otherKey: 'roleId',
+});
+db.user.belongsToMany(db.role, {
+    through: 'user_roles',
+    foreignKey: 'userId',
+    otherKey: 'roleId',
+});
+
+db.ROLES = ['user', 'admin', 'moderator'];
 
 export default db;

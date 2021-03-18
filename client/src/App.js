@@ -1,6 +1,6 @@
 import React from "react";
 import './App.scss';
-import Sidebar from "./components/common/sidebar";
+import Navigation from "./components/common/nav";
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -15,7 +15,7 @@ import NoMatch from "./components/common/NoMatch"
 
 import Poster from "./components/shops/poster"
 
-const SidebarWithRouter = withRouter(Sidebar);
+const SidebarWithRouter = withRouter(Navigation);
 
 function App() {
   const viewHeight = window.innerHeight;

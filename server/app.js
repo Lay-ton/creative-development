@@ -1,17 +1,43 @@
 import express from "express";
 import cors from "cors";
 
-const app = express();
+//My files
 import db from './models/index.js';
+import photography from './routes/photography.routes.js';
+import auth from './routes/auth.routes.js';
+
+
+const app = express();
 
 // This reset and drop the table
 // db.connection.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
 // });
 
+const Role = db.role;
+
 db.connection.sync().then(() => {
     console.log("Drop and re-sync db.");
 });
+
+
+// function initial() {
+//     Role.create({
+//         id: 1,
+//         name: 'user',
+//     });
+
+//     Role.create({
+//         id: 2,
+//         name: "moderator",
+//     });
+
+//     Role.create({
+//         id: 3,
+//         name: 'admin',
+//     })
+// }
+
 
 var corsOptions = {
     origin: 'http://localhost:5000'
@@ -24,8 +50,8 @@ app.get("/", (req, res) => {
     res.json({message: "Welcome to my site"});
 });
 
-import photography from "./routes/photography.routes.js";
 photography(app);
+auth(app);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

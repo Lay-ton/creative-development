@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import CardDeck from 'react-bootstrap/CardDeck';
 
 import Tile from './tile';
@@ -36,7 +33,7 @@ function Tiles(props) {
     }
     
     useEffect(() => {
-        makeApiCallPage()
+        makeApiCallPage();
     }, [window.location.pathname]);
 
     const pageNumbers = [];
@@ -48,7 +45,7 @@ function Tiles(props) {
 
     //Need to make this dynamic
     const items = data.reduce(function (rows, item, index) { 
-        return (index % 3 == 0 ? rows.push([<Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />]) 
+        return (index % 3 === 0 ? rows.push([<Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />]) 
                 : rows[rows.length-1].push(<Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />)) && rows;
       }, []);
     
