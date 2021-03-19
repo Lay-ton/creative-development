@@ -1,10 +1,23 @@
-import { Router } from 'express';
+import { verifySignUp } from '../middleware/index';
+import controller from '../controllers/auth.controller';
 
 export default (app) => {
-    const router = Router();
-    router.post('/signup',);
+    app.use(function(req, res, next) {
+        res.header(
+            "Access-Control-Allow-Headers",
+            "x-access-token, Origin, Content-Type, Accept"
+        );
+        next()
+    });
 
-    router.post('/signin',);
+    app.post(
+        "/api/auth/signup",
+        [
+            verifySignUp.checkDuplicateUsernameOrEmail,
+            verifySignUp.checkRolesExisted
+        ],
+        controller.signup
+    );
 
-    app.use('/api/auth', router);
-}
+    app.post("/api/auth/signin", controller.signin);
+};

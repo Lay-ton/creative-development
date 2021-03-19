@@ -5,6 +5,7 @@ import cors from "cors";
 import db from './models/index.js';
 import photography from './routes/photography.routes.js';
 import auth from './routes/auth.routes.js';
+import user from './routes/user.routes.js';
 
 
 const app = express();
@@ -52,6 +53,7 @@ app.get("/", (req, res) => {
 
 photography(app);
 auth(app);
+user(app);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
