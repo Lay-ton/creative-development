@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 // My Files
-import db from '../models/index';
-import config from '../configs/auth.config';
+import db from '../models/index.js';
+import config from '../configs/auth.config.js';
 
 const User = db.user;
 const Role = db.role;

@@ -1,5 +1,10 @@
-import { authJwt } from '../middleware/index';
-import controller from '../controllers/user.controller';
+import { authJwt } from '../middleware/index.js';
+import { 
+    userBoard,
+    allAccess,
+    moderatorBoard,
+    adminBoard
+} from '../controllers/user.controller.js';
 
 export default function(app) {
     app.use(function(req, res, next) {
@@ -10,23 +15,23 @@ export default function(app) {
         next()
     });
 
-    app.get("/api/test/all", controller.allAccess);
+    app.get("/api/test/all", allAccess);
 
     app.get(
         "/api/test/user",
         [authJwt.verifyToken],
-        controller.userBoard
+        userBoard
     );
 
     app.get(
         "/api/test/mod",
         [authJwt.verifyToken, authJwt.isModerator],
-        controller.moderatorBoard
+        moderatorBoard
     );
 
     app.get(
         "/api/test/admin",
         [authJwt.verifyToken, authJwt.isAdmin],
-        controller.adminBoard
+        adminBoard
     );
 };
