@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { withRouter } from "react-router";
 
 import Home from './components/home/home'
+import Login from './components/common/login'
 import Photography from './components/shops/photography'
 import Tiles from './components/common/tiles'
 import Career from "./components/career/career"
@@ -28,7 +29,8 @@ function App() {
           <SidebarWithRouter/>
           <Container as={Col} lg={10} md={12} className="main-content_body">
             <Switch>
-              <Route exact path="/" component={Home}/>
+              <Route exact path={["/", "/home"]} component={Home}/>
+              <Route exact path="/login" component={Login}/>
               <Route exact path="/photography" component={Photography}/>
               <Route exact path="/photography/page/:id" component={Tiles}/>
               <Route exact path="/photography/poster/:id" component={Poster}/>

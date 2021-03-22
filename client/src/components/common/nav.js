@@ -11,16 +11,19 @@ function Navigation(props) {
     <Container className="site-nav" fluid>
         <Navbar bg="dark" variant="dark" expand="sm">
             <Container className="justify-content-center">
-            <Navbar.Brand href="/">Layton</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav activeKey={"/" + location} className="mr-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/photography">Photos/Posters</Nav.Link>
-                    <Nav.Link href="/career">Experience</Nav.Link>
-                    <Nav.Link href="/workshop">Workshop</Nav.Link>
+                <Navbar.Brand href="/">Layton</Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav activeKey={"/" + location} className="mr-auto">
+                        <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/photography">Photos/Posters</Nav.Link>
+                        <Nav.Link href="/career">Experience</Nav.Link>
+                        <Nav.Link href="/workshop">Workshop</Nav.Link>
+                    </Nav>
+                </Navbar.Collapse>
+                <Nav>
+                    <Nav.Link href="/login">Login</Nav.Link>
                 </Nav>
-            </Navbar.Collapse>
             </Container>
         </Navbar>
     </Container>
