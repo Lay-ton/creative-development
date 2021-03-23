@@ -23,6 +23,7 @@ function Navigation(props) {
                 </Navbar.Collapse>
                 <Nav>
                     <Nav.Link href="/login">Login</Nav.Link>
+                    <Nav.Link href="/register">Sign Up</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
