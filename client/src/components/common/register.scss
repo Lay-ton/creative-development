@@ -1,0 +1,32 @@
+.register__wrapper {
+    max-width: 375px;
+
+    .register-body {
+        margin: auto;
+        margin-top: 100px;
+        padding: 20px 40px;
+        background-color: #343a40;
+        box-shadow: 0 0 0.25rem rgb(30, 30, 30 / 30%);
+
+        .register-title {
+            color: white;
+            text-align: center;
+            text-decoration: underline;
+            font-size: 2.2em;
+            margin-top: 10px;
+        }
+
+        .register-form-title {
+            color: white;
+        }
+
+        .submit-btn__wrapper {
+            text-align: center;
+            margin-top: 40px;
+
+            .submit-btn {
+                width: 150px;
+            }
+        }
+    }
+}

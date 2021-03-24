@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import Container from 'react-bootstrap/esm/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
+import Card from 'react-bootstrap/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { isEmail } from 'validator';
 
 import { register } from '../../actions/auth';
+import './register.scss';
 
 // Username input is valid as long as its 4-20 characters
 const validUsername = (value) => {
@@ -95,69 +95,74 @@ function Register(props) {
     }
 
     return (
-        <Form noValidate onSubmit={handleRegister}>
-            {!succesful && (
-                <Container>
-                    <Form.Group>
-                        <Form.Label htmlFor="username">Username</Form.Label>
-                        <Form.Control 
-                            type="text"
-                            name="username"
-                            placeholder="Username"
-                            onChange={onChangeUsername}
-                            isInvalid={validated.vusername}
-                            required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Username must 4 to 20 characters and can only be letters and numbers.
-                        </Form.Control.Feedback>
-                    </Form.Group>
+        <Container className="register__wrapper">
+            <Card border="dark" className="register-body">
+                <Card.Title className="register-title">Sign Up</Card.Title>
+                <Form noValidate onSubmit={handleRegister}>
+                    {!succesful && (
+                        <Container>
+                            <Form.Group>
+                                <Form.Label htmlFor="username" className="register-form-title">Username</Form.Label>
+                                <Form.Control 
+                                    type="text"
+                                    name="username"
+                                    placeholder="Username"
+                                    onChange={onChangeUsername}
+                                    isInvalid={validated.vusername}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    Username must 4 to 20 characters and can only be letters and numbers.
+                                </Form.Control.Feedback>
+                            </Form.Group>
 
-                    <Form.Group>
-                        <Form.Label htmlFor="email">Email</Form.Label>
-                        <Form.Control 
-                            type="email"
-                            name="email"
-                            placeholder="email@example.com"
-                            onChange={onChangeEmail}
-                            isInvalid={validated.vemail}
-                            required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Please enter a valid email
-                        </Form.Control.Feedback>
-                    </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="email" className="register-form-title">Email</Form.Label>
+                                <Form.Control 
+                                    type="email"
+                                    name="email"
+                                    placeholder="email@example.com"
+                                    onChange={onChangeEmail}
+                                    isInvalid={validated.vemail}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    Please enter a valid email
+                                </Form.Control.Feedback>
+                            </Form.Group>
 
-                    <Form.Group>
-                        <Form.Label htmlFor="password">Password</Form.Label>
-                        <Form.Control 
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            onChange={onChangePassword}
-                            isInvalid={validated.vpassword}
-                            required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Password must be 8 to 40 characters and contain at least one uppercase letter, 
-                            one lowercase letter, one number, and one special character.
-                        </Form.Control.Feedback>
-                    </Form.Group>
+                            <Form.Group>
+                                <Form.Label htmlFor="password" className="register-form-title">Password</Form.Label>
+                                <Form.Control 
+                                    type="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    onChange={onChangePassword}
+                                    isInvalid={validated.vpassword}
+                                    required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    Password must be 8 to 40 characters and contain at least one uppercase letter, 
+                                    one lowercase letter, one number, and one special character.
+                                </Form.Control.Feedback>
+                            </Form.Group>
 
-                    <Form.Group>
-                        <Button type="submit">Sign Up</Button>
-                    </Form.Group>
-                </Container>
-            )}
+                            <Form.Group className="submit-btn__wrapper">
+                                <Button type="submit" variant="info" className="submit-btn">Sign Up</Button>
+                            </Form.Group>
+                        </Container>
+                    )}
 
-            {message && (
-                <Form.Group>
-                    <Alert variant="successful">{message}</Alert>
-                </Form.Group>
-            )}
-            
+                    {message && (
+                        <Form.Group>
+                            <Alert variant="successful">{message}</Alert>
+                        </Form.Group>
+                    )}
+                    
 
-        </Form>
+                </Form>
+            </Card>
+        </Container>
     );
 }
 

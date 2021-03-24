@@ -5,7 +5,8 @@ import Container from 'react-bootstrap/Container'
 import "./nav.scss";
 
 function Navigation(props) {
-  const { location } = window.location.pathname.split('/')[1];
+  const location = window.location.pathname.split('/')[1];
+  console.log(location);
 
   return (
     <Container className="site-nav" fluid>
