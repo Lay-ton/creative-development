@@ -25,3 +25,6 @@ yarn-error.log*
 /client/src/imgs/posters
 /client/public/imgs/posters
 /server/node_modules
+
+#jshint
+.jshintrc
