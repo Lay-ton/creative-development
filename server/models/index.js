@@ -2,7 +2,6 @@
 import Sequelize from 'sequelize';
 import mysql from 'mysql';
 
-
 //My Files
 import dbConfig from '../configs/db.config.js'
 import Photography from './photography.model.js';
@@ -10,17 +9,16 @@ import Role from './role.model.js';
 import User from './user.model.js';
 
 
-
+// Creates the database if needed based on what the NODE_ENV var is set to, then disconnects
 const initialize = mysql.createConnection({ host: dbConfig.HOST, user: dbConfig.USER, password: dbConfig.PASSWORD});
-// initialize.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.DB}\`;`);
-
 initialize.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    console.log("Connected...");
     initialize.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.DB}\`;`, function (err, result) {
       if (err) throw err;
-      console.log("Database created");
+      console.log("Database created or already exists!");
     });
+    initialize.end();
   });
 
 

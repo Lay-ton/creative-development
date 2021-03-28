@@ -10,13 +10,6 @@ import user from './routes/user.routes.js';
 
 const app = express();
 
-
-
-const Role = db.role;
-
-
-const env = process.env.NODE_ENV
-console.log(env)
 // console.log("Testing");
 // // This resets and drops the tables
 // db.connection.sync({ force: true }).then(() => {
@@ -26,7 +19,7 @@ console.log(env)
 db.connection.sync();
 
 
-
+// const Role = db.role;
 // function initial() {
 //     Role.create({
 //         id: 1,

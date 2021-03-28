@@ -5,8 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "NODE_ENV=test jest --silent",
-    "start": "nodemon app.js"
+    "test": "NODE_ENV=test jest --runInBand --silent",
+    "start": "NODE_ENV=development nodemon app.js"
   },
   "jest": {
     "transform": {
