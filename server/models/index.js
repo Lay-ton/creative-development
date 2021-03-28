@@ -1,9 +1,6 @@
 
-import iconv from 'iconv-lite';
-iconv.encodingExists('cesu8');
 import Sequelize from 'sequelize';
 import mysql from 'mysql';
-
 
 
 //My Files

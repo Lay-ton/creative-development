@@ -17,14 +17,13 @@ const Role = db.role;
 
 const env = process.env.NODE_ENV
 console.log(env)
-// if (env == 'test') {
-//     console.log("Testing");
-//     // This reset and drop the table
-//     db.connection.sync({ force: true }).then(() => {
-//         console.log("Drop and re-sync db.");
-//     });
-// } else {
-//db.connection.sync();
+// console.log("Testing");
+// // This resets and drops the tables
+// db.connection.sync({ force: true }).then(() => {
+//     console.log("Drop and re-sync db.");
+// });
+
+db.connection.sync();
 
 
 
