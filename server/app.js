@@ -10,16 +10,22 @@ import user from './routes/user.routes.js';
 
 const app = express();
 
-// This reset and drop the table
-// db.connection.sync({ force: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-// });
+
 
 const Role = db.role;
 
-db.connection.sync().then(() => {
-    console.log("Drop and re-sync db.");
-});
+
+const env = process.env.NODE_ENV
+console.log(env)
+// if (env == 'test') {
+//     console.log("Testing");
+//     // This reset and drop the table
+//     db.connection.sync({ force: true }).then(() => {
+//         console.log("Drop and re-sync db.");
+//     });
+// } else {
+//db.connection.sync();
+
 
 
 // function initial() {
@@ -59,3 +65,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+
+export default app;

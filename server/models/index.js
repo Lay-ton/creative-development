@@ -1,10 +1,31 @@
+
+import iconv from 'iconv-lite';
+iconv.encodingExists('cesu8');
 import Sequelize from 'sequelize';
+import mysql from 'mysql';
+
+
 
 //My Files
 import dbConfig from '../configs/db.config.js'
 import Photography from './photography.model.js';
 import Role from './role.model.js';
 import User from './user.model.js';
+
+
+
+const initialize = mysql.createConnection({ host: dbConfig.HOST, user: dbConfig.USER, password: dbConfig.PASSWORD});
+// initialize.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.DB}\`;`);
+
+initialize.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+    initialize.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.DB}\`;`, function (err, result) {
+      if (err) throw err;
+      console.log("Database created");
+    });
+  });
+
 
 const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
