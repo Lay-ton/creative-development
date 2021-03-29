@@ -17,7 +17,7 @@ jobs:
       mysql:
         image: mysql:8.0.23
         env:
-        MYSQL_ROOT_PASSWORD: ${{ secrets.SQL_PASS }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.SQL_PASS }}
 
     steps:
       - uses: actions/checkout@v2
