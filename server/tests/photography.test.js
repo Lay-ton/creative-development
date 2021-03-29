@@ -13,16 +13,11 @@ photography(app);
 describe("testing-photography-routes", () => {
   test("GET /api/photography - success", async () => {
     const res = await request(app).get("/api/photography"); //uses the request function that calls on express app instance
-    console.log(res);
+    //console.log(res);
     expect(res.statusCode).toEqual(200)
     expect(res.body).toHaveProperty("totalItems")
     expect(res.body).toHaveProperty("data")
     expect(res.body).toHaveProperty("totalPages")
     expect(res.body).toHaveProperty("currentPage")
   })
-
-  afterAll(async () => {
-    // Not completely sure if this is needed. But need to find the leaking
-    await db.connection.close();
-  });
 });

@@ -11,7 +11,8 @@
   "jest": {
     "transform": {
       "^.+\\.(js|jsx)?$": "babel-jest"
-    }
+    },
+    "setupFilesAfterEnv": ["./tests/setup.js"]
   },
   "keywords": [],
   "author": "",
