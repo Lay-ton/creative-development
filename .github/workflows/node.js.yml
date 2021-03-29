@@ -15,8 +15,9 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0.23
+        image: mysql:5.7
         env:
+          MYSQL_ROOT_USER: root
           MYSQL_ROOT_PASSWORD: root
 
     steps:
