@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "NODE_ENV=test jest --runInBand --silent",
+    "test": "NODE_ENV=test jest --runInBand",
     "start": "NODE_ENV=development nodemon app.js"
   },
   "jest": {

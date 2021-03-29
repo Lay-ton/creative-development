@@ -13,6 +13,7 @@ photography(app);
 describe("testing-photography-routes", () => {
   test("GET /api/photography - success", async () => {
     const res = await request(app).get("/api/photography"); //uses the request function that calls on express app instance
+    console.log(res);
     expect(res.statusCode).toEqual(200)
     expect(res.body).toHaveProperty("totalItems")
     expect(res.body).toHaveProperty("data")
