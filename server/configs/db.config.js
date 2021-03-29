@@ -1,9 +1,9 @@
 export default {
     HOST: "localhost",
-    USER: "root",
-    PASSWORD: "",
+    USER: "postgres",
+    PASSWORD: "root",
     DB: "sealyoulater",
-    dialect: "mysql",
+    dialect: "postgres",
     pool: {
       max: 5,
       min: 0,
