@@ -1,0 +1,29 @@
+{
+  "name": "creative-development",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && npm install && npm start",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "engines": {
+    "node": "15.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lay-ton/creative-development.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lay-ton/creative-development/issues"
+  },
+  "homepage": "https://github.com/Lay-ton/creative-development#readme",
+  "dependencies": {
+    "redux-devtools-extension": "^2.13.9"
+  }
+
+}
