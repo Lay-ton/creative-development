@@ -16,7 +16,7 @@ initialize.connect(function(err) {
     console.log("Connected...");
     initialize.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.DB}\`;`, function (err, result) {
       if (err) throw err;
-      console.log("Database created or already exists!");
+      console.log(`Database created or already exists! (DB: ${dbConfig.DB})`);
     });
     initialize.end();
   });
