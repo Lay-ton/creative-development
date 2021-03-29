@@ -17,10 +17,15 @@ jobs:
       mysql:
         image: mysql:8.0.23
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.SQL_PASS }}
+          MYSQL_ROOT_PASSWORD: root
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Verify MySQL connection from host
+        run: |
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 -uroot -proot -e "SHOW DATABASES"
 
       - name: Set up Node
         uses: actions/setup-node@v1
