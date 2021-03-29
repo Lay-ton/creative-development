@@ -11,14 +11,15 @@ import user from './routes/user.routes.js';
 const app = express();
 
 // console.log("Testing");
-// // This resets and drops the tables
+// This drops and resets the tables
 // db.connection.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
 // });
-
 db.connection.sync();
 
-
+// Uncomment and run if you want to populate your roles table.
+// Unless your force sync you can comment it back out after the
+// first run.
 // const Role = db.role;
 // function initial() {
 //     Role.create({
@@ -36,7 +37,7 @@ db.connection.sync();
 //         name: 'admin',
 //     })
 // }
-
+// initial();
 
 var corsOptions = {
     origin: 'http://localhost:3000'

@@ -12,7 +12,9 @@
     "transform": {
       "^.+\\.(js|jsx)?$": "babel-jest"
     },
-    "setupFilesAfterEnv": ["./tests/setup.js"]
+    "setupFilesAfterEnv": [
+      "./tests/setup.js"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -26,11 +28,10 @@
     "express": "^4.17.1",
     "jest": "^26.6.3",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
     "sequelize": "^6.5.1",
-    "sequelize-mock-v5": "^1.2.3",
     "supertest": "^6.1.3"
   }
 }

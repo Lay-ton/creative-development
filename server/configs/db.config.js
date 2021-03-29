@@ -1,10 +1,10 @@
 const databases = {
   "development": {
     HOST: "localhost",
-    USER: "root",
-    PASSWORD: "root",
+    USER: "postgres",
+    PASSWORD: "",
     DB: "sealyoulater_dev",
-    dialect: "mysql",
+    dialect: "postgres",
     pool: {
       max: 5,
       min: 0,
@@ -14,10 +14,10 @@ const databases = {
   },
   "test": {
     HOST: "localhost",
-    USER: "root",
-    PASSWORD: "root",
+    USER: "postgres",
+    PASSWORD: "",
     DB: "sealyoulater_test",
-    dialect: "mysql",
+    dialect: "postgres",
     pool: {
       max: 5,
       min: 0,
@@ -27,10 +27,10 @@ const databases = {
   },
   "production": {
     HOST: "localhost",
-    USER: "root",
-    PASSWORD: "root",
+    USER: "postgres",
+    PASSWORD: "",
     DB: "sealyoulater_prod",
-    dialect: "mysql",
+    dialect: "postgres",
     pool: {
       max: 5,
       min: 0,
