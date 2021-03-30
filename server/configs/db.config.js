@@ -15,7 +15,7 @@ const databases = {
   "test": {
     HOST: "localhost",
     USER: "postgres",
-    PASSWORD: "",
+    PASSWORD: "root",
     DB: "sealyoulater_test",
     dialect: "postgres",
     pool: {
