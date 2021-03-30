@@ -18,8 +18,8 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_DB: sealyoulater_test
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_USER: postgres
         ports:
           - 5432:5432
         # Set health checks to wait until postgres has started
