@@ -10,6 +10,7 @@ import user from './routes/user.routes.js';
 
 const app = express();
 
+// console.log("Testing");
 // This drops and resets the tables
 // db.connection.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
@@ -57,3 +58,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+
+export default app;

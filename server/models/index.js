@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import { Client } from 'pg';
 
 //My Files
 import dbConfig from '../configs/db.config.js'

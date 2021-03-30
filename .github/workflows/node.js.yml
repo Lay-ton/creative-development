@@ -5,39 +5,54 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: sealyoulater_test
+          POSTGRES_PASSWORD: root
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
 
-    - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Run npm ci on server
-      working-directory: ./server
-      run: npm ci
-    
-    - name: Run npm build on server
-      working-directory: ./server
-      run: npm run build --if-present
+      - name: Run npm ci on server
+        working-directory: ./server
+        run: npm ci
 
-    - name: Run Jest on server
-      working-directory: ./server
-      run: npm test
+      - name: Run npm build on server
+        working-directory: ./server
+        run: npm run build --if-present
+
+      - name: Run Jest on server
+        working-directory: ./server
+        run: npm test

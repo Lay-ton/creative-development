@@ -52,11 +52,10 @@ export const create = (req, res) => {
 
 // Retrieve all Photos from the database
 export const findAll = (req, res) => {
-
     const page = req.query.page;
     const size = req.query.size;
-    var order = req.query.order ? req.query.order : null;
-    if (order && order == "rand") {
+    var order = req.query.order ? req.query.order : "ASC";
+    if (order == "rand") {
         order = db.connection.random();
     } else {
         order = ['id', order];
@@ -70,7 +69,9 @@ export const findAll = (req, res) => {
         offset,
     })
     .then(data => {
+        //console.log(data);
         const response = getPagingData(data, page, limit);
+        //console.log(response);
         res.json(response);
     })
     .catch(err => {
@@ -83,7 +84,6 @@ export const findAll = (req, res) => {
 // Finds a single Photo via id
 export const findOne = (req, res) => {
     const id = req.params.id;
-
     Photography.findByPk(id)
     .then(data => {
         res.json({
