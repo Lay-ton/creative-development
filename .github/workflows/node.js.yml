@@ -14,22 +14,23 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql:5.7
+      postgres:
+        image: postgres:latest
         env:
-          MYSQL_ROOT_USER: root
-          MYSQL_ROOT_PASSWORD: root
+          POSTGRES_DB: sealyoulater_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: root
         ports:
-          - "3306:3306"
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Verify MySQL connection from host
-        run: |
-          sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 -uroot -proot -e "SHOW DATABASES;"
 
       - name: Set up Node
         uses: actions/setup-node@v1
@@ -55,6 +56,3 @@ jobs:
       - name: Run Jest on server
         working-directory: ./server
         run: npm test
-
-      - name: Stop MYSQL service
-        run: sudo service mysql stop
