@@ -10,17 +10,16 @@ import user from './routes/user.routes.js';
 
 const app = express();
 
-// console.log("Testing");
+// Uncomment the chunk below and run if you want to populate your roles table.
+// Unless you force sync you can comment it back out after the
+// first run.
+
 // This drops and resets the tables
+// const Role = db.role;
 // db.connection.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
+//     initial();
 // });
-db.connection.sync();
-
-// Uncomment and run if you want to populate your roles table.
-// Unless your force sync you can comment it back out after the
-// first run.
-// const Role = db.role;
 // function initial() {
 //     Role.create({
 //         id: 1,
@@ -37,7 +36,9 @@ db.connection.sync();
 //         name: 'admin',
 //     })
 // }
-// initial();
+
+db.connection.sync();
+
 
 var corsOptions = {
     origin: 'http://localhost:3000'
