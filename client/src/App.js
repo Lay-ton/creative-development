@@ -9,6 +9,7 @@ import { clearMessage } from './actions/message';
 import { history } from './helpers/history';
 import './App.scss';
 
+import AdminNav from './components/dashboard/adminNav';
 import Navigation from "./components/common/nav";
 import Home from './components/home/home';
 import Login from './components/common/login';
@@ -44,6 +45,7 @@ function App() {
 		<Container className="App" fluid>
 			<Router history={history}>
 				<Row className="main-content_wrapper"  noGutters>
+				{ showAdminBoard && <AdminNav/> }
 				<SidebarWithRouter/>
 				<Container as={Col} lg={10} md={12} className="main-content_body">
 					<Switch>
@@ -54,7 +56,6 @@ function App() {
 					<Route exact path="/photography/page/:id" component={Tiles}/>
 					<Route exact path="/photography/poster/:id" component={Poster}/>
 					<Route path="/career" component={Career}/>
-					<Route path="/workshop"/>
 					<Route component={NoMatch} />
 					</Switch>
 				</Container>
