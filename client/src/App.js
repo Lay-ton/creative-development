@@ -10,6 +10,7 @@ import { history } from './helpers/history';
 import './App.scss';
 
 import AdminNav from './components/dashboard/adminNav';
+import Dashboard from './components/dashboard/dashboard';
 import Navigation from "./components/common/nav";
 import Home from './components/home/home';
 import Login from './components/common/login';
@@ -21,9 +22,10 @@ import Poster from "./components/shops/poster";
 import NoMatch from "./components/common/NoMatch";
 
 
-const SidebarWithRouter = withRouter(Navigation);
+const NavbarWithRouter = withRouter(Navigation);
 
 function App() {
+	const location = window.location.pathname.split('/')[1];
 	const [showAdminBoard, setShowAdminBoard] = useState(false);
 
 	const { user: currentUser } = useSelector((state) => state.auth);
@@ -41,25 +43,44 @@ function App() {
 		}
 	}, [currentUser]);
 
+	console.log(location);
+
 	return (
 		<Container className="App" fluid>
 			<Router history={history}>
-				<Row className="main-content_wrapper"  noGutters>
-				{ showAdminBoard && <AdminNav/> }
-				<SidebarWithRouter/>
-				<Container as={Col} lg={10} md={12} className="main-content_body">
-					<Switch>
-					<Route exact path={["/", "/home"]} component={Home}/>
-					<Route exact path="/login" component={Login}/>
-					<Route exact path="/register" component={Register}/>
-					<Route exact path="/photography" component={Photography}/>
-					<Route exact path="/photography/page/:id" component={Tiles}/>
-					<Route exact path="/photography/poster/:id" component={Poster}/>
-					<Route path="/career" component={Career}/>
-					<Route component={NoMatch} />
-					</Switch>
-				</Container>
-				</Row>
+			
+				{ location == "dashboard" ? (
+					
+					<Row className="main-content_wrapper" noGutters>
+						{ showAdminBoard && <AdminNav/>}
+						<Switch>
+							<Route exact path="/dashboard" component={Dashboard}/>
+							<Route exact path={["/", "/home"]} component={Home}/>
+						</Switch>
+					</Row>
+					
+				) : (
+					
+					<Row className="main-content_wrapper" noGutters>
+						{ showAdminBoard && <AdminNav/>}
+						<NavbarWithRouter/>
+						<Container as={Col} lg={10} md={12} className="main-content_body">
+							<Switch>
+								<Route exact path={["/", "/home"]} component={Home}/>
+								<Route exact path="/login" component={Login}/>
+								<Route exact path="/register" component={Register}/>
+								<Route exact path="/photography" component={Photography}/>
+								<Route exact path="/photography/page/:id" component={Tiles}/>
+								<Route exact path="/photography/poster/:id" component={Poster}/>
+								<Route exact path="/career" component={Career}/>
+								<Route component={NoMatch} />	
+							</Switch>				
+						</Container>
+					</Row>
+					
+				)}
+					
+				
 			</Router>
 		</Container>
 	);
