@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 
+import './adminNav.scss';
 
 
 
@@ -11,7 +12,7 @@ function adminNav(props) {
 
     return (
         <Container className="admin-nav" fluid>
-            <Navbar>
+            <Navbar variant="dark">
                 <Nav className="mr-auto">
                     { location == "dashboard" ? (
                         <Nav.Link href="/">Main Site</Nav.Link>

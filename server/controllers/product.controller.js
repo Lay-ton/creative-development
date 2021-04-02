@@ -1,6 +1,6 @@
 import db from '../models/index.js';
 
-const Photography = db.photography;
+const Product = db.products;
 const Op = db.Sequelize.Op;
 
 // HELPERS
@@ -20,7 +20,7 @@ const getPagingData = (input, page, limit) => {
 }
 
 // CONTROLLERS
-// Create a new Photo entry
+// Create a new Product entry
 export const create = (req, res) => {
     //Validate request
     if (!req.body.title) {
@@ -30,27 +30,28 @@ export const create = (req, res) => {
         return;
     }
 
-    // Create a Photo entry
-    const photography = {
+    // Create a Product entry
+    const product = {
         title: req.body.title,
         description: req.body.description,
         image: req.body.image,
         published: req.body.published ? req.body.published : false,
+        typeTable: req.body.type
     };
 
-    // Save Photo to database
-    Photography.create(photography)
+    // Save Product to database
+    Product.create(product)
     .then(data => {
         res.json(data);
     })
     .catch(err => {
         res.status(500).send({
-            message: err.message || "An error occurred while creating Photo."
+            message: err.message || "An error occurred while creating Product."
         });
     });
 };
 
-// Retrieve all Photos from the database
+// Retrieve all Product from the database
 export const findAll = (req, res) => {
     const page = req.query.page;
     const size = req.query.size;
@@ -63,41 +64,47 @@ export const findAll = (req, res) => {
 
     const { limit, offset } = getPagination(page, size);
 
-    Photography.findAndCountAll({
+    Product.findAndCountAll({
         order: [order,],
         limit,
         offset,
     })
     .then(data => {
-        //console.log(data);
         const response = getPagingData(data, page, limit);
-        //console.log(response);
         res.json(response);
     })
     .catch(err => {
         res.status(500).send({
-            message: err.message || "An error occurred while retrieving Photos"
+            message: err.message || "An error occurred while retrieving Products"
         })
     })
 };
 
-// Finds a single Photo via id
+// Finds a single Product via id
 export const findOne = (req, res) => {
     const id = req.params.id;
-    Photography.findByPk(id)
-    .then(data => {
-        res.json({
-            data: data,
-        });
+    Product.findByPk(id, {attributes: ['id', 'typeTable']})
+    .then(entry => {
+        Product.findByPk(1, {include: entry.dataValues['typeTable']})
+        .then((data) => {
+            res.json({
+                data: data,
+            });
+        })
     })
     .catch(err => {
         res.status.send({
-            message: err.message || "Error retrieving Photo with id=" + id
+            message: err.message || "Error retrieving Product with id=" + id
         });
     });
 };
 
-// Update a Photo by the id in request
+/*
+    Need to rewrite the code that comes after this line to work with the new database design.
+    It's still all the old Photography only model
+*/
+
+// Update a Product by the id in request
 export const update = (req, res) => {
     const id = req.params.id;
 

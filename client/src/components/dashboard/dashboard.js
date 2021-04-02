@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Sidebar from './sidebar';
 
+import Sidebar from './sidebar';
 import Product from './products';
+import './dashboard.scss';
 
 function Dashboard(props) {
     const [bodyKey, setBodyKey] = useState("dashboard");
@@ -21,7 +22,7 @@ function Dashboard(props) {
             <Container as={Col} lg={2} fluid>
                 <Sidebar active={bodyKey} setActive={setBodyKey}/>
             </Container>
-            <Container as={Col} lg={10} fluid>
+            <Container as={Col} lg={10} className="dashboard-body" fluid>
                 {body}
             </Container>
         </Container>

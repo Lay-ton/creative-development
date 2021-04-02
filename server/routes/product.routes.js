@@ -6,7 +6,7 @@ import {
     update,
     deleteOne,
     deleteAll,
-} from "../controllers/photography.controller.js";
+} from "../controllers/product.controller.js";
 import { Router } from "express";
 
 
@@ -26,5 +26,5 @@ export default (app) => {
 
     router.delete("/", deleteAll);
 
-    app.use('/api/photography', router);
+    app.use('/api/products', router);
 }
