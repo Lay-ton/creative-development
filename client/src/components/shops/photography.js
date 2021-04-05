@@ -26,7 +26,7 @@ function Photography(props) {
     
     return (
         <Container className="photography-body page">
-            <Slider api_url="/api/photography?order=rand&size=3" image_context="posters" />
+            <Slider api_url="/api/products/photo?order=rand&size=3" image_context="posters" />
             <Container className="new-additions_wrapper">
                 <h2 className="new-additions_header">Newest Additions</h2>
                 <CardDeck className="new-additions_tiles">

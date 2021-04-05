@@ -80,6 +80,39 @@ export const findAll = (req, res) => {
     })
 };
 
+// Retrieve all Product of a specified type from the database
+export const findAllType = (req, res) => {
+    const page = req.query.page;
+    const size = req.query.size;
+    const type = req.params.type;
+    var order = req.query.order ? req.query.order : "ASC";
+    if (order == "rand") {
+        order = db.connection.random();
+    } else {
+        order = ['id', order];
+    }
+
+    const { limit, offset } = getPagination(page, size);
+
+    Product.findAndCountAll({
+        where: {
+            typeTable: type
+        },
+        order: [order,],
+        limit,
+        offset,
+    })
+    .then(data => {
+        const response = getPagingData(data, page, limit);
+        res.json(response);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "An error occurred while retrieving Products"
+        })
+    })
+};
+
 // Finds a single Product via id
 export const findOne = (req, res) => {
     const id = req.params.id;

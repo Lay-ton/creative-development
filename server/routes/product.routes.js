@@ -1,6 +1,7 @@
 import { 
     create, 
-    findAll, 
+    findAll,
+    findAllType,
     findAllPublished,
     findOne,
     update,
@@ -15,6 +16,8 @@ export default (app) => {
     router.post("/", create);
 
     router.get("/", findAll);
+
+    router.get("/:type", findAllType);
 
     router.get("/published", findAllPublished);
 
