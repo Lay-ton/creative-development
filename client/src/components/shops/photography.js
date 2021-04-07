@@ -11,7 +11,7 @@ function Photography(props) {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        fetch("/api/photography?order=desc&size=3").then(response => 
+        fetch("/api/products/photo?order=desc&size=3").then(response => 
             response.json().then(data => {
                 setData(data.data);
             })

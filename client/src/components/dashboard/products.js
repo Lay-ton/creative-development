@@ -6,18 +6,25 @@ import DataList from '../common/dataList';
 import './products.scss';
 
 function Products(props) {
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [query, setQuery] = useState(props.query);
 
     useEffect(() => {
-        axios.get("/api/products").then(response => {
+        axios.get(query).then(response => {
             setData(response.data.data);
         })
-    },[])
+    },[query])
 
+    console.log(query)
     console.log(data);
     return (
         <Container className="products-body__wrapper" fluid>
-            <DataList data={data}/>
+
+            {/* Want a switch statement right here that either does listing or pulls up a single*/}
+            <Container className="products-filter__wrapper">
+
+            </Container>
+            <DataList data={data} type="products"/>
         </Container>
     )
 }

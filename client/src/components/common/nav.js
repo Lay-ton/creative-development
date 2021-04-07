@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
+import { withRouter } from "react-router";
 import { history } from "../../helpers/history";
 import { clearMessage } from '../../actions/message';
 import { logout } from '../../actions/auth';
@@ -55,4 +56,4 @@ function Navigation(props) {
     );
 }
 
-export default Navigation;
+export default withRouter(Navigation);

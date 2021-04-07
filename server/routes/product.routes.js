@@ -17,8 +17,6 @@ export default (app) => {
 
     router.get("/", findAll);
 
-    router.get("/:type", findAllType);
-
     router.get("/published", findAllPublished);
 
     router.get("/:id", findOne);

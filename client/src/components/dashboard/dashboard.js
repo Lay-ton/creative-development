@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -9,13 +10,11 @@ import './dashboard.scss';
 
 function Dashboard(props) {
     const [bodyKey, setBodyKey] = useState("dashboard");
-    const [body, setBody] = useState();
+    const [body, setBody] = useState(props.body);
 
     useEffect(() => {
-        if (bodyKey == 'products') {
-            setBody(<Product/>)
-        }
-    }, [bodyKey]);
+        setBody(props.body)
+    }, [props.body]);
 
     return (
         <Container as={Row} className="dashboard-main" fluid noGutters>

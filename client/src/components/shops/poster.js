@@ -55,7 +55,7 @@ function Poster(props) {
     }, [props.location.pathname])
 
     useEffect(() => {
-        fetch("/api/photography?order=desc&size=3").then(response => 
+        fetch("/api/products/photo?order=desc&size=3").then(response => 
             response.json().then(data => {
                 setData(data.data);
             })

@@ -9,8 +9,13 @@ import { clearMessage } from './actions/message';
 import { history } from './helpers/history';
 import './App.scss';
 
+// Admin components
 import AdminNav from './components/dashboard/adminNav';
 import Dashboard from './components/dashboard/dashboard';
+import Products from './components/dashboard/products';
+import Product from './components/dashboard/product';
+
+// Main site components
 import Navigation from "./components/common/nav";
 import Home from './components/home/home';
 import Login from './components/common/login';
@@ -22,10 +27,8 @@ import Poster from "./components/shops/poster";
 import NoMatch from "./components/common/NoMatch";
 
 
-const NavbarWithRouter = withRouter(Navigation);
-
 function App() {
-	const location = window.location.pathname.split('/')[1];
+	const [location, setLocation] = useState(window.location.pathname.split('/')[1]);
 	const [showAdminBoard, setShowAdminBoard] = useState(false);
 
 	const { user: currentUser } = useSelector((state) => state.auth);
@@ -43,18 +46,23 @@ function App() {
 		}
 	}, [currentUser]);
 
-	console.log(location);
+	useEffect(() => {
+		setLocation(window.location.pathname.split('/')[1])
+	}, [window.location.pathname])
+
+	
 
 	return (
 		<Container className="App" fluid>
-			<Router history={history}>
 			
 				{ location == "dashboard" ? (
 					
 					<Row className="main-content_wrapper" noGutters>
-						{ showAdminBoard && <AdminNav/>}
+						{ showAdminBoard && <AdminNav/> }
 						<Switch>
 							<Route exact path="/dashboard" component={Dashboard}/>
+							<Route exact path="/dashboard/products/:id" render={() => <Dashboard body={<Product/>}/>}/>
+							<Route exact path="/dashboard/products" render={() => <Dashboard body={<Products query="/api/products"/>}/>}/>
 							<Route exact path={["/", "/home"]} component={Home}/>
 						</Switch>
 					</Row>
@@ -63,7 +71,7 @@ function App() {
 					
 					<Row className="main-content_wrapper" noGutters>
 						{ showAdminBoard && <AdminNav/>}
-						<NavbarWithRouter/>
+						<Navigation/>
 						<Container as={Col} lg={10} md={12} className="main-content_body">
 							<Switch>
 								<Route exact path={["/", "/home"]} component={Home}/>
@@ -80,10 +88,8 @@ function App() {
 					
 				)}
 					
-				
-			</Router>
 		</Container>
 	);
 }
 
-export default App;
+export default withRouter(App);
