@@ -42,7 +42,7 @@ function Poster(props) {
     useEffect(() => {
         var split_url = window.location.pathname.split('/');
         console.log(split_url);
-        fetch(`/api/${split_url[1]}/${split_url[3]}`).then(response => 
+        fetch(`/api/products/${split_url[3]}`).then(response => 
             response.json().then(data => {
                 console.log(data);
                 setPoster(data.data);
@@ -55,7 +55,7 @@ function Poster(props) {
     }, [props.location.pathname])
 
     useEffect(() => {
-        fetch("/api/products/photo?order=desc&size=3").then(response => 
+        fetch("/api/products/type/photo?order=desc&size=3").then(response => 
             response.json().then(data => {
                 setData(data.data);
             })
@@ -65,7 +65,7 @@ function Poster(props) {
     
     const images = Object.values(sizes).map((dim) =>
         <Tab.Pane className="poster-img__wrapper" eventKey={dim}>
-            <Image className={`poster-img img-dim_${dim}`} src={`/imgs/posters/${poster.image}/${poster.image}_${dim}.jpg`} />
+            <Image className={`poster-img img-dim_${dim}`} src={`/imgs/photo/${poster.image}/${poster.image}_${dim}.jpg`} />
         </Tab.Pane>
     )
 
@@ -77,7 +77,7 @@ function Poster(props) {
 
     const tiles = data.map((item) => {
         return (
-            <Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />
+            <Tile type="thumbnail" data={item} />
         )
     })
 
@@ -85,11 +85,11 @@ function Poster(props) {
         <Container className="poster-body page">
             <h6 className="poster-path_wrapper">
                 <Link to={{pathname: "/photography"}}>
-                    /Photography
+                    /photography
                 </Link>
                 <Link to={{pathname: "/photography/page/1",
                     }}>
-                    /Photos
+                    /photos
                 </Link>
             </h6>
             <h2 className="section-title">{poster.title}</h2>

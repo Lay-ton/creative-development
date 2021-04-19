@@ -22,8 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/client/src/imgs/posters
-/client/public/imgs/posters
+/client/src/imgs/photo
+/client/public/imgs/photo
 /server/node_modules
 
 #jshint

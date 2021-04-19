@@ -15,6 +15,7 @@ function Slider({api_url, image_context}) {
         )
     }, [])
 
+    console.log(data)
     return (
         <Carousel fade hover>
             {data.map(data => {

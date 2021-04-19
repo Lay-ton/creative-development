@@ -10,18 +10,12 @@ import './dataList.scss';
 
 
 function DataList(props) {
-
-    const queryHandler = (val) => {
-        props.setQuery(val)
-    }
-
-    console.log(props.data);
     return (
         <Container className="data-list__wrapper" fluid>
             {props.data.map(val => {
                 return (
                 <Container as={Row} className="data-list__item" fluid noGutters>
-                    <Image className="data-list__thumbnail" src={`/imgs/posters/${val.image}/${val.image}_12x12.jpg`} thumbnail/>
+                    <Image className="data-list__thumbnail" src={`/imgs/${val.typeTable}/${val.image}/${val.image}_12x12.jpg`} thumbnail/>
                     <Container as={Col} className="data-list__summary">
                         <h5>{val.title}</h5>
                         <h6>{val.typeTable ? (val.typeTable) : ("default")}</h6>

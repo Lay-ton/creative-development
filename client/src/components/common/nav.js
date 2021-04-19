@@ -34,7 +34,7 @@ function Navigation(props) {
                         <Nav activeKey={"/" + location} className="mr-auto">
                             <Nav.Link href="/">Home</Nav.Link>
                             <Nav.Link href="/photography">Photos/Posters</Nav.Link>
-                            <Nav.Link href="/career">About Us</Nav.Link>
+                            <Nav.Link href="/career">About</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                     {currentUser ? (

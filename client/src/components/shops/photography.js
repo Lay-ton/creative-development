@@ -11,7 +11,7 @@ function Photography(props) {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        fetch("/api/products/photo?order=desc&size=3").then(response => 
+        fetch("/api/products/type/photo?order=desc&size=3").then(response => 
             response.json().then(data => {
                 setData(data.data);
             })
@@ -19,14 +19,16 @@ function Photography(props) {
     }, [])
 
     const tiles = data.map((item) => {
+        console.log("Item")
+        console.log(item);
         return (
-            <Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />
+            <Tile link="/photography/poster" type="thumbnail" data={item} />
         )
     })
     
     return (
         <Container className="photography-body page">
-            <Slider api_url="/api/products/photo?order=rand&size=3" image_context="posters" />
+            <Slider api_url="/api/products/type/photo?order=rand&size=3" image_context="photo" />
             <Container className="new-additions_wrapper">
                 <h2 className="new-additions_header">Newest Additions</h2>
                 <CardDeck className="new-additions_tiles">

@@ -113,6 +113,32 @@ export const findAllType = (req, res) => {
     })
 };
 
+// Find all published Photos
+export const findAllPublished = (req, res) => {
+    const { page, size } = req.query;
+    const type = req.params.type;
+    const { limit, offset } = getPagination(page, size);
+
+    console.log(type);
+    Product.findAndCountAll({ 
+        where: {
+            published: true,
+            ...(type !== undefined && { typeTable: type })
+        }, 
+        limit, offset 
+    })
+    .then(data => {
+        const response = getPagingData(data, page, limit);
+        res.send(response);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving Photos."
+        });
+    });
+};
+
 // Finds a single Product via id
 export const findOne = (req, res) => {
     const id = req.params.id;
@@ -126,7 +152,7 @@ export const findOne = (req, res) => {
         })
     })
     .catch(err => {
-        res.status.send({
+        res.status(500).send({
             message: err.message || "Error retrieving Product with id=" + id
         });
     });
@@ -199,24 +225,6 @@ export const deleteAll = (req, res) => {
     .catch(err => {
         res.status(500).send({
             message: err.message || "An error occurred while removing all Photos."
-        });
-    });
-};
-
-// Find all published Photos
-export const findAllPublished = (req, res) => {
-    const { page, size } = req.query;
-    const { limit, offset } = getPagination(page, size);
-
-    Photography.findAndCountAll({ where: { published: true }, limit, offset })
-    .then(data => {
-        const response = getPagingData(data, page, limit);
-        res.send(response);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message:
-            err.message || "Some error occurred while retrieving Photos."
         });
     });
 };

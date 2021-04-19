@@ -55,7 +55,7 @@ function App() {
 	return (
 		<Container className="App" fluid>
 			
-				{ location == "dashboard" ? (
+				{ location === "dashboard" ? (
 					
 					<Row className="main-content_wrapper" noGutters>
 						{ showAdminBoard && <AdminNav/> }

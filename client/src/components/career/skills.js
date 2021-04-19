@@ -7,22 +7,19 @@ import './skills.scss'
 
 function Skills(props) {
     let types = {}
-    let items = []
 
     // Breaks down the array of skills into the desired 6 per a col format
     // Note: Maybe come back here and clean this up to make it responsive
     let rows = Object.entries(props.skills).map(([type, skill]) => (
-    items = skill.reduce(function (rows, key, index) { 
-        return (index % 6 == 0 ? rows.push([<Container as="li">{key}</Container>]) 
+    skill.reduce(function (rows, key, index) { 
+        return (index % 6 === 0 ? rows.push([<Container as="li">{key}</Container>]) 
                 : rows[rows.length-1].push(<Container as="li">{key}</Container>)) && rows;
       }, [])));
 
     // Creates the dictionary with proper assortment
-    {
-        Object.keys(props.skills).map((keyName, i) => (
-            types[keyName] = rows[i]
-        ))
-    }
+    Object.keys(props.skills).map((keyName, i) => (
+        types[keyName] = rows[i]
+    ))
 
     // Generates the skills section, taking each skill type and displaying it accordingly
     const sections = Object.entries(types).map(([keys, skills]) => 
