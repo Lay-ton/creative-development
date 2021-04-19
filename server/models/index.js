@@ -1,9 +1,9 @@
 import Sequelize from 'sequelize';
-import { Client } from 'pg';
 
 //My Files
 import dbConfig from '../configs/db.config.js'
-import Photography from './photography.model.js';
+import Product from './product.model.js';
+import Photo from './photo.model.js';
 import Role from './role.model.js';
 import User from './user.model.js';
 
@@ -24,7 +24,8 @@ db.Sequelize = Sequelize;
 db.connection = connection;
 
 // Establish tables
-db.photography = Photography(connection, Sequelize);
+db.products = Product(connection, Sequelize);
+db.photos = Photo(connection, Sequelize);
 db.role = Role(connection, Sequelize);
 db.user = User(connection, Sequelize);
 
@@ -39,6 +40,13 @@ db.user.belongsToMany(db.role, {
     foreignKey: 'userId',
     otherKey: 'roleId',
 });
+
+// Product.associate = (models) => {
+//     Product.hasOne(models.Photo, {as: "type"})
+// }
+db.photos.belongsTo(db.products, {foreignKey: 'productId'})
+db.products.hasOne(db.photos)
+
 
 db.ROLES = ['user', 'admin', 'moderator'];
 

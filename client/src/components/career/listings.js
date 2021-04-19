@@ -17,7 +17,7 @@ function Listing(props) {
                 </Container>
             </Container>
             <Container as="ul" className={`content-item content-list ${props.slug}-list`} fluid>
-                <Container as={Row} className="${props.slug}-table" fluid>
+                <Container as={Row} className={`${props.slug}-table`} fluid>
                     <>
                     {entry.tasks.map((task) => {
                         return (

@@ -1,0 +1,24 @@
+.data-list__wrapper {
+    padding: 20px;
+
+    .data-list__item {
+        margin: 5px 0;
+        padding: 10px;
+        border: solid 1px #fff;
+        border-radius: .5em;
+        background-color: #fff;
+
+        .data-list__thumbnail {
+            width: 100px;
+        }
+
+        .data-list__summary {
+            padding: 8px;
+        }
+
+        .data-list__state {
+            padding: 35px 20px;
+            text-align: right;
+        }
+    }
+}

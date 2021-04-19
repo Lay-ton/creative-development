@@ -6,6 +6,9 @@ import Tile from './tile';
 import Paging from './paging';
 import './tiles.scss';
 
+const apiTypes = {
+    "photography" : "photo"
+}
 
 function Tiles(props) {
     const [data, setData] = useState([])
@@ -15,7 +18,7 @@ function Tiles(props) {
         totalPages: null,
     })
     const split_url = window.location.pathname.split("/")
-    const api_url = `/api/${split_url[1]}/published?size=9&page=${split_url[3] - 1}`;
+    const api_url = `/api/products/published/${apiTypes[split_url[1]]}?size=9&page=${split_url[3] - 1}`;
 
     //There is a bunch of extra metadata here that could be useful if I had a lot of entries 
     const makeApiCallPage = () => {
@@ -45,8 +48,8 @@ function Tiles(props) {
 
     //Need to make this dynamic
     const items = data.reduce(function (rows, item, index) { 
-        return (index % 3 === 0 ? rows.push([<Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />]) 
-                : rows[rows.length-1].push(<Tile link="/photography/poster" type="thumbnail" id={item.id} image_context="posters" image={item.image} title={item.title} />)) && rows;
+        return (index % 3 === 0 ? rows.push([<Tile link="/photography/poster" type="thumbnail" data={item} />]) 
+                : rows[rows.length-1].push(<Tile link="/photography/poster" type="thumbnail" data={item} />)) && rows;
       }, []);
     
     const tiles = items.map((item) => 

@@ -1,5 +1,5 @@
 export default (connection, Sequelize) => {
-    const Photography = connection.define('photography', {
+    const Product = connection.define('product', {
         id: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -22,10 +22,13 @@ export default (connection, Sequelize) => {
             type: Sequelize.BOOLEAN,
             defaultValue: false,
             allowNull: false,
+        },
+        typeTable: {
+            type: Sequelize.STRING,
         }
     },{
-        tableName: 'photography',
+        tableName: 'products',
     });
 
-    return Photography
+    return Product
 }
