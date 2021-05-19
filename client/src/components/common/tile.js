@@ -4,8 +4,6 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 
-import './tile.scss';
-
 const tileLinks = {
     "photo" : "/photography/poster"
 }

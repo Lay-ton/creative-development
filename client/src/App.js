@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { clearMessage } from './actions/message';
 import { history } from './helpers/history';
-import './App.scss';
 
 // Admin components
 import AdminNav from './components/dashboard/adminNav';

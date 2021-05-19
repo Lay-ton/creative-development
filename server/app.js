@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import bcrypt from 'bcryptjs';
 
 //My files
 import db from './models/index.js';
@@ -15,9 +16,10 @@ const app = express();
 // first run.
 
 // This drops and resets the tables
-const Product = db.products
-const Photo = db.photos
+const Product = db.products;
+const Photo = db.photos;
 const Role = db.role;
+const User = db.user;
 db.connection.sync({ force: true }).then(() => {
     console.log("Drop and re-sync db.");
     initial();
@@ -50,6 +52,14 @@ function initial() {
         productId: 1,
         sizes: "12x12, 12x18, 18x20, 24x36",
         images: "0000809_0000809-R1-006-1A, 0000809_0000809-R1-006-1A"
+    })
+
+    User.create({
+        username: "admin",
+        email: "admin@email.com",
+        password: bcrypt.hashSync("BigJohnny123!", 8)
+    }).then(user => {
+        user.setRoles([1, 2, 3])
     })
 }
 

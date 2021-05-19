@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row'
 import Skills from './skills'
 import Listing from './listings'
 import Contact from './contacts'
-import './career.scss'
 
 const info = {
     skills: {

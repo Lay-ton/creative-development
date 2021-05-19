@@ -4,7 +4,6 @@ import {
     Container, Form,
     Button, Col, Row
 } from 'react-bootstrap';
-import './product.scss';
 
 function Product(props) {
     const [location, setLocation] = useState(window.location.pathname.split('/')[3]);

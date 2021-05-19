@@ -5,10 +5,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
-import './dataList.scss';
-
-
-
 function DataList(props) {
     return (
         <Container className="data-list__wrapper" fluid>

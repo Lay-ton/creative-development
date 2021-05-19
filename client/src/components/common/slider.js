@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 
-import './slider.scss';
-
 
 function Slider({api_url, image_context}) {
     const [data, setData] = useState([]);

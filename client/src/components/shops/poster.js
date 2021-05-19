@@ -10,7 +10,6 @@ import Nav from 'react-bootstrap/Nav';
 import CardDeck from 'react-bootstrap/CardDeck';
 
 import Tile from '../common/tile';
-import './poster.scss';
 
 const prices = {
     "14\"X11\"": "$11.00",

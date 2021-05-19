@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import CardDeck from 'react-bootstrap/CardDeck';
 import Slider from '../common/slider';
 import Tile from '../common/tile';
-import './photography.scss';
 
 function Photography(props) {
     const [data, setData] = useState([])

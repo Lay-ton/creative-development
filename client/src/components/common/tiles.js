@@ -4,7 +4,6 @@ import CardDeck from 'react-bootstrap/CardDeck';
 
 import Tile from './tile';
 import Paging from './paging';
-import './tiles.scss';
 
 const apiTypes = {
     "photography" : "photo"

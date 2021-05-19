@@ -3,8 +3,6 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import DataList from '../common/dataList';
 
-import './products.scss';
-
 function Products(props) {
     const [data, setData] = useState([]);
     const [query, setQuery] = useState(props.query);

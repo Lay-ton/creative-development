@@ -7,7 +7,6 @@ import { withRouter } from "react-router";
 import { history } from "../../helpers/history";
 import { clearMessage } from '../../actions/message';
 import { logout } from '../../actions/auth';
-import "./nav.scss";
 
 function Navigation(props) {
     const location = window.location.pathname.split('/')[1];

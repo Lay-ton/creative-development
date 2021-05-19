@@ -1,0 +1,43 @@
+@import "~bootstrap/scss/bootstrap";
+
+@import "src/adminNav.scss";
+@import "src/career.scss";
+@import "src/contacts.scss";
+@import "src/dashboard.scss";
+@import "src/dataList.scss";
+@import "src/listings.scss";
+@import "src/login.scss";
+@import "src/nav.scss";
+@import "src/paging.scss";
+@import "src/photography.scss";
+@import "src/poster.scss";
+@import "src/product.scss";
+@import "src/products.scss";
+@import "src/register.scss";
+@import "src/sidebar.scss";
+@import "src/skills.scss";
+@import "src/slider.scss";
+@import "src/tile.scss";
+@import "src/tiles.scss";
+
+
+// @import "./career/career.scss";
+
+.container-fluid {
+    padding: 0;
+}
+
+.section-title {
+  text-decoration: underline;
+}
+
+.section-title-center {
+  text-decoration: underline;
+  text-align: center;
+  margin: auto;
+}
+
+a, a:hover {
+  color:black;
+}
+

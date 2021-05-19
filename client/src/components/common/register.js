@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isEmail } from 'validator';
 
 import { register } from '../../actions/auth';
-import './register.scss';
 
 // Username input is valid as long as its 4-20 characters
 const validUsername = (value) => {

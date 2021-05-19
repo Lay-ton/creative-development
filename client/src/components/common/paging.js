@@ -1,8 +1,6 @@
 import React from 'react';
 import Pagination from 'react-bootstrap/Pagination'
 
-import './paging.scss';
-
 function Paging(props) {
     return (
         <Pagination className="paging_wrapper">

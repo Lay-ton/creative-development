@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { login } from '../../actions/auth';
-import './login.scss';
 
 function Login(props) {
     const [username, setUsername] = useState("");

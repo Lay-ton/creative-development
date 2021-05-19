@@ -3,7 +3,6 @@ import { NavDropdown } from "react-bootstrap";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
-import "./sidebar.scss";
 
 function Sidebar(props) {
     const location = window.location.pathname.split('/')[2];
