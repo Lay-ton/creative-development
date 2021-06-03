@@ -37,3 +37,12 @@ export default (connection, Sequelize) => {
 
     return Photo
 }
+
+export default (connection) => {
+    const MongoPhotos = connection.createCollection('photo', 
+        {
+            autoIndexId: true,
+            
+        }
+    )
+}

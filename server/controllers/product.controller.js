@@ -1,7 +1,7 @@
 import db from '../models/index.js';
 
 const Product = db.products;
-const Op = db.Sequelize.Op;
+
 
 // HELPERS
 const getPagination = (page, size) => {
@@ -23,31 +23,24 @@ const getPagingData = (input, page, limit) => {
 // Create a new Product entry
 export const create = (req, res) => {
     //Validate request
+    console.log(req.body);
     if (!req.body.title) {
-        res.status(400)/send({
+        res.status(400).send({
             message: "Content can not be empty!"
         });
         return;
     }
 
-    // Create a Product entry
-    const product = {
-        title: req.body.title,
-        description: req.body.description,
-        image: req.body.image,
-        published: req.body.published ? req.body.published : false,
-        typeTable: req.body.type
-    };
-
-    // Save Product to database
-    Product.create(product)
-    .then(data => {
-        res.json(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || "An error occurred while creating Product."
-        });
+    const product = new Product(req.body);
+    product.save()
+        .then(data => {
+            // res.json(data);
+            res.send({
+                message: "Product was created successfully"
+            })
+        }).catch(err => {
+            console.log({ message: err.message})
+            res.status(500).send({ message: err.message});
     });
 };
 
@@ -55,29 +48,26 @@ export const create = (req, res) => {
 export const findAll = (req, res) => {
     const page = req.query.page;
     const size = req.query.size;
-    var order = req.query.order ? req.query.order : "ASC";
-    if (order == "rand") {
-        order = db.connection.random();
-    } else {
-        order = ['id', order];
-    }
-
     const { limit, offset } = getPagination(page, size);
-
-    Product.findAndCountAll({
-        order: [order,],
-        limit,
-        offset,
-    })
-    .then(data => {
-        const response = getPagingData(data, page, limit);
-        res.json(response);
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || "An error occurred while retrieving Products"
+    let query = {}
+    let options = {
+        limit: limit,
+        offset: offset,
+        select: 'title description image typeTable',
+        sort: {updated: -1},
+        populate: 'title'
+    }
+    Product.paginate(query, options)
+        .then(data => {
+            const response = getPagingData(data, page, limit);
+            console.log(response);
+            res.json(response);
         })
-    })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "An error occurred while retrieving Products"
+            })
+        })
 };
 
 // Retrieve all Product of a specified type from the database
@@ -119,14 +109,15 @@ export const findAllPublished = (req, res) => {
     const type = req.params.type;
     const { limit, offset } = getPagination(page, size);
 
-    console.log(type);
-    Product.findAndCountAll({ 
-        where: {
-            published: true,
-            ...(type !== undefined && { typeTable: type })
-        }, 
-        limit, offset 
-    })
+    let query = {published: 'true'}
+    let options = {
+        limit: limit,
+        offset: offset,
+        select: 'title description image',
+        sort: {updated: -1},
+        populate: 'title'
+    }
+    Product.paginate(query, options)
     .then(data => {
         const response = getPagingData(data, page, limit);
         res.send(response);
@@ -141,8 +132,9 @@ export const findAllPublished = (req, res) => {
 
 // Finds a single Product via id
 export const findOne = (req, res) => {
-    const id = req.params.id;
-    Product.findByPk(id, {attributes: ['id', 'typeTable']})
+    const typeTable = req.params.typeTable;
+    //TODO
+    Product.findOne({typeTable: typeTable})
     .then(entry => {
         Product.findByPk(1, {include: entry.dataValues['typeTable']})
         .then((data) => {

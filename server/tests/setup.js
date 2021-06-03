@@ -1,9 +1,16 @@
-import db from '../models/index';
+function importTest(name, path) {
+    describe(name, function () {
+        export path from ''
+    });
+}
 
-beforeAll(async () => {
-    await db.connection.sync({force: true})
-}); 
-afterAll(async () => {
-    await db.connection.close();
-    console.log("Connection closed!");
+describe("setup", function () {
+    beforeEach(function () {
+        console.log("Next group of tests is running");
+    });
+    importTest("create_test", './create_test');
+    importTest("auth.test", './auth.test');
+    after(function () {
+        console.log("After all tests");
+    });
 });

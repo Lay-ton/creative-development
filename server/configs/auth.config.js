@@ -1,3 +1,5 @@
 export default {
-    secret: "secret-key"
+    user: "mongo",
+    password: "mongoroot",
+    secret:"ThisIsASecretPhrase"
 };

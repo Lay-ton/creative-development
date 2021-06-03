@@ -14,4 +14,4 @@ export default (connection, Sequelize) => {
     });
 
     return User
-}
+};
