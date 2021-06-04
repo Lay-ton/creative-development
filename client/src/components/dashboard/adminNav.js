@@ -17,7 +17,7 @@ function adminNav(props) {
                     ) : (
                         <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                     )}  
-                    <Nav.Link href="/">Products</Nav.Link>
+                    <Nav.Link href="/dashboard/products">Products</Nav.Link>
                     <Nav.Link href="/">Orders</Nav.Link>
                 </Nav>
             </Navbar>

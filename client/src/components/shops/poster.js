@@ -80,6 +80,8 @@ function Poster(props) {
         )
     })
 
+    console.log("Data:", data);
+
     return (
         <Container className="poster-body page">
             <h6 className="poster-path_wrapper">

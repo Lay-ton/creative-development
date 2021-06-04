@@ -1,8 +1,22 @@
 .product-edit__wrapper {
     padding: 30px;
-    
 
     .product-edit__body {
         background-color: white;
+        padding: 20px;
+        border-radius: .5em;
+
+        .product-edit__image {
+            height: 100%;
+        }
+
+        .product-edit__save {
+            gap: 25px;
+        }
+
+        .product-edit__timestamp {
+            padding-right: 25px;
+            margin: auto 0;
+        }
     }
 }

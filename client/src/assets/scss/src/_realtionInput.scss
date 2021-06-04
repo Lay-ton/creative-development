@@ -1,0 +1,81 @@
+
+.relation-input__wrapper {
+
+    .relation-input__body {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 30px;
+        gap: 20px;
+
+        .relation-item__wrapper {
+            background-color: #cecece;
+            border-radius: 0.3rem;
+
+            .relation-item__body {
+                border: 1px solid #ced4da;
+                border-radius: 0.3rem;
+                font-size: 1em;
+
+                .relation-value__wrapper {
+
+                    #hide {
+                        position: absolute;
+                        opacity: 0;
+                        z-index: -100;
+                        white-space: pre;
+                    }
+
+                    input {
+                        min-width: 50px;
+                        padding: 0;
+                        text-align: center;
+                        border: none;
+                        padding: 10px;
+
+                        &:focus-visible {
+                            border: none;
+                            outline: none;
+                            outline-offset: 0;
+                        }
+                    }
+
+                    .relation1 {
+                        color: white;
+                        background: #343a40;
+                        border-top-left-radius: 0.3rem;
+                        border-bottom-left-radius: 0.3rem;
+                    }
+
+                    .relation2 {
+                        border-top-right-radius: 0.3rem;
+                        border-bottom-right-radius: 0.3rem;
+                    }
+                }
+            }
+
+            .relation-item__delete {
+                height: 100%;
+                display: none;
+
+                .btn {
+                    margin: 4px 3px;
+                }
+            }
+            
+            &:hover {
+                .relation-item__delete {
+                    display: inline-block;
+                }
+            }
+        }
+
+        .relation-add {
+            padding: 10px;
+            width: 100px;
+        }
+    }
+
+    
+
+    
+}
