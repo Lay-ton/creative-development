@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import auth from './auth.config.js'
+import auth from '../auth.config.js'
 class MongoDB {
     constructor() {
         this.PREFIX = 'mongodb+srv://';

@@ -6,30 +6,10 @@ import mongoose from 'mongoose'
 import db from './models/index.js';
 import photography from './routes/product.routes.js';
 import auth from './routes/auth.routes.js';
-import user from './routes/user.routes.js';
-import MongoDB from "./configs/mongo.config.js";
-
+import bcrypt from "bcryptjs";
 
 const app = express();
-db.connection = new MongoDB();
-
-const Product = db.products;
-const Photo = db.photos;
 const User = db.users;
-
-// db.connection.sync({ force: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-//     initial();
-// });
-// function initial() {
-//
-// }
-
-// db.connection.sync(); 
-
-
-
-
 var corsOptions = {
     origin: 'http://localhost:3000'
 };
@@ -43,11 +23,42 @@ app.get("/", (req, res) => {
 
 photography(app);
 auth(app);
-//user(app);
+
+/**--------------DEV DEBUG OPTION------------*/
+
+if (process.env.NODE_ENV === "development") {
+    db.users.deleteMany()
+        .then(()=>{
+            let user = new User({
+                username: "devTestUser",
+                password: bcrypt.hashSync("DevTestUser123", 8),
+                email: "dev@testuser.com",
+                roles: ['Admin', 'User']
+            })
+            user.save()
+        })
+}
+/**--------------------------------------------*/
+
+
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-});
+db.sessionStorage.init()
+    .then((conn) => {
+
+        console.log('<-----------Session storage has been initialized----------->');
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}.`);
+        });
+
+    }).catch((err) => {
+    throw new Error('Error in init:\n' + err)
+})
+
+
+
+
+
+
 
 export default app;
