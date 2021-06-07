@@ -15,8 +15,9 @@ class MongoDB {
         await mongoose.connect(this.URI,
             {
                 useNewUrlParser: true, useUnifiedTopology: true
-            }) .then(() => {
+            }) .then((db) => {
                 console.log('Database connection successful')
+
               })
               .catch(err => {
                 console.error('Database connection error')

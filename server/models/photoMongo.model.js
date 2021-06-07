@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
+import mongoosePaginate from "mongoose-paginate-v2";
 
 //uses virtual foreign/primary key  relationship based on the ObjectId('<id>')
 // https://dbschema.com/2020/06/23/mongodb-virtual-foreign-keys/
@@ -24,6 +25,7 @@ const PhotoSchema = new mongoose.Schema(
     }
 )
 
+PhotoSchema.plugin(mongoosePaginate);
 const Photo = mongoose.model('Photo', PhotoSchema);
 
 

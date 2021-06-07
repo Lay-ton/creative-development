@@ -10,29 +10,18 @@ import User from '../models/userMongo.model.js';
 let should = chai.should();
 chai.use(chaiHttp);
 describe('USER', () => {
-    // beforeEach((done) => {
-    //     User.remove({}, err => {
-    //         done();
-    //     })
-    // })
+    beforeEach((done) => {
+        User.remove({}, err => {
+            done();
+        })
+        User.insertMany({
+            username: 'TEST3',
+            email:'test3@test.mail.com',
+            password: bcrypt.hashSync('n00bies228', 8),
+            roles: ['User', 'Moderator', 'Admin']
+        })
+    })
     describe('/POST signin', () => {
-        it('SHOULD create a user', (done) => {
-            let user = {
-                username: 'TEST3',
-                email:'test3@test.mail.com',
-                password: bcrypt.hashSync('n00bies228', 8),
-                roles: ['User', 'Moderator', 'Admin']
-            }
-            chai.request(server)
-                .post('/api/auth/signup')
-                .send(user)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('message').eql('User was registered successfully');
-                    done();
-                });
-        });
 
         it('SHOULD singin the user', (done) => {
             let user = {

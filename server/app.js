@@ -9,7 +9,7 @@ import auth from './routes/auth.routes.js';
 import bcrypt from "bcryptjs";
 
 const app = express();
-const User = db.users;
+const User = db.User;
 var corsOptions = {
     origin: 'http://localhost:3000'
 };
@@ -27,7 +27,7 @@ auth(app);
 /**--------------DEV DEBUG OPTION------------*/
 
 if (process.env.NODE_ENV === "development") {
-    db.users.deleteMany()
+    db.User.deleteMany()
         .then(()=>{
             let user = new User({
                 username: "devTestUser",
@@ -43,17 +43,17 @@ if (process.env.NODE_ENV === "development") {
 
 
 const PORT = process.env.PORT || 5000;
-db.sessionStorage.init()
-    .then((conn) => {
+// db.sessionStorage.init()
+    //.then((conn) => {
 
         console.log('<-----------Session storage has been initialized----------->');
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}.`);
         });
 
-    }).catch((err) => {
-    throw new Error('Error in init:\n' + err)
-})
+    // }).catch((err) => {
+    // throw new Error('Error in init:\n' + err)
+//})
 
 
 

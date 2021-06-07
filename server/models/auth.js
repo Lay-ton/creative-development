@@ -3,7 +3,7 @@ import db from '../models/index.js';
 import redisConfig from '../configs/redis.config.js';
 import jwt from 'jsonwebtoken';
 import config from '../configs/auth.config.js';
-const User = db.users;
+const User = db.User;
 const sessionStorage = db.sessionStorage;
 import Model from '../core/types/model.js'
 
@@ -77,6 +77,7 @@ class Auth extends Model {
                 roles: authorities,
                 accessToken: token,
                 body: -1,
+                //Cookie: get cookie
             });
             //console.log(res);
             //});

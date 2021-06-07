@@ -8,24 +8,31 @@ import MongoDB from "../configs/clients/mongo.client.js";
 
 const db = {}
 
-db.users = User;
-db.photos = Photo;
-db.products = Product;
-db.connection = new MongoDB();
-db.sessionStorage = new SessionStorage(new RedisClient())
-console.log(db.sessionStorage)
-//TODO: add relationships for photos->products
-// TODO: possibly add connection of the database to db object
-// db.connection = mongoose.connection?
+db.User = User;
+db.Photo = Photo;
+db.Product = Product;
 
-
-// // Product.associate = (models) => {
-// //     Product.hasOne(models.Photo, {as: "type"})
-// // }
-// db.photos.belongsTo(db.products, {foreignKey: 'productId'})
-// db.products.hasOne(db.photos)
 
 db.ROLES = ['User', 'Admin', 'Moderator'];
+
+
+db.connection = new MongoDB();
+
+db.sessionStorage = new SessionStorage(new RedisClient())
+
+
+
+// const getCollection = (name ) => {
+//     for (const [key, value] of Object.entries(db)) {
+//         console.log(`Type of ${key} is ${typeof key}, and type of ${value} is ${typeof value}`)
+//     }
+// }
+//
+// getCollection('Photo')
+
+
+
+
 
 export default db;
 //export const auth =  new Auth();

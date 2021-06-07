@@ -1,6 +1,6 @@
 import db from '../models/index.js';
 
-const Product = db.products;
+const Product = db.Product;
 
 
 // HELPERS
@@ -19,11 +19,33 @@ const getPagingData = (input, page, limit) => {
     return { totalItems, data, totalPages, currentPage };
 }
 
-// CONTROLLERS
-// Create a new Product entry
+/**
+ * Helper method to query collections in mongo to find the right one by the name
+ * @param collectionName
+ */
+const getCollectionModel = (collectionName) => {
+    for (const [key, value] of Object.entries(db)) {
+        if (key == collectionName) {
+            return value;
+        }
+    }
+}
+
+
+/**
+ * Request body
+ *
+ * {
+ *  title <string>,
+ *  description <string>,
+ *  published(optional) <string>,
+ *  typeTable <string>,
+ *  tableObject : {<object>}
+ * }
+ *
+ */
 export const create = (req, res) => {
-    //Validate request
-    console.log(req.body);
+
     if (!req.body.title) {
         res.status(400).send({
             message: "Content can not be empty!"
@@ -31,10 +53,29 @@ export const create = (req, res) => {
         return;
     }
 
-    const product = new Product(req.body);
+    const product = new Product({
+        title: req.body.title,
+        description: req.body.description,
+        published: (req.body.published) ? req.body.published : 'false',
+        typeTable: req.body.typeTable,
+        image: req.body.image,
+    })
+
+    // add product._id to tableObject in the request body
+    req.body.tableObject.productId = product._id
+
+    // after we received data, query collections by the name of <typeTable> based on local <db> storage
+    const collectionObject = getCollectionModel(req.body.typeTable);
+    //TODO validation for non-existent model
+
+
     product.save()
         .then(data => {
-            // res.json(data);
+            if (collectionObject) {
+                // create document in mongoDB based on the query, e.g. mongoModel returned 'Photo'
+                const newProduct = new collectionObject(req.body.tableObject);
+                newProduct.save()
+            }
             res.send({
                 message: "Product was created successfully"
             })
@@ -44,24 +85,22 @@ export const create = (req, res) => {
     });
 };
 
+
+
+
+
 // Retrieve all Product from the database
 export const findAll = (req, res) => {
+    console.log('FIND ALL HAD BEEN CALLED')
     const page = req.query.page;
     const size = req.query.size;
     const { limit, offset } = getPagination(page, size);
-    let query = {}
-    let options = {
-        limit: limit,
-        offset: offset,
-        select: 'title description image typeTable',
-        sort: {updated: -1},
-        populate: 'title'
-    }
-    Product.paginate(query, options)
+    console.log(`Limit is ${limit}, and offset is ${offset}`)
+        Product.find().skip(offset).limit(limit)
         .then(data => {
-            const response = getPagingData(data, page, limit);
-            console.log(response);
-            res.json(response);
+            //const response = getPagingData(data, page, limit);
+            console.log(data);
+            res.json(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -75,23 +114,17 @@ export const findAllType = (req, res) => {
     const page = req.query.page;
     const size = req.query.size;
     const type = req.params.type;
-    var order = req.query.order ? req.query.order : "ASC";
-    if (order == "rand") {
-        order = db.connection.random();
-    } else {
-        order = ['id', order];
-    }
+    // var order = req.query.order ? req.query.order : "ASC";
+    // if (order == "rand") {
+    //     order = db.connection.random();
+    // } else {
+    //     order = ['id', order];
+    // }
 
+    //TODO type, as we have only 1 type for now
     const { limit, offset } = getPagination(page, size);
 
-    Product.findAndCountAll({
-        where: {
-            typeTable: type
-        },
-        order: [order,],
-        limit,
-        offset,
-    })
+    Product.find({typeTable: type}).skip(offset).limit(limit)
     .then(data => {
         const response = getPagingData(data, page, limit);
         res.json(response);
@@ -108,19 +141,12 @@ export const findAllPublished = (req, res) => {
     const { page, size } = req.query;
     const type = req.params.type;
     const { limit, offset } = getPagination(page, size);
-
-    let query = {published: 'true'}
-    let options = {
-        limit: limit,
-        offset: offset,
-        select: 'title description image',
-        sort: {updated: -1},
-        populate: 'title'
-    }
-    Product.paginate(query, options)
+    //TODO type
+    Product.find({published: 'true'}).skip(offset).limit(limit)
     .then(data => {
         const response = getPagingData(data, page, limit);
-        res.send(response);
+        console.log(data);
+        res.send(data);
     })
     .catch(err => {
         res.status(500).send({
@@ -132,16 +158,18 @@ export const findAllPublished = (req, res) => {
 
 // Finds a single Product via id
 export const findOne = (req, res) => {
-    const typeTable = req.params.typeTable;
-    //TODO
-    Product.findOne({typeTable: typeTable})
-    .then(entry => {
-        Product.findByPk(1, {include: entry.dataValues['typeTable']})
-        .then((data) => {
-            res.json({
-                data: data,
-            });
-        })
+    const id = req.params.id;
+    Product.findById(id)
+    .then(document => {
+        const collectionObject = getCollectionModel(document.typeTable);
+        collectionObject.findOne({productId: document._id})
+            .then((data) => {
+                console.log(data);
+                res.json({
+                    data: data,
+                });
+            })
+
     })
     .catch(err => {
         res.status(500).send({
@@ -157,27 +185,34 @@ export const findOne = (req, res) => {
 
 // Update a Product by the id in request
 export const update = (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id
 
-    Photography.update(req.body, {
-        where: {id: id }
-    })
-    .then(num => {
-        if (num == 1) {
-            res.send({
-                message: "Photo was updated successfully."
+    Product.findOneAndUpdate(
+        {_id: id},
+        {$set : req.body.updatedFields},
+        { returnOriginal: false },
+    )
+        .then((document) => {
+            console.log(document)
+            console.log(`typeTable of the object ${id} is ${document.typeTable}`)
+
+            //TODO
+            const collectionObject = getCollectionModel(document.typeTable)
+            if(req.body.image) {
+                collectionObject.findOneAndUpdate({productId: document._id}, req.body)
+                    .then((data) => {
+                        console.log(data);
+                        res.json({data: data})
+                    })
+            }
+
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({
+                message: err.message || "Error updating Product with id=" + id
             });
-        } else {
-            res.send({
-                message: `Cannot update Photo with id=${id}`
-            });
-        }
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: "Error updating Photo with id=" + id
         });
-    });
 };
 
 // Delete a Photo by the id in the request

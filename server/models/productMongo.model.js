@@ -13,7 +13,9 @@ const ProductSchema = new mongoose.Schema(
             type: String,
         },
         image:{
+            //path of the image aka name
             type: String,
+            required: [true, 'You did not upload an image']
         },
         published:{
             type: String,
@@ -23,7 +25,9 @@ const ProductSchema = new mongoose.Schema(
             }
         },
         typeTable: {
-            type: [mongoose.Schema.Types.ObjectId]
+            type: String,
+            required: [true, 'Type of the product is required'],
+            enum: ['Photo']
         },
     }
 )
