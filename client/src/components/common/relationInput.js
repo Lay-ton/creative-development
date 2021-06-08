@@ -4,11 +4,6 @@ import { Button } from 'react-bootstrap';
 function zip(a, b) {
     let combine = a.map((k, i) => [k,b[i]]);
     return combine;
-    // let initial = {}
-    // return combine.reduce((obj, item, index) => {
-    //         obj[index] = item;
-    //         return obj
-    // }, initial);
 }
 
 function RelationPill({values, setValues, index, proc, setProc}) {
@@ -24,6 +19,10 @@ function RelationPill({values, setValues, index, proc, setProc}) {
     const [width2, setWidth2] = useState();
     const span2 = useRef();
     
+    useEffect(() => {
+        setRelation1(values[index][0]);
+        setRelation2(values[index][1]);
+    }, [values])
     
     // Updates the zip array in the parent
     useEffect(() => {
@@ -39,6 +38,8 @@ function RelationPill({values, setValues, index, proc, setProc}) {
     useEffect(() => {
         setWidth2(span2.current.offsetWidth + baseWidth);
     }, [relation2])
+
+    console.log(values);
 
     return (
         <div className="relation-item__wrapper d-flex" ref={totalWidth} key={index}>
@@ -66,7 +67,12 @@ function RelationPill({values, setValues, index, proc, setProc}) {
                 
             </div>
             <div className="relation-item__delete" ref={deleteBtn}>
-                <Button variant="danger">
+                <Button variant="danger" onClick={() => {
+                    values.splice(index, 1);
+                    console.log("splice:", values);
+                    setValues(values);
+                    setProc(!proc);
+                }}>
                     X
                 </Button>
             </div>
@@ -76,32 +82,38 @@ function RelationPill({values, setValues, index, proc, setProc}) {
 
 function RelationInput({title, item1, setItem1, item2, setItem2, proc, setProc}) {
     const [relation, setRelation] = useState(zip(item1, item2));
-    // let relationPills = null;
 
-    useEffect(() => {
+    useEffect(async () => {
+        console.log("relation:", relation);
+
+        item1 = []
+        item2 = []
         
         Object.keys(relation).map((key, index) => {
+            
             item1[index] = relation[key][0]
             item2[index] = relation[key][1]
         })
 
+        console.log("item1", item1)
+        console.log("item2", item2)
+        
         setItem1(item1);
         setItem2(item2);
-    }, [proc, relation])
-
-    const populate = () => {
-        return relation.map((element, index) => {
-            return (
-                <RelationPill values={relation} setValues={setRelation} proc={proc} setProc={setProc} index={index}/>
-            );
-        })
-    }
+        setRelation(zip(item1, item2));
+        console.log("new relation", relation);
+        
+    }, [proc])
 
     return (
         <div className="relation-input__wrapper">
             <label>{title}</label>
             <div className="relation-input__body d-flex flex-wrap">
-                {populate()}
+                {relation.map((element, index) => {
+                    return (
+                        <RelationPill values={relation} setValues={setRelation} proc={proc} setProc={setProc} index={index}/>
+                    );
+                })}
                 <Button className="relation-add" variant="info" 
                     onClick={() => {
                         relation.push(["", ""])

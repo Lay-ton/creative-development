@@ -6,16 +6,27 @@
         padding: 20px;
         border-radius: .5em;
 
-        .product-edit__image {
-            height: 100%;
+        .product-edit__image-container {
+            border: 1px solid #ced4da;
+            border-radius: 0.3rem;
+            font-size: 1em;
+            padding: 0.375rem 0.75rem;
+
+            .product-edit__image {
+                height: 100%;
+                width: 100%;
+            }
+
+            .product-edit__image-upload {
+                margin-top: 5px;
+            }
         }
 
         .product-edit__save {
-            gap: 25px;
+            gap: 15px;
         }
 
         .product-edit__timestamp {
-            padding-right: 25px;
             margin: auto 0;
         }
     }

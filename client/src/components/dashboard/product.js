@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Type from './type';
 import axios from 'axios';
 import { 
-    Container, Form,
-    Button, Col, Row
+    Container, 
+    Form,
+    Button, 
+    Col, 
+    Row,
+    Image
 } from 'react-bootstrap';
 
 function Product(props) {
@@ -11,6 +15,11 @@ function Product(props) {
 
     const [location, setLocation] = useState(window.location.pathname.split('/')[3]);
     const [type, setType] = useState(undefined);
+
+    const [orgImage, setOrgImage] = useState()
+    const [orgImageName, setOrgImageName] = useState();
+    const [image, setImage] = useState()
+
     const [data, setData] = useState({
         title: "",
         description: "",
@@ -24,6 +33,9 @@ function Product(props) {
             console.log(response)
             setData(response.data.data);
             setType(response.data.data.typeTable);
+            setOrgImageName(response.data.data.image);
+            setOrgImage(`/imgs/${response.data.data.typeTable}/${response.data.data.image}/${response.data.data.image}.jpg`)
+            setImage(`/imgs/${response.data.data.typeTable}/${response.data.data.image}/${response.data.data.image}.jpg`)
         });
     },[])
 
@@ -32,20 +44,29 @@ function Product(props) {
         setTypeData(data[type]);
         setLoaded(true);
     }, [type, data])
-        
-    console.log(data)
+
+    const handleImageChange = (e) => {
+        if (e.target.files[0]) {
+            setData({
+                ...data,
+                image: e.target.files[0].name.split(".")[0]
+            })
+            setImage(URL.createObjectURL(e.target.files[0]));
+        } else {
+            setData({
+                ...data,
+                image: orgImageName
+            })
+            setImage(orgImage);
+        }
+    };
+
     return (
         <Container className="product-edit__wrapper" fluid>
             <Container className="product-edit__body" fluid>
-            {/* Build out form and fill all values with current values in db */}
-                
                 <Form>
                     <div className="d-flex justify-content-between">
                         <h3>product data</h3>
-                        <div className="d-flex product-edit__save">
-                            <Button>Save Draft</Button>
-                            <Button>Publish</Button>
-                        </div>
                     </div>
                     <Row>
                         <Container as={Col}>
@@ -61,7 +82,24 @@ function Product(props) {
                         <Container as={Col}>
                             <Form.Group controlId="formImage">
                                 <Form.Label>Image</Form.Label>
-                                <Form.Control className="product-edit__image" type="image" src={`/imgs/${data.typeTable}/${data.image}/${data.image}.jpg`}/>
+                                { data.image ? (
+                                    <div className="product-edit__image-container">
+                                        <Image className="product-edit__image" src={image} />
+                                        <Form.File 
+                                            className="product-edit__image-upload"
+                                            id="custom-file"
+                                            label={data.image}
+                                            onChange={(event) => {
+                                                handleImageChange(event);
+                                            }}
+                                            custom
+                                        />
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <Form.Control className="product-edit__image" type="file"/>
+                                    </div>
+                                )}
                             </Form.Group>
                         </Container>
                     </Row>
@@ -74,12 +112,13 @@ function Product(props) {
                         <> </>
                     )}
                     <div className="d-flex justify-content-end">
-                        <div className="product-edit__timestamp">
-                            Last updated: {data.updatedAt}
+                        <div className="d-flex product-edit__save">
+                            <div className="product-edit__timestamp">
+                                Last updated: {data.updatedAt}
+                            </div>
+                            <Button variant="success">Save Draft</Button>
+                            <Button variant="success">Publish</Button>
                         </div>
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
                     </div>
                 </Form>
             </Container>
