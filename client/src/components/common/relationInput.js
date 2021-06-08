@@ -84,24 +84,18 @@ function RelationInput({title, item1, setItem1, item2, setItem2, proc, setProc})
     const [relation, setRelation] = useState(zip(item1, item2));
 
     useEffect(async () => {
-        console.log("relation:", relation);
-
+        // reset the items array
         item1 = []
         item2 = []
         
         Object.keys(relation).map((key, index) => {
-            
             item1[index] = relation[key][0]
             item2[index] = relation[key][1]
         })
-
-        console.log("item1", item1)
-        console.log("item2", item2)
         
         setItem1(item1);
         setItem2(item2);
         setRelation(zip(item1, item2));
-        console.log("new relation", relation);
         
     }, [proc])
 

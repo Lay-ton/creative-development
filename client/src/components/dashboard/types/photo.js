@@ -7,8 +7,8 @@ import {
 } from 'react-bootstrap';
 
 function Photo({data, setData}) {
-    const [sizes, setSizes] = useState(/*data.sizes*/["12x12", "12x18", "18x20", "24x36"])
-    const [prices, setPrices] = useState(/*data.prices*/["$20.00", "$25.00", "$30.00", "$35.00"])
+    const [sizes, setSizes] = useState(data.sizes)
+    const [prices, setPrices] = useState(data.prices)
     const [changed, setChanged] = useState(false);
     
     useEffect(() => {

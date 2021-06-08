@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 
 import Sidebar from './sidebar';
 import Product from './products';
+import axios from 'axios';
 
 function Dashboard(props) {
     const [bodyKey, setBodyKey] = useState("dashboard");

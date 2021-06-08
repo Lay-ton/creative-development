@@ -9,12 +9,13 @@ function Products(props) {
 
     useEffect(() => {
         axios.get(query).then(response => {
-            setData(response.data.data);
+            // console.log(response)
+            setData(response.data);
         })
     },[query])
 
-    console.log(query)
-    console.log(data);
+    // console.log("query", query)
+    // console.log(data);
     return (
         <Container className="products-body__wrapper" fluid>
 

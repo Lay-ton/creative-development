@@ -31,11 +31,11 @@ function Product(props) {
     useEffect(() => {
         axios.get(`/api/products/${location}`).then(response => {
             console.log(response)
-            setData(response.data.data);
-            setType(response.data.data.typeTable);
-            setOrgImageName(response.data.data.image);
-            setOrgImage(`/imgs/${response.data.data.typeTable}/${response.data.data.image}/${response.data.data.image}.jpg`)
-            setImage(`/imgs/${response.data.data.typeTable}/${response.data.data.image}/${response.data.data.image}.jpg`)
+            setData(response.data);
+            setType(response.data.typeTable);
+            setOrgImageName(response.data.image);
+            setOrgImage(`/imgs/${response.data.typeTable}/${response.data.image}/${response.data.image}.jpg`)
+            setImage(`/imgs/${response.data.typeTable}/${response.data.image}/${response.data.image}.jpg`)
         });
     },[])
 

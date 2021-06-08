@@ -16,7 +16,7 @@ function DataList(props) {
                         <h5>{val.title}</h5>
                         <h6>{val.typeTable ? (val.typeTable) : ("default")}</h6>
                         <Container fluid>
-                            <Link to={`/dashboard/${props.type}/${val.id}`}>Edit</Link> | <Link>View</Link> | <Link>Delete</Link>
+                            <Link to={`/dashboard/${props.type}/${val._id}`}>Edit</Link> | <Link>View</Link> | <Link>Delete</Link>
                         </Container>
                     </Container>
                     <Container as={Col} className="data-list__state">
