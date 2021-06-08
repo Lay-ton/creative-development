@@ -159,23 +159,27 @@ export const findAllPublished = (req, res) => {
 // Finds a single Product via id
 export const findOne = (req, res) => {
     const id = req.params.id;
+    console.log(id)
+    let test = null;
     Product.findById(id)
-    .then(document => {
-        const collectionObject = getCollectionModel(document.typeTable);
-        collectionObject.findOne({productId: document._id})
-            .then((data) => {
-                console.log(data);
-                res.json({
-                    data: data,
-                });
-            })
+        .then((document) => {
+            if (document) {
+                test = document
 
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || "Error retrieving Product with id=" + id
-        });
-    });
+                const collectionObject = getCollectionModel(document.typeTable);
+                collectionObject.findOne({productId: document._id})
+                    .then((data) => {
+                        test.type = data
+                        console.log(test)
+                        res.json({
+                            data: test,
+                        });
+                    })
+            };
+        })
+        //console.log(document)
+
+
 };
 
 /*
