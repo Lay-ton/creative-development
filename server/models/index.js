@@ -1,53 +1,38 @@
-import Sequelize from 'sequelize';
+import User from './userMongo.model.js'
+import Photo from './photoMongo.model.js'
+import Product from './productMongo.model.js'
+import RedisClient from "../configs/clients/redis.client.js";
+import SessionStorage from "../core/storages/sessionStorage.js";
+import MongoDB from "../configs/clients/mongo.client.js";
+//import Auth from "./auth.js";
 
-//My Files
-import dbConfig from '../configs/db.config.js'
-import Product from './product.model.js';
-import Photo from './photo.model.js';
-import Role from './role.model.js';
-import User from './user.model.js';
+const db = {}
 
-const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    pool: {
-        max: dbConfig.pool.max,
-        min: dbConfig.pool.min,
-        acquire: dbConfig.pool.acquire,
-        idle: dbConfig.pool.idle,
-    }
-});
+db.User = User;
+db.Photo = Photo;
+db.Product = Product;
 
-const db = {};
 
-db.Sequelize = Sequelize;
-db.connection = connection;
+db.ROLES = ['User', 'Admin', 'Moderator'];
 
-// Establish tables
-db.products = Product(connection, Sequelize);
-db.photos = Photo(connection, Sequelize);
-db.role = Role(connection, Sequelize);
-db.user = User(connection, Sequelize);
 
-// Establish relationship
-db.role.belongsToMany(db.user, {
-    through: 'user_roles',
-    foreignKey: 'roleId',
-    otherKey: 'roleId',
-});
-db.user.belongsToMany(db.role, {
-    through: 'user_roles',
-    foreignKey: 'userId',
-    otherKey: 'roleId',
-});
+db.connection = new MongoDB();
 
-// Product.associate = (models) => {
-//     Product.hasOne(models.Photo, {as: "type"})
+db.sessionStorage = new SessionStorage(new RedisClient())
+
+
+
+// const getCollection = (name ) => {
+//     for (const [key, value] of Object.entries(db)) {
+//         console.log(`Type of ${key} is ${typeof key}, and type of ${value} is ${typeof value}`)
+//     }
 // }
-db.photos.belongsTo(db.products, {foreignKey: 'productId'})
-db.products.hasOne(db.photos)
+//
+// getCollection('Photo')
 
 
-db.ROLES = ['user', 'admin', 'moderator'];
+
+
 
 export default db;
+//export const auth =  new Auth();

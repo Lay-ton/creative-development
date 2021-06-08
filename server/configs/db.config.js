@@ -13,17 +13,10 @@ const databases = {
     }
   },
   "test": {
-    HOST: "localhost",
-    USER: "postgres",
-    PASSWORD: "root",
-    DB: "sealyoulater_test",
-    dialect: "postgres",
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
+    HOST: "cluster0.qy5oi.mongodb.net/",
+    USER: "mongo",
+    PASSWORD: "mongoroot",
+    DB: "test",
   },
   "production": {
     HOST: "localhost",
