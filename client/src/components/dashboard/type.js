@@ -5,10 +5,16 @@ function Type({type, data, setData}) {
 
     const handleType = () => {
         switch(type) {
-            case "photo":
+            case "Photo":
+                console.log("print", data);
+                if (Object.keys(data).length === 0) {
+                    console.log("print", data);
+                    data = { prices: [], sizes: [], images: [] }
+                    setData(data)
+                }
                 return <Photo data={data} setData={setData}/>;
             default:
-                return "ERROR: Not type associated with this product"
+                return "ERROR: No type associated with this product"
         }
     }
 

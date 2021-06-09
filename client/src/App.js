@@ -12,7 +12,8 @@ import { history } from './helpers/history';
 import AdminNav from './components/dashboard/adminNav';
 import Dashboard from './components/dashboard/dashboard';
 import Products from './components/dashboard/products';
-import Product from './components/dashboard/product';
+import UpdateProduct from './components/dashboard/updateProduct';
+import NewProduct from './components/dashboard/newProduct';
 
 // Main site components
 import Navigation from "./components/common/nav";
@@ -60,7 +61,8 @@ function App() {
 						{ showAdminBoard && <AdminNav/> }
 						<Switch>
 							<Route exact path="/dashboard" component={Dashboard}/>
-							<Route exact path="/dashboard/products/:id" render={() => <Dashboard body={<Product/>}/>}/>
+							<Route exact path="/dashboard/products/new" render={() => <Dashboard body={<NewProduct/>}/>}/>
+							<Route exact path="/dashboard/products/:id" render={() => <Dashboard body={<UpdateProduct/>}/>}/>
 							<Route exact path="/dashboard/products" render={() => <Dashboard body={<Products query="/api/products"/>}/>}/>
 							<Route exact path={["/", "/home"]} component={Home}/>
 						</Switch>

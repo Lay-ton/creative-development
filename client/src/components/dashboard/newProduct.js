@@ -10,11 +10,13 @@ import {
     Image
 } from 'react-bootstrap';
 
-function Product(props) {
+const Types = ["None", "Photo"]
+
+function NewProduct(props) {
     const [loaded, setLoaded] = useState(false);
 
     const [location, setLocation] = useState(window.location.pathname.split('/')[3]);
-    const [type, setType] = useState(undefined);
+    const [type, setType] = useState();
 
     const [orgImage, setOrgImage] = useState()
     const [orgImageName, setOrgImageName] = useState();
@@ -27,23 +29,6 @@ function Product(props) {
         published: false
     });
     const [typeData, setTypeData] = useState({});
-
-    useEffect(() => {
-        axios.get(`/api/products/${location}`).then(response => {
-            console.log(response)
-            setData(response.data);
-            setType(response.data.typeTable);
-            setOrgImageName(response.data.image);
-            setOrgImage(`/imgs/${response.data.typeTable}/${response.data.image}/${response.data.image}.jpg`)
-            setImage(`/imgs/${response.data.typeTable}/${response.data.image}/${response.data.image}.jpg`)
-        });
-    },[])
-
-    useEffect(() => {
-        console.log(type, data[type])
-        setTypeData(data[type]);
-        setLoaded(true);
-    }, [type, data])
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
@@ -60,6 +45,10 @@ function Product(props) {
             setImage(orgImage);
         }
     };
+
+    const handleTypeChange = (e) => {
+        setType(e.target.value);
+    }
 
     return (
         <Container className="product-edit__wrapper" fluid>
@@ -104,27 +93,33 @@ function Product(props) {
                         </Container>
                     </Row>
                     
-                    { loaded && typeData ? (
-                        <div>
-                            <Type type={type} data={typeData} setData={setTypeData}/>
-                        </div>
-                    ) : (
-                        <> </>
-                    )}
+                    {/* Select the type and present the desired type fields */}
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                        <h3>select type</h3>
+                        <Form.Control as="select" onChange={(event) => {
+                            handleTypeChange(event);
+                        }}>
+                            {/* map the types here */}
+                            {Types.map(data => {
+                                return (<option>{data}</option>)
+                            })}
+                        </Form.Control>
+                    </Form.Group>
+
+                    <div>
+                        <Type type={type} data={typeData} setData={setTypeData}/>
+                    </div>
+
                     <div className="d-flex justify-content-end">
                         <div className="d-flex product-edit__save">
-                            <div className="product-edit__timestamp">
-                                Last updated: {data.updatedAt}
-                            </div>
                             <Button variant="success">Save Draft</Button>
                             <Button variant="success">Publish</Button>
                         </div>
                     </div>
                 </Form>
             </Container>
-
         </Container>
     )
 }
 
-export default Product;
+export default NewProduct;
