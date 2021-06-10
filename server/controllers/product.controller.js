@@ -1,6 +1,5 @@
 import db from '../models/index.js';
-
-const Product = db.Product;
+const Product = db.product;
 
 
 // HELPERS
@@ -61,19 +60,21 @@ export const create = (req, res) => {
         image: req.body.image,
     })
 
-    // add product._id to tableObject in the request body
-    req.body.tableObject.productId = product._id
-
     // after we received data, query collections by the name of <typeTable> based on local <db> storage
     const collectionObject = getCollectionModel(req.body.typeTable);
     //TODO validation for non-existent model
-
+    if (!collectionObject) {
+        res.status(500).send({message: 'Collection specified does not exist'})
+        return;
+    }
 
     product.save()
         .then(data => {
             if (collectionObject) {
                 // create document in mongoDB based on the query, e.g. mongoModel returned 'Photo'
-                const newProduct = new collectionObject(req.body.tableObject);
+                // add product._id to tableObject in the request body
+                req.body.typeData.productId = product._id
+                const newProduct = new collectionObject(req.body.typeData);
                 newProduct.save()
             }
             res.send({
@@ -86,10 +87,11 @@ export const create = (req, res) => {
 };
 
 
-
-
-
-// Retrieve all Product from the database
+/**
+ * Retrieve all Product from the database
+ * @param req
+ * @param res
+ */
 export const findAll = (req, res) => {
     console.log('FIND ALL HAD BEEN CALLED')
     const page = req.query.page;
@@ -109,158 +111,185 @@ export const findAll = (req, res) => {
         })
 };
 
-// Retrieve all Product of a specified type from the database
+
+/**
+ * Retrieve all Product of a specified type from the database
+ * @param req
+ * @param res
+ */
 export const findAllType = (req, res) => {
     const page = req.query.page;
     const size = req.query.size;
-    const type = req.params.type;
-    // var order = req.query.order ? req.query.order : "ASC";
-    // if (order == "rand") {
-    //     order = db.connection.random();
-    // } else {
-    //     order = ['id', order];
-    // }
+    const { limit, offset } = getPagination(page, size);
+
 
     //TODO type, as we have only 1 type for now
-    const { limit, offset } = getPagination(page, size);
-
-    Product.find({typeTable: type}).skip(offset).limit(limit)
-    .then(data => {
-        const response = getPagingData(data, page, limit);
-        res.json(response);
-    })
-    .catch(err => {
+    const type = req.params.type;
+    const modelEnum = Product.schema.paths.typeTable.enumValues
+    //check if the type sent to the server supposed to exist in mongo
+    if (!modelEnum.includes(type)) {
         res.status(500).send({
-            message: err.message || "An error occurred while retrieving Products"
+            message: `Object of type \'${type}'\ does not exist`
         })
-    })
+    }else {
+        Product.find({typeTable: type}).skip(offset).limit(limit)
+          .then(data => {
+              console.log(data)
+              res.json(data);
+          })
+          .catch(err => {
+              res.status(500).send({
+                  message: err.message || "An error occurred while retrieving Products of this type"
+              })
+          })
+    }
 };
 
-// Find all published Photos
+/**
+ * Returns
+ * @param req
+ * @param res
+ */
+export const getTypes = (req, res) => {
+    res.send(Product.schema.paths.typeTable.enumValues);
+}
+
+
+/**
+ * Finds all products based on its <published> status
+ * @param req
+ * @param res
+ */
 export const findAllPublished = (req, res) => {
     const { page, size } = req.query;
-    const type = req.params.type;
+
     const { limit, offset } = getPagination(page, size);
-    //TODO type
+    //TODO type?
+    //const type = req.params.type;
     Product.find({published: 'true'}).skip(offset).limit(limit)
     .then(data => {
-        const response = getPagingData(data, page, limit);
-        console.log(data);
         res.send(data);
     })
     .catch(err => {
         res.status(500).send({
             message:
-            err.message || "Some error occurred while retrieving Photos."
+            err.message || "Some error occurred while retrieving published products."
         });
     });
 };
 
-// Finds a single Product via id
-// Finds a single Product via id
+
+/**
+ * Finds a single product based on id
+ * @param req
+ * @param res
+ * @return Product document with <typeData> which includes data about its foreign key
+ */
 export const findOne =  (req, res) => {
     const id = req.params.id;
-    console.log(id)
+
     Product.findById(id).lean().exec((err, data) => {
         if (err) {
             res.status(500).send({
                 message: err || "Error retrieving Product with id=" + id
             });
         }else {
-            const collectionObject = getCollectionModel(data.typeTable);
-            if (collectionObject) {
-                collectionObject.findOne({productId: data._id}).lean().exec((err, doc) => {
-                    if (err) {
-                        res.status(500).send({
-                            message: err || "Error collection object with id= " + id
-                        });
-                    }else {
-                        data.type = doc;
-                        res.json({
-                            data: data
-                        })
-                    }
-                })
+            if (data){
+                const collectionObject = getCollectionModel(data.typeTable);
+                if (collectionObject) {
+                    collectionObject.findOne({productId: data._id}).lean().exec((err, doc) => {
+                        if (err) {
+                            res.status(500).send({
+                                message: err || "Error collection object with id= " + id
+                            });
+                        }else {
+                            data.typeData = doc;
+                            res.json({
+                                data: data
+                            })
+                        }
+                    })
+                }
+            }else {
+                res.status(404).send({
+                    message: err || `Product ${id} not found`
+                });
             }
-
         }
     })
 };
+
 
 /*
     Need to rewrite the code that comes after this line to work with the new database design.
     It's still all the old Photography only model
 */
 
-// Update a Product by the id in request
+
+/**
+ * Update product based on id
+ * @param req
+ * @param res
+ * @return Product with the key <typeData> which includes data about its foreign key
+ */
 export const update = (req, res) => {
     const id = req.params.id
 
-    Product.findOneAndUpdate(
-        {_id: id},
-        {$set : req.body.updatedFields},
-        { returnOriginal: false },
-    )
-        .then((document) => {
-            console.log(document)
-            console.log(`typeTable of the object ${id} is ${document.typeTable}`)
-
-            //TODO
-            const collectionObject = getCollectionModel(document.typeTable)
-            if(req.body.image) {
-                collectionObject.findOneAndUpdate({productId: document._id}, req.body)
-                    .then((data) => {
-                        console.log(data);
-                        res.json({data: data})
-                    })
-            }
-
-        })
-        .catch(err => {
-            console.log(err)
+    Product.findOneAndUpdate({_id: id}, req.body, { new: true },).lean().exec((err, document) => {
+        if (err) {
             res.status(500).send({
-                message: err.message || "Error updating Product with id=" + id
+                message: err || "Error retrieving Product with id=" + id
             });
-        });
-};
-
-// Delete a Photo by the id in the request
-export const deleteOne = (req, res) => {
-    const id = req.params.id;
-
-    Photography.destroy({
-        where: { id: id }
-    })
-    .then(num => {
-        if (num == 1) {
-            res.send({
-                message: "Photo was deleted successfully."
-            });
-        } else {
-            res.send({
-                message: `Cannot delete Photo with id=${id}`
-            });
+        }else {
+            const collectionObject = getCollectionModel(document.typeTable)
+            //due to the nature of method, mongo document changes it's original id
+            // > we need to change  corresponding typeTable object's productId as well
+            collectionObject.findOneAndUpdate(id, {productId: document._id}).lean().exec((err, doc) =>
+            {
+                if (err) {
+                    res.status(500).send({
+                        message: err || "Error collection object with id= " + id
+                    });
+                } else {
+                    document.typeData = doc;
+                    res.json({
+                        data: document
+                    })
+                }
+            })
         }
     })
-    .catch(err => {
-        res.status(500).send({
-            message: "Error deleting Photo with id=" + id
-        });
-    });
 };
 
-// Delete all Photos from the database
-export const deleteAll = (req, res) => {
-    Photography.destroy({
-        where: {},
-        truncate: false
-    })
-    .then(nums => {
-        res.send({ message: `${nums} Photos were deleted successfully!` });
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || "An error occurred while removing all Photos."
-        });
-    });
+
+/**
+ * Delete a Photo by the id in the request
+ * @param req
+ * @param res
+ */
+export const deleteOne = (req, res) => {
+    const id = req.params.id;
+    Product.findOneAndDelete({_id: id})
+      .then((document) =>{
+          console.log(document)
+          const collectionObject = getCollectionModel(document.typeTable)
+          collectionObject.deleteOne({productId: id})
+            .then(() => {
+                res.send({
+                    message: `Object with id=${id} and its corresponding typeObject=${document.typeTable} have been deleted`
+                })
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err || `Error occurred deleting object with productId = ${id} `
+                })
+            })
+        })
+      .catch((err) => {
+          res.status(500).send({
+              message: err || `Error occurred deleting object with id = ${id} `
+          })
+      })
 };
+
+

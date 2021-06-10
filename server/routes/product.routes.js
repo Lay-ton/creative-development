@@ -2,11 +2,11 @@ import {
     create, 
     findAll,
     findAllType,
+    getTypes,
     findAllPublished,
     findOne,
     update,
     deleteOne,
-    deleteAll,
 } from "../controllers/product.controller.js";
 import { Router } from "express";
 
@@ -21,6 +21,8 @@ export default (app) => {
     
     router.get("/published", findAllPublished);
 
+    router.get("/types", getTypes);
+
     router.get("/type/:type", findAllType);
 
     router.get("/:id", findOne);
@@ -28,8 +30,6 @@ export default (app) => {
     router.put("/:id", update);
 
     router.delete("/:id", deleteOne);
-
-    router.delete("/", deleteAll);
 
     app.use('/api/products', router);
 }

@@ -8,9 +8,9 @@ import MongoDB from "../configs/clients/mongo.client.js";
 
 const db = {}
 
-db.User = User;
-db.Photo = Photo;
-db.Product = Product;
+db.user = User;
+db.photo = Photo;
+db.product = Product;
 
 
 db.ROLES = ['User', 'Admin', 'Moderator'];

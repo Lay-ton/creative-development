@@ -4,7 +4,8 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const ProductSchema = new mongoose.Schema(
     {
-        updated: { type: Date, default: Date.now() },
+        updatedAt: { type: Date, default: Date.now() },
+        createdAt: { type: Date, default: Date.now() },
         title: {
             type: String,
             required: [true, 'Title is required']
@@ -27,7 +28,7 @@ const ProductSchema = new mongoose.Schema(
         typeTable: {
             type: String,
             required: [true, 'Type of the product is required'],
-            enum: ['Photo']
+            enum: ['photo']
         },
     }
 )
