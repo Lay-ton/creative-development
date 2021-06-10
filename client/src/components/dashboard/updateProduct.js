@@ -30,20 +30,24 @@ function UpdateProduct(props) {
 
     useEffect(() => {
         axios.get(`/api/products/${location}`).then(response => {
-            console.log(response)
-            setData(response.data.data);
-            setType(response.data.data.typeTable);
-            setOrgImageName(response.data.data.image);
-            setOrgImage(`/imgs/${response.data.data.typeTable}/${response.data.data.image}/${response.data.data.image}.jpg`)
-            setImage(`/imgs/${response.data.data.typeTable}/${response.data.data.image}/${response.data.data.image}.jpg`)
+            const result = response.data.data;
+            setData(result);
+            setType(result.typeTable);
+            setOrgImageName(result.image);
+            setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setTypeData(result.type);
+            setLoaded(true);
         });
     },[])
 
     useEffect(() => {
-        console.log(type, data.type)
-        setTypeData(data.type);
-        setLoaded(true);
-    }, [type, data])
+        let newData = { 
+            ...data,
+            typeData
+        }
+        setData(newData)
+    }, [typeData])
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
@@ -60,6 +64,23 @@ function UpdateProduct(props) {
             setImage(orgImage);
         }
     };
+
+    const handlePost = (publish) => {
+        
+        axios.post(`/api/products/${location}`, {
+            ...data,
+            published: publish
+        }).then(response => {
+            const result = response.data.data;
+            setData(result);
+            setType(result.typeTable);
+            setOrgImageName(result.image);
+            setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setTypeData(result.type);
+            setLoaded(true);
+        });
+    }
 
     return (
         <Container className="product-edit__wrapper" fluid>
@@ -116,13 +137,29 @@ function UpdateProduct(props) {
                             <div className="product-edit__timestamp">
                                 Last updated: {data.updatedAt}
                             </div>
-                            <Button variant="success">Save Draft</Button>
-                            <Button variant="success">Publish</Button>
+                            { data.published ? (
+                                <>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(false)
+                                    }}>Save As Draft</Button>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(true)
+                                    }}>Publish</Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(false)
+                                    }}>Save</Button>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(true)
+                                    }}>Publish</Button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Form>
             </Container>
-
         </Container>
     )
 }

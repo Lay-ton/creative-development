@@ -12,16 +12,14 @@ function Photo({data, setData}) {
     const [changed, setChanged] = useState(false);
     
     useEffect(() => {
+        // Updates typeData in the parent
         setData({
             ...data,
             sizes,
             prices
         })
-        console.log(data);
+    }, [changed, sizes, prices])
 
-    }, [changed])
-
-    console.log(data)
     return (
         <div className="row">
             <Container as={Col}>

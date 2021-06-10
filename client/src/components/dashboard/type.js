@@ -6,9 +6,8 @@ function Type({type, data, setData}) {
     const handleType = () => {
         switch(type) {
             case "Photo":
-                console.log("print", data);
+                // Handles the creation of a new product with type photo
                 if (Object.keys(data).length === 0) {
-                    console.log("print", data);
                     data = { prices: [], sizes: [], images: [] }
                     setData(data)
                 }
@@ -17,8 +16,6 @@ function Type({type, data, setData}) {
                 return "ERROR: No type associated with this product"
         }
     }
-
-
 
     return (
         <div>

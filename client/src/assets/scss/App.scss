@@ -5,17 +5,23 @@
 }
 
 .section-title {
-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .section-title-center {
-text-decoration: underline;
-text-align: center;
-margin: auto;
+  text-decoration: underline;
+  text-align: center;
+  margin: auto;
 }
 
 a, a:hover {
-color:black;
+  color:black;
+}
+
+body {
+	margin: 0;
+	height: 100%;
+  background-color: #cecece;
 }
 
 

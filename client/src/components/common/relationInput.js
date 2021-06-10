@@ -39,8 +39,6 @@ function RelationPill({values, setValues, index, proc, setProc}) {
         setWidth2(span2.current.offsetWidth + baseWidth);
     }, [relation2])
 
-    console.log(values);
-
     return (
         <div className="relation-item__wrapper d-flex" ref={totalWidth} key={index}>
             <div className="relation-item__body d-flex">
@@ -69,7 +67,6 @@ function RelationPill({values, setValues, index, proc, setProc}) {
             <div className="relation-item__delete" ref={deleteBtn}>
                 <Button variant="danger" onClick={() => {
                     values.splice(index, 1);
-                    console.log("splice:", values);
                     setValues(values);
                     setProc(!proc);
                 }}>
@@ -88,6 +85,7 @@ function RelationInput({title, item1, setItem1, item2, setItem2, proc, setProc})
         item1 = []
         item2 = []
         
+        // fills the item array with the correct values
         Object.keys(relation).map((key, index) => {
             item1[index] = relation[key][0]
             item2[index] = relation[key][1]
@@ -96,7 +94,6 @@ function RelationInput({title, item1, setItem1, item2, setItem2, proc, setProc})
         setItem1(item1);
         setItem2(item2);
         setRelation(zip(item1, item2));
-        
     }, [proc])
 
     return (
@@ -112,7 +109,6 @@ function RelationInput({title, item1, setItem1, item2, setItem2, proc, setProc})
                     onClick={() => {
                         relation.push(["", ""])
                         setRelation(relation);
-                        console.log(relation);
                         setProc(!proc);
                     }}>
                     Add
