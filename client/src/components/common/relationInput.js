@@ -102,7 +102,7 @@ function RelationInput({title, item1, setItem1, item2, setItem2, proc, setProc})
             <div className="relation-input__body d-flex flex-wrap">
                 {relation.map((element, index) => {
                     return (
-                        <RelationPill values={relation} setValues={setRelation} proc={proc} setProc={setProc} index={index}/>
+                        <RelationPill key={index} values={relation} setValues={setRelation} proc={proc} setProc={setProc} index={index}/>
                     );
                 })}
                 <Button className="relation-add" variant="info" 

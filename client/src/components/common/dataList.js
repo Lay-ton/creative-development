@@ -8,9 +8,9 @@ import Image from 'react-bootstrap/Image';
 function DataList(props) {
     return (
         <Container className="data-list__wrapper" fluid>
-            {props.data.map(val => {
+            {props.data.map((val, index) => {
                 return (
-                <Container as={Row} className="data-list__item" fluid noGutters>
+                <Container key={index} as={Row} className="data-list__item" fluid noGutters>
                     <Image className="data-list__thumbnail" src={`/imgs/${val.typeTable}/${val.image}/${val.image}_12x12.jpg`} thumbnail/>
                     <Container as={Col} className="data-list__summary">
                         <h5>{val.title}</h5>

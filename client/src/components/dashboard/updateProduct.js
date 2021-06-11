@@ -36,7 +36,7 @@ function UpdateProduct(props) {
             setOrgImageName(result.image);
             setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
             setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
-            setTypeData(result.type);
+            setTypeData(result.typeData);
             setLoaded(true);
         });
     },[])
@@ -65,9 +65,23 @@ function UpdateProduct(props) {
         }
     };
 
-    const handlePost = (publish) => {
-        
-        axios.post(`/api/products/${location}`, {
+    const handleTitleChange = (e) => {
+        setData({
+            ...data,
+            title: e.target.value
+        })
+    }
+
+    const handleDescChange = (e) => {
+        setData({
+            ...data,
+            description: e.target.value
+        })
+    }
+
+    const handlePut = (publish) => {
+        console.log("posting!")
+        axios.put(`/api/products/${location}`, {
             ...data,
             published: publish
         }).then(response => {
@@ -77,11 +91,12 @@ function UpdateProduct(props) {
             setOrgImageName(result.image);
             setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
             setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
-            setTypeData(result.type);
+            setTypeData(result.typeData);
             setLoaded(true);
         });
     }
 
+    console.log(data)
     return (
         <Container className="product-edit__wrapper" fluid>
             <Container className="product-edit__body" fluid>
@@ -93,11 +108,15 @@ function UpdateProduct(props) {
                         <Container as={Col}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Title</Form.Label>
-                                <Form.Control type="text" placeholder="Title" value={data.title} />
+                                <Form.Control type="text" placeholder="Title" value={data.title} onChange={(event) => {
+                                    handleTitleChange(event);
+                                }}/>
                             </Form.Group>
                             <Form.Group controlId="formDescription">
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" rows="6" value={data.description} />
+                                <Form.Control as="textarea" rows="6" value={data.description} onChange={(event) => {
+                                    handleDescChange(event);
+                                }}/>
                             </Form.Group>
                         </Container>
                         <Container as={Col}>
@@ -140,19 +159,19 @@ function UpdateProduct(props) {
                             { data.published ? (
                                 <>
                                     <Button variant="success" onClick={() => {
-                                        handlePost(false)
+                                        handlePut(false)
                                     }}>Save As Draft</Button>
                                     <Button variant="success" onClick={() => {
-                                        handlePost(true)
+                                        handlePut(true)
                                     }}>Publish</Button>
                                 </>
                             ) : (
                                 <>
                                     <Button variant="success" onClick={() => {
-                                        handlePost(false)
+                                        handlePut(false)
                                     }}>Save</Button>
                                     <Button variant="success" onClick={() => {
-                                        handlePost(true)
+                                        handlePut(true)
                                     }}>Publish</Button>
                                 </>
                             )}

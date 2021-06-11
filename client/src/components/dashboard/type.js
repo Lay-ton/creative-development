@@ -5,7 +5,7 @@ function Type({type, data, setData}) {
 
     const handleType = () => {
         switch(type) {
-            case "Photo":
+            case "photo":
                 // Handles the creation of a new product with type photo
                 if (Object.keys(data).length === 0) {
                     data = { prices: [], sizes: [], images: [] }
