@@ -9,9 +9,10 @@ import auth from './routes/auth.routes.js';
 import bcrypt from "bcryptjs";
 
 const app = express();
-const User = db.User;
-const Product = db.Product;
-const Photo = db.Photo;
+const User = db.user;
+const Product = db.product;
+const Photo = db.photo;
+
 var corsOptions = {
     origin: 'http://localhost:3000'
 };
@@ -45,7 +46,7 @@ if (process.env.NODE_ENV === "development") {
             title: "Blackfoot Mountain",
             description: "A about 7 miles into our hike towards Gunsight Pass in Glacier National Park, Montana. This shot is directed towards the mountains east of Gunsight Lake.",
             published: true,
-            typeTable: "Photo",
+            typeTable: "photo",
             image: "0000809_0000809-R1-006-1A",
         })
         product.save()

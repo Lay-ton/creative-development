@@ -3,7 +3,7 @@ const databases = {
     HOST: "localhost",
     USER: "postgres",
     PASSWORD: "root",
-    DB: "sealyoulater_dev",
+    DB: "test",
     dialect: "postgres",
     pool: {
       max: 5,

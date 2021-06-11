@@ -3,7 +3,7 @@ import db from '../models/index.js';
 import redisConfig from '../configs/redis.config.js';
 import jwt from 'jsonwebtoken';
 import config from '../configs/auth.config.js';
-const User = db.User;
+const User = db.user;
 const sessionStorage = db.sessionStorage;
 import Model from '../core/types/model.js'
 
