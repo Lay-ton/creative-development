@@ -12,7 +12,8 @@ function Photography(props) {
     useEffect(() => {
         fetch("/api/products/type/photo?order=desc&size=3").then(response => 
             response.json().then(data => {
-                setData(data.data);
+                console.log(data)
+                setData(data);
             })
         );
     }, [])

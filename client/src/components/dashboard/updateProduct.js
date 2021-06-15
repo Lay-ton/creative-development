@@ -10,7 +10,7 @@ import {
     Image
 } from 'react-bootstrap';
 
-function Product(props) {
+function UpdateProduct(props) {
     const [loaded, setLoaded] = useState(false);
 
     const [location, setLocation] = useState(window.location.pathname.split('/')[3]);
@@ -30,20 +30,25 @@ function Product(props) {
 
     useEffect(() => {
         axios.get(`/api/products/${location}`).then(response => {
-            console.log(response)
-            setData(response.data);
-            setType(response.data.typeTable);
-            setOrgImageName(response.data.image);
-            setOrgImage(`/imgs/${response.data.typeTable}/${response.data.image}/${response.data.image}.jpg`)
-            setImage(`/imgs/${response.data.typeTable}/${response.data.image}/${response.data.image}.jpg`)
+            const result = response.data.data;
+            setData(result);
+            setType(result.typeTable);
+            setOrgImageName(result.image);
+            setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setTypeData(result.typeData);
+            setLoaded(true);
         });
     },[])
 
     useEffect(() => {
-        console.log(type, data[type])
-        setTypeData(data[type]);
-        setLoaded(true);
-    }, [type, data])
+        let newData = { 
+            ...data,
+            typeData
+        }
+        console.log(newData)
+        setData(newData)
+    }, [typeData])
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
@@ -61,6 +66,39 @@ function Product(props) {
         }
     };
 
+    const handleTitleChange = (e) => {
+        setData({
+            ...data,
+            title: e.target.value
+        })
+    }
+
+    const handleDescChange = (e) => {
+        setData({
+            ...data,
+            description: e.target.value
+        })
+    }
+
+    const handlePut = (publish) => {
+        console.log("posting!")
+        const newData = {
+            ...data,
+            published: publish
+        }
+        console.log("update", newData)
+        axios.put(`/api/products/${location}`, newData ).then(response => {
+            const result = response.data.data;
+            setData(result);
+            setType(result.typeTable);
+            setOrgImageName(result.image);
+            setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setTypeData(result.typeData);
+            setLoaded(true);
+        });
+    }
+
     return (
         <Container className="product-edit__wrapper" fluid>
             <Container className="product-edit__body" fluid>
@@ -72,11 +110,15 @@ function Product(props) {
                         <Container as={Col}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Title</Form.Label>
-                                <Form.Control type="text" placeholder="Title" value={data.title} />
+                                <Form.Control type="text" placeholder="Title" value={data.title} onChange={(event) => {
+                                    handleTitleChange(event);
+                                }}/>
                             </Form.Group>
                             <Form.Group controlId="formDescription">
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" rows="6" value={data.description} />
+                                <Form.Control as="textarea" rows="6" value={data.description} onChange={(event) => {
+                                    handleDescChange(event);
+                                }}/>
                             </Form.Group>
                         </Container>
                         <Container as={Col}>
@@ -116,15 +158,31 @@ function Product(props) {
                             <div className="product-edit__timestamp">
                                 Last updated: {data.updatedAt}
                             </div>
-                            <Button variant="success">Save Draft</Button>
-                            <Button variant="success">Publish</Button>
+                            { data.published ? (
+                                <>
+                                    <Button variant="success" onClick={() => {
+                                        handlePut(false)
+                                    }}>Save As Draft</Button>
+                                    <Button variant="success" onClick={() => {
+                                        handlePut(true)
+                                    }}>Publish</Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button variant="success" onClick={() => {
+                                        handlePut(false)
+                                    }}>Save</Button>
+                                    <Button variant="success" onClick={() => {
+                                        handlePut(true)
+                                    }}>Publish</Button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Form>
             </Container>
-
         </Container>
     )
 }
 
-export default Product;
+export default UpdateProduct;
