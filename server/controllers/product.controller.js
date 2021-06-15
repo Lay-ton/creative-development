@@ -39,7 +39,7 @@ const getCollectionModel = (collectionName) => {
  *  description <string>,
  *  published(optional) <string>,
  *  typeTable <string>,
- *  tableObject : {<object>}
+ *  typeData : {<object>}
  * }
  *
  */
@@ -72,7 +72,7 @@ export const create = (req, res) => {
         .then(data => {
             if (collectionObject) {
                 // create document in mongoDB based on the query, e.g. mongoModel returned 'Photo'
-                // add product._id to tableObject in the request body
+                // add product._id to typeData in the request body
                 req.body.typeData.productId = product._id
                 const newProduct = new collectionObject(req.body.typeData);
                 newProduct.save()
@@ -242,9 +242,25 @@ export const update = (req, res) => {
             });
         }else {
             const collectionObject = getCollectionModel(document.typeTable)
+
+            const typeData = req.body.typeData
+            let changes = {}
+            if (typeData) {
+                changes = {
+                    sizes : (typeData.sizes) ? typeData.sizes : undefined,
+                    prices : (typeData.prices) ? typeData.prices : undefined,
+                    images : (typeData.images) ? typeData.images : undefined,
+                }
+            }
+
             //due to the nature of method, mongo document changes it's original id
             // > we need to change  corresponding typeTable object's productId as well
-            collectionObject.findOneAndUpdate(id, {productId: document._id}).lean().exec((err, doc) =>
+            changes.productId = document._id;
+
+            //remove undefined properties
+            Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
+
+            collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) =>
             {
                 if (err) {
                     res.status(500).send({
