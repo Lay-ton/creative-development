@@ -246,11 +246,9 @@ export const update = (req, res) => {
             const typeData = req.body.typeData
             let changes = {}
             if (typeData) {
-                changes = {
-                    sizes : (typeData.sizes) ? typeData.sizes : undefined,
-                    prices : (typeData.prices) ? typeData.prices : undefined,
-                    images : (typeData.images) ? typeData.images : undefined,
-                }
+                Object.assign(changes, (typeData.sizes) ? {sizes: typeData.sizes} : null,
+                                      (typeData.prices) ? {prices: typeData.prices} : null,
+                                      (typeData.images) ? {images: typeData.images} : null)
             }
 
             //due to the nature of method, mongo document changes it's original id
@@ -258,7 +256,7 @@ export const update = (req, res) => {
             changes.productId = document._id;
 
             //remove undefined properties
-            Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
+            //Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
 
             collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) =>
             {
