@@ -11,76 +11,80 @@ import CardDeck from 'react-bootstrap/CardDeck';
 
 import Tile from '../common/tile';
 
-const prices = {
-    "14\"X11\"": "$11.00",
-    "12\"X12\"": "$13.00",
-    "18\"X12\"": "$14.00",
-    "20\"X8\"": "$14.00",
-    "20\"X16\"": "$18.00",
-    "30\"X20\"": "$25.00",
-    "36\"X24\"": "$30.00",
-}
+// const prices = {
+//     "14\"X11\"": "$11.00",
+//     "12\"X12\"": "$13.00",
+//     "18\"X12\"": "$14.00",
+//     "20\"X8\"": "$14.00",
+//     "20\"X16\"": "$18.00",
+//     "30\"X20\"": "$25.00",
+//     "36\"X24\"": "$30.00",
+// }
 
-const sizes = {
-    "14\"X11\"": "14x11",
-    "12\"X12\"": "12x12",
-    "18\"X12\"": "18x12",
-    "20\"X8\"": "20x8",
-    "20\"X16\"": "20x16",
-    "30\"X20\"": "30x20",
-    "36\"X24\"": "36x24",
-}
+// const sizes = {
+//     "14\"X11\"": "14x11",
+//     "12\"X12\"": "12x12",
+//     "18\"X12\"": "18x12",
+//     "20\"X8\"": "20x8",
+//     "20\"X16\"": "20x16",
+//     "30\"X20\"": "30x20",
+//     "36\"X24\"": "36x24",
+// }
 
 function Poster(props) {
-    const [size, setSize] = useState("14\"X11\"");
-    const [selected, setSelected] = useState("14\"X11\"");
-    const [price, setPrice] = useState(prices[size]);
-    const [poster, setPoster] = useState([]);
-    const [data, setData] = useState([]);
+    const [sizes, setSizes] = useState([]);
+    const [prices, setPrices] = useState([]);
+    const [size, setSize] = useState("");
+    const [selected, setSelected] = useState("");
+    const [price, setPrice] = useState("");
+    const [product, setProduct] = useState([]);
+    const [additions, setAdditions] = useState([]);
 
     useEffect(() => {
         var split_url = window.location.pathname.split('/');
         console.log(split_url);
         fetch(`/api/products/${split_url[3]}`).then(response => 
             response.json().then(data => {
-                console.log(data);
-                setPoster(data.data);
+                console.log(data.data)
+                const result = data.data
+                setProduct(result);
+                setSizes(result.typeData.sizes);
+                setPrices(result.typeData.prices);
+                setSelected(result.typeData.sizes[0]);
+                setSize(result.typeData.sizes[0]);
+                setPrice(result.typeData.prices[0]);
             })
         );
-        setSelected("14\"X11\"");
-        setSize("14\"X11\"");
-        setPrice(prices["14\"X11\""]);
+        
         window.scrollTo(0, 0);
     }, [props.location.pathname])
 
     useEffect(() => {
         fetch("/api/products/type/photo?order=desc&size=3").then(response => 
             response.json().then(data => {
-                setData(data.data);
+                setAdditions(data);
             })
         );
     }, [])
 
     
-    const images = Object.values(sizes).map((dim) =>
-        <Tab.Pane className="poster-img__wrapper" eventKey={dim}>
-            <Image className={`poster-img img-dim_${dim}`} src={`/imgs/photo/${poster.image}/${poster.image}_${dim}.jpg`} />
+    const images = sizes.map((dim, key) =>
+        <Tab.Pane className="poster-img__wrapper" eventKey={key}>
+            <Image className={`poster-img img-dim_${dim}`} src={`/imgs/photo/${product.image}/${product.image}_${dim}.jpg`} />
         </Tab.Pane>
     )
 
-    const options = Object.entries(sizes).map(([key, dim]) =>
+    const options = sizes.map((dim, key) =>
         <Nav.Item as={Col} lg={4} className="size-item">
-            <Nav.Link className="poster-btn" eventKey={dim} onMouseEnter={() => setSize(key)} onMouseLeave={() => setSize(selected)} onClick={() => {setSelected(key); setPrice(prices[key])}}>{key}</Nav.Link>
+            <Nav.Link className="poster-btn" eventKey={key} onMouseEnter={() => setSize(dim)} onMouseLeave={() => setSize(selected)} onClick={() => {setSelected(dim); setPrice(prices[key])}}>{dim}</Nav.Link>
         </Nav.Item>
     )
 
-    const tiles = data.map((item) => {
+    const tiles = additions.map((item) => {
         return (
             <Tile type="thumbnail" data={item} />
         )
     })
-
-    console.log("Data:", data);
 
     return (
         <Container className="poster-body page">
@@ -93,7 +97,7 @@ function Poster(props) {
                     /photos
                 </Link>
             </h6>
-            <h2 className="section-title">{poster.title}</h2>
+            <h2 className="section-title">{product.title}</h2>
             <Tab.Container id="left-tabs-example" activeKey={sizes[selected]}>
                 <Container as={Row} className="poster-main_wrapper" noGutters fluid>
                     <Tab.Content className="images_wrapper" as={Col} lg={7} xs={12}>
@@ -103,7 +107,7 @@ function Poster(props) {
                         <Container className="option-cart_inner-wrapper">
                             <Container className="poster-desc_wrapper">
                                 <h6 className="poster-desc_header"><u>Description:</u></h6>
-                                {poster.description}
+                                {product.description}
                             </Container>  
                             <Nav className="flex-column poster-sizes_wrapper">
                                 <h6 className="poster-sizes_header"><u>Size:</u> {size}</h6>

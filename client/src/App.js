@@ -73,7 +73,7 @@ function App() {
 					<Row className="main-content_wrapper" noGutters>
 						{ showAdminBoard && <AdminNav/>}
 						<Navigation/>
-						<Container as={Col} lg={10} md={12} className="main-content_body">
+						<Container as={Col} lg={7} md={12} className="main-content_body">
 							<Switch>
 								<Route exact path={["/", "/home"]} component={Home}/>
 								<Route exact path="/login" component={Login}/>

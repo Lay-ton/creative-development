@@ -46,6 +46,7 @@ function UpdateProduct(props) {
             ...data,
             typeData
         }
+        console.log(newData)
         setData(newData)
     }, [typeData])
 
@@ -81,10 +82,12 @@ function UpdateProduct(props) {
 
     const handlePut = (publish) => {
         console.log("posting!")
-        axios.put(`/api/products/${location}`, {
+        const newData = {
             ...data,
             published: publish
-        }).then(response => {
+        }
+        console.log("update", newData)
+        axios.put(`/api/products/${location}`, newData ).then(response => {
             const result = response.data.data;
             setData(result);
             setType(result.typeTable);
@@ -96,7 +99,6 @@ function UpdateProduct(props) {
         });
     }
 
-    console.log(data)
     return (
         <Container className="product-edit__wrapper" fluid>
             <Container className="product-edit__body" fluid>

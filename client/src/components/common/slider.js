@@ -8,7 +8,7 @@ function Slider({api_url, image_context}) {
     useEffect(() => {
         fetch(api_url).then(response =>
             response.json().then(data => {
-                setData(data.data);
+                setData(data);
             }) 
         )
     }, [])
