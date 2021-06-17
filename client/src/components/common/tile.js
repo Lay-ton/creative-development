@@ -16,7 +16,7 @@ function Tile(props) {
         <Container as={Col} lg={4} className="tile_wrapper">
             <Card border="dark" className={`tile tile-type-${props.type}`}>
                 <Link to={{
-                    pathname: `${tileLinks[data.typeTable]}/${data.id}`,
+                    pathname: `${tileLinks[data.typeTable]}/${data._id}`,
                 }}>
                 <Card.Img className="tile-image" variant="top" src={`/imgs/${data.typeTable}/${data.image}/${data.image}.jpg`} />
                 <Card.Body>

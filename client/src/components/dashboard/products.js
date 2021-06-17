@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Container from 'react-bootstrap/Container';
+import { Link } from 'react-router-dom';
+import { 
+    Container,
+    Button
+} from 'react-bootstrap';
 import DataList from '../common/dataList';
 
 function Products(props) {
@@ -14,14 +18,15 @@ function Products(props) {
         })
     },[query])
 
-    // console.log("query", query)
-    // console.log(data);
     return (
         <Container className="products-body__wrapper" fluid>
-
-            {/* Want a switch statement right here that either does listing or pulls up a single*/}
-            <Container className="products-filter__wrapper">
-
+            <Container className="d-flex products-filter__wrapper justify-content-between" fluid>
+                <div className="products-filter">
+                    Filter
+                </div>
+                <Link className="" to="/dashboard/products/new">
+                    New Product
+                </Link>
             </Container>
             <DataList data={data} type="products"/>
         </Container>
