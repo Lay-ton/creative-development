@@ -1,5 +1,5 @@
 import redis from '../../configs/redis.config.js'
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 class SessionStorage {
     constructor(client) {
@@ -10,13 +10,7 @@ class SessionStorage {
     }
 
     async init() {
-        this._redis = this._redisClient.init()
-            .then(() => {
-                console.log("Initialized redis successfully")
-            })
-            .catch((err) => {
-                throw new Error('There was a problem initializing redis connection: ' + err)
-            });
+        this._redis = await this._redisClient.init()
     }
 
     /**
@@ -25,8 +19,9 @@ class SessionStorage {
      * @returns {Promise<string>}
      */
     async createSession(user){
-        const sessionId = uuid.v4();
-        this._redis.set(this._SESSION_PREFIX + sessionId, JSON.stringify({uid: user.uid}), 'EX', this._SESSION_EXPIRE)
+        const sessionId = uuidv4();
+        console.log("SESSION ID: " + sessionId)
+        await this._redis.set(this._SESSION_PREFIX + sessionId, JSON.stringify({uid: user.username}), 'EX', this._SESSION_EXPIRE)
             .then(() => {
                 console.log('SESSION KEY WAS SET')
             })

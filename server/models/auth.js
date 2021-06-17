@@ -3,89 +3,82 @@ import db from '../models/index.js';
 import redisConfig from '../configs/redis.config.js';
 import jwt from 'jsonwebtoken';
 import config from '../configs/auth.config.js';
+import Model from '../core/types/model.js'
+import { v4 as uuidv4 } from 'uuid';
+
 const User = db.user;
 const sessionStorage = db.sessionStorage;
-import Model from '../core/types/model.js'
 
 class Auth extends Model {
-    constructor() {
-        super()
-        this.sessionStorage = sessionStorage
-        console.log('SESSION STORAGE IN AUTH ' + this.sessionStorage);
-    }
 
-    signup(req, res) {
-        // console.log(req.body);
+    async signup() {
         let user = new User({
-            username: req.body.username,
-            password: bcrypt.hashSync(req.body.password, 8),
-            email: req.body.email,
-            //roles: ['Admin', 'User']
+            username: this.req.body.username,
+            password: bcrypt.hashSync(this.req.body.password, 8),
+            email: this.req.body.email,
+            roles: this.req.body.roles,
         })
-        user.save()
-            .then(() => {
-                res.send({
-                    message: "User was registered successfully"
-                })
-            }).catch(err => {
-                res.status(500).send({ message: err.message});
+        await user.save()
+        .then(() => {
+            this.body = { message: "User was registered successfully" };
+        }).catch(err => {
+            this.body = { message: err.message }
+            this.responseCode = 500;
         });
     }
 
-    signin(req, res) {
-        User.findOne({username: req.body.username}
-        ).then(user => {
+    async signin() {
+        await User.findOne({username: this.req.body.username}).then(user => {
             if (!user) {
                 console.log('User not found')
-                return res.status(404).send({ message: "User not found."});
+                this.body = {message: "User not found."}
+                this.responseCode = 404
             }
 
             let passwordIsValid = bcrypt.compareSync(
-                req.body.password,
+                this.req.body.password,
                 user.password,
             );
 
             if (!passwordIsValid) {
                 console.log('Password not valid')
-                return res.status(401).send({
-                    accessToken: null,
-                    message: "Invalid password."
-                });
+                // return res.status(401).send({
+                //     accessToken: null,
+                //     message: "Invalid password."
+                // });
             }
-            //changed user.id to user._id as that is how it's stored in mongo
-            let token = jwt.sign({ id: user._id }, config.secret, {
-                expiresIn: 86400 // 24 hours
+            return user;
+            }).then(user => {
+                //changed user.id to user._id as that is how it's stored in mongo
+                let token = jwt.sign({ id: user._id }, config.secret, {
+                    expiresIn: 86400 // 24 hours
+                });
+
+
+                let authorities = [];
+                user.roles.forEach((role) => authorities.push("ROLE_" + role.toUpperCase()));
+
+                //set body params
+                delete this.req.body.password;
+                this.body = {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    roles: authorities,
+                    accessToken: token,
+                }
+
+                return sessionStorage.createSession(user);
+            }).then(sessionId => {
+                console.log(sessionId)
+                this.setCookie('sid', sessionId, new Date(new Date().getTime() * 1000 + redisConfig.sessionExpire));
+              })
+              .catch(err => {
+                console.log(err);
+                this.body = { message: err.message }
+                this.responseCode = 500
+                //res.status(500).send({ message: err.message });
             });
-
-            // assign sid to the current user using redis client
-            const sid = this.sessionStorage.createSession(user)
-                 .then(() => {
-                    this.setCookie('sid', sid, new Date(new Date().getTime() * 1000 + redisConfig.sessionExpire));
-                })
-                .catch((err) => {
-                    console.log('Error in setting a cookie')
-                })
-
-            let authorities = [];
-            user.roles.forEach((role) => authorities.push("ROLE_" + role.toUpperCase()));
-            delete req.body.password;
-
-            res.status(200).send({
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                roles: authorities,
-                accessToken: token,
-                body: -1,
-                //Cookie: get cookie
-            });
-            //console.log(res);
-            //});
-        })
-            .catch(err => {
-            console.log(err);
-            res.status(500).send({ message: err.message });
-        });
     }
 
     signout(){
