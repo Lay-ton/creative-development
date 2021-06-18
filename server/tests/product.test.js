@@ -76,7 +76,7 @@ describe('Product', () => {
 
 })
 
-describe('PRODUCT findOne using relationship', () => {
+describe('PRODUCT update', () => {
     beforeEach((done) => {
         Product.remove({}, err => {
             done();
@@ -97,5 +97,12 @@ describe('PRODUCT findOne using relationship', () => {
             .catch((err) => {
                 console.log('Error has occurred: ' + err);
             })
+    })
+
+    describe('/PUT update method test success', () => {
+        it('SHOULD RETURN NEW DOCUMENT', (done) => {
+            chai.request(server)
+              .put('/api/products/')
+        })
     })
 })

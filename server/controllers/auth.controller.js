@@ -1,18 +1,16 @@
 import Auth from "../models/auth.js";
-const auth = new Auth();
+import methodExecutor from '../core/methodExecutor.js';
 
-const signup = (req, res, next) => {
-   auth.signup(req,res);
-   //next();
+
+const signup = async (req, res, next) => {
+  console.log("HERE");
+  await methodExecutor(new Auth(req), "signup", res)
+  next();
 }
 
-const signin = (req, res, next) => {
-    try {
-        auth.signin(req, res);
-    }catch(err) {
-        throw new Error('Cannot sign in ' + err)
-    }
-    //next();
+const signin = async (req, res, next) => {
+  await methodExecutor(new Auth(req), "signin", res)
+  next();
 }
 
 const signout = (req, res) => {
