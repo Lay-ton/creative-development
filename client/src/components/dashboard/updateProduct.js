@@ -108,7 +108,7 @@ function UpdateProduct(props) {
                     </div>
                     <Row>
                         <Container as={Col}>
-                            <Form.Group controlId="formBasicEmail">
+                            <Form.Group controlId="formTitle">
                                 <Form.Label>Title</Form.Label>
                                 <Form.Control type="text" placeholder="Title" value={data.title} onChange={(event) => {
                                     handleTitleChange(event);

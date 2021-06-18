@@ -10,12 +10,11 @@ import {
     Image
 } from 'react-bootstrap';
 
-const Types = ["None", "Photo"]
-
 function NewProduct(props) {
     const [loaded, setLoaded] = useState(false);
 
     const [location, setLocation] = useState(window.location.pathname.split('/')[3]);
+    const [types, setTypes] = useState([]);
     const [type, setType] = useState();
 
     const [orgImage, setOrgImage] = useState()
@@ -29,6 +28,27 @@ function NewProduct(props) {
         published: false
     });
     const [typeData, setTypeData] = useState({});
+
+    useEffect(() => {
+        axios.get('/api/products/types').then(response => {
+            setTypes(response.data)
+            setType(response.data[0])
+        });
+    },[])
+
+    const handleTitleChange = (e) => {
+        setData({
+            ...data,
+            title: e.target.value
+        })
+    }
+
+    const handleDescChange = (e) => {
+        setData({
+            ...data,
+            description: e.target.value
+        })
+    }
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
@@ -50,6 +70,41 @@ function NewProduct(props) {
         setType(e.target.value);
     }
 
+    useEffect(() => {
+        setData({
+            ...data,
+            typeTable: type
+        })
+    }, [type])
+
+    useEffect(() => {
+        let newData = { 
+            ...data,
+            typeData
+        }
+        console.log(newData)
+        setData(newData)
+    }, [typeData])
+
+    const handlePost = (publish) => {
+        console.log("posting!")
+        const newData = {
+            ...data,
+            published: publish
+        }
+        console.log("update", newData)
+        axios.post(`/api/products/`, newData ).then(response => {
+            const result = response.data.data;
+            setData(result);
+            setType(result.typeTable);
+            setOrgImageName(result.image);
+            setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setTypeData(result.typeData);
+            setLoaded(true);
+        });
+    }
+
     return (
         <Container className="product-edit__wrapper" fluid>
             <Container className="product-edit__body" fluid>
@@ -61,11 +116,15 @@ function NewProduct(props) {
                         <Container as={Col}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Title</Form.Label>
-                                <Form.Control type="text" placeholder="Title" value={data.title} />
+                                <Form.Control type="text" placeholder="Title" value={data.title} onChange={(event) => {
+                                    handleTitleChange(event);
+                                }}/>
                             </Form.Group>
                             <Form.Group controlId="formDescription">
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" rows="6" value={data.description} />
+                                <Form.Control as="textarea" rows="6" value={data.description} onChange={(event) => {
+                                    handleDescChange(event);
+                                }}/>
                             </Form.Group>
                         </Container>
                         <Container as={Col}>
@@ -100,7 +159,7 @@ function NewProduct(props) {
                             handleTypeChange(event);
                         }}>
                             {/* map the types here */}
-                            {Types.map(data => {
+                            {types.map(data => {
                                 return (<option>{data}</option>)
                             })}
                         </Form.Control>
@@ -112,8 +171,25 @@ function NewProduct(props) {
 
                     <div className="d-flex justify-content-end">
                         <div className="d-flex product-edit__save">
-                            <Button variant="success">Save Draft</Button>
-                            <Button variant="success">Publish</Button>
+                            { data.published ? (
+                                <>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(false)
+                                    }}>Save As Draft</Button>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(true)
+                                    }}>Publish</Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(false)
+                                    }}>Save</Button>
+                                    <Button variant="success" onClick={() => {
+                                        handlePost(true)
+                                    }}>Publish</Button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Form>
