@@ -18,6 +18,7 @@ function UpdateProduct(props) {
 
     const [orgImage, setOrgImage] = useState()
     const [orgImageName, setOrgImageName] = useState();
+    const [imageName, setImageName] = useState();
     const [image, setImage] = useState()
 
     const [data, setData] = useState({
@@ -35,6 +36,7 @@ function UpdateProduct(props) {
             setType(result.typeTable);
             setOrgImageName(result.image);
             setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setImageName(result.image)
             setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
             setTypeData(result.typeData);
             setLoaded(true);
@@ -51,17 +53,20 @@ function UpdateProduct(props) {
     }, [typeData])
 
     const handleImageChange = (e) => {
+        console.log(e.target.files[0])
         if (e.target.files[0]) {
             setData({
                 ...data,
                 image: e.target.files[0].name.split(".")[0]
             })
+            setImageName(e.target.files[0].name.split(".")[0]);
             setImage(URL.createObjectURL(e.target.files[0]));
         } else {
             setData({
                 ...data,
                 image: orgImageName
             })
+            setImageName(orgImageName);
             setImage(orgImage);
         }
     };
@@ -86,8 +91,13 @@ function UpdateProduct(props) {
             ...data,
             published: publish
         }
+
         console.log("update", newData)
-        axios.put(`/api/products/${location}`, newData ).then(response => {
+        axios({
+            method: 'post',
+            url: `/api/products/${location}`, 
+            data: newData,
+        }).then(response => {
             const result = response.data.data;
             setData(result);
             setType(result.typeTable);
@@ -130,7 +140,7 @@ function UpdateProduct(props) {
                                         <Form.File 
                                             className="product-edit__image-upload"
                                             id="custom-file"
-                                            label={data.image}
+                                            label={imageName}
                                             onChange={(event) => {
                                                 handleImageChange(event);
                                             }}
