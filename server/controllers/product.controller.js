@@ -235,44 +235,47 @@ export const findOne =  (req, res) => {
 export const update = (req, res) => {
     const id = req.params.id
 
-    Product.findOneAndUpdate({_id: id}, req.body, { new: true },).lean().exec((err, document) => {
-        if (err) {
-            res.status(500).send({
-                message: err || "Error retrieving Product with id=" + id
-            });
-        }else {
-            const collectionObject = getCollectionModel(document.typeTable)
+    console.log(typeof(req.body))
+    console.log(req.body);
 
-            const typeData = req.body.typeData
-            let changes = {}
-            if (typeData) {
-                Object.assign(changes, (typeData.sizes) ? {sizes: typeData.sizes} : null,
-                                      (typeData.prices) ? {prices: typeData.prices} : null,
-                                      (typeData.images) ? {images: typeData.images} : null)
-            }
+    // Product.findOneAndUpdate({_id: id}, req.body, { new: true },).lean().exec((err, document) => {
+    //     if (err) {
+    //         res.status(500).send({
+    //             message: err || "Error retrieving Product with id=" + id
+    //         });
+    //     }else {
+    //         const collectionObject = getCollectionModel(document.typeTable)
 
-            //due to the nature of method, mongo document changes it's original id
-            // > we need to change  corresponding typeTable object's productId as well
-            changes.productId = document._id;
+    //         const typeData = req.body.typeData
+    //         let changes = {}
+    //         if (typeData) {
+    //             Object.assign(changes, (typeData.sizes) ? {sizes: typeData.sizes} : null,
+    //                                   (typeData.prices) ? {prices: typeData.prices} : null,
+    //                                   (typeData.images) ? {images: typeData.images} : null)
+    //         }
 
-            //remove undefined properties
-            //Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
+    //         //due to the nature of method, mongo document changes it's original id
+    //         // > we need to change  corresponding typeTable object's productId as well
+    //         changes.productId = document._id;
 
-            collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) =>
-            {
-                if (err) {
-                    res.status(500).send({
-                        message: err || "Error collection object with id= " + id
-                    });
-                } else {
-                    document.typeData = doc;
-                    res.json({
-                        data: document
-                    })
-                }
-            })
-        }
-    })
+    //         //remove undefined properties
+    //         //Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
+
+    //         collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) =>
+    //         {
+    //             if (err) {
+    //                 res.status(500).send({
+    //                     message: err || "Error collection object with id= " + id
+    //                 });
+    //             } else {
+    //                 document.typeData = doc;
+    //                 res.json({
+    //                     data: document
+    //                 })
+    //             }
+    //         })
+    //     }
+    // })
 };
 
 

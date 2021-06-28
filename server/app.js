@@ -100,14 +100,14 @@ if (process.env.NODE_ENV === "development") {
 const PORT = process.env.PORT || 5000;
 
 db.sessionStorage.init()
-    .then((conn) => {
-        console.log('<-----------Session storage has been initialized----------->');
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}.`);
-        });
-    }).catch((err) => {
-        throw new Error('Error in init:\n' + err)
-    })
+.then((conn) => {
+    console.log('<-----------Session storage has been initialized----------->');
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+    });
+}).catch((err) => {
+    throw new Error('Error in init:\n' + err)
+})
 
 
 

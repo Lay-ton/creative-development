@@ -3,7 +3,6 @@ import methodExecutor from '../core/methodExecutor.js';
 
 
 const signup = async (req, res, next) => {
-  console.log("HERE");
   await methodExecutor(new Auth(req), "signup", res)
   next();
 }

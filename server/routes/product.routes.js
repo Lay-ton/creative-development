@@ -27,7 +27,7 @@ export default (app) => {
 
     router.get("/:id", findOne);
 
-    router.put("/:id", update);
+    router.post("/:id", update);
 
     router.delete("/:id", deleteOne);
 
