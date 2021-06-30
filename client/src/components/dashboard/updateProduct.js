@@ -16,10 +16,11 @@ function UpdateProduct(props) {
     const [location, setLocation] = useState(window.location.pathname.split('/')[3]);
     const [type, setType] = useState(undefined);
 
+    const [render, setRender] = useState()
     const [orgImage, setOrgImage] = useState()
     const [orgImageName, setOrgImageName] = useState();
-    const [imageName, setImageName] = useState();
     const [image, setImage] = useState()
+    const [imageName, setImageName] = useState();
 
     const [data, setData] = useState({
         title: "",
@@ -38,6 +39,7 @@ function UpdateProduct(props) {
             setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
             setImageName(result.image)
             setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setRender(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
             setTypeData(result.typeData);
             setLoaded(true);
         });
@@ -60,7 +62,8 @@ function UpdateProduct(props) {
                 image: e.target.files[0].name.split(".")[0]
             })
             setImageName(e.target.files[0].name.split(".")[0]);
-            setImage(URL.createObjectURL(e.target.files[0]));
+            setImage(e.target.files[0]);
+            setRender(URL.createObjectURL(e.target.files[0]))
         } else {
             setData({
                 ...data,
@@ -92,11 +95,19 @@ function UpdateProduct(props) {
             published: publish
         }
 
+        let formData = new FormData();
+        formData.append('image', image);
+        formData.append('data', JSON.stringify(newData));
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+
         console.log("update", newData)
         axios({
             method: 'post',
             url: `/api/products/${location}`, 
-            data: newData,
+            data: formData,
         }).then(response => {
             const result = response.data.data;
             setData(result);
@@ -136,7 +147,7 @@ function UpdateProduct(props) {
                                 <Form.Label>Image</Form.Label>
                                 { data.image ? (
                                     <div className="product-edit__image-container">
-                                        <Image className="product-edit__image" src={image} />
+                                        <Image className="product-edit__image" src={render} />
                                         <Form.File 
                                             className="product-edit__image-upload"
                                             id="custom-file"

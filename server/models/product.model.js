@@ -19,11 +19,11 @@ const ProductSchema = new mongoose.Schema(
             required: [true, 'You did not upload an image']
         },
         published:{
-            type: String,
-            default:'false',
-            validate: (value) => {
-                return validator.isBoolean(value)
-            }
+            type: Boolean,
+            default: false,
+            // validate: (value) => {
+            //     return validator.isBoolean(value)
+            // }
         },
         typeTable: {
             type: String,
