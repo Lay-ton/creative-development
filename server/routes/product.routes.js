@@ -5,6 +5,7 @@ import {
     getTypes,
     findAllPublished,
     findOne,
+    singleFileUpload,
     update,
     deleteOne,
 } from "../controllers/product.controller.js";
@@ -27,7 +28,7 @@ export default (app) => {
 
     router.get("/:id", findOne);
 
-    router.post("/:id", update);
+    router.post("/:id", singleFileUpload(), update);
 
     router.delete("/:id", deleteOne);
 

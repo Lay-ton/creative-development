@@ -1,6 +1,31 @@
 import db from '../models/index.js';
 import formidable from 'formidable';
+import Multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+
 const Product = db.product;
+
+const uploadDir = process.env.ROOT_DIR +'/storage/products';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+let imageStorage = Multer.diskStorage({
+    destination: function (req, file, cb) {
+       cb(null, uploadDir)
+   },
+   filename: function (req, file, cb) {
+       console.log(file)
+        cb(null, file.originalname.split('.').slice(0, -1).join('.')+ "_" + Date.now() + path.extname(file.originalname));
+   }
+})
+
+export const singleFileUpload = () => {
+    return Multer({
+        storage : imageStorage
+    }).single('image');
+}
 
 
 // HELPERS
@@ -227,6 +252,8 @@ export const findOne = (req, res) => {
 */
 
 
+
+
 /**
  * Update product based on id
  * @param req
@@ -236,58 +263,54 @@ export const findOne = (req, res) => {
 export const update = async (req, res) => {
     const id = req.params.id
     const form = new formidable.IncomingForm();
-    form.parse(req, function(err, fields, files) {
+
+    console.log(req.file);
+    console.log(req.body);
+
+    const data = JSON.parse(req.body.data)
+    console.log(data)
+
+    Product.findOneAndUpdate({_id: id}, data, { new: true },).lean().exec((err, document) => {
+
         if (err) {
-            return res.status(400).json({ error: err.message });
-        }
-        const [firstFileName] = Object.keys(files);
-        const data = JSON.parse(fields.data);
-        const image = files[firstFileName];
+            res.status(500).send({
+                message: err || "Error retrieving Product with id=" + id
+            });
+        }else {
+            const collectionObject = getCollectionModel(document.typeTable)
 
-        console.log(data);
-
-        Product.findOneAndUpdate({_id: id}, data, { new: true },).lean().exec((err, document) => {
-
-            if (err) {
-                res.status(500).send({
-                    message: err || "Error retrieving Product with id=" + id
-                });
-            }else {
-                const collectionObject = getCollectionModel(document.typeTable)
-    
-                const typeData = data.typeData
-                let changes = {}
-                if (typeData) {
-                    Object.assign(changes, (typeData.sizes) ? {sizes: typeData.sizes} : null,
-                                          (typeData.prices) ? {prices: typeData.prices} : null,
-                                          (typeData.images) ? {images: typeData.images} : null)
-                }
-    
-                //due to the nature of method, mongo document changes it's original id
-                // > we need to change  corresponding typeTable object's productId as well
-                changes.productId = document._id;
-    
-                //remove undefined properties
-                //Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
-    
-                collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) =>
-                {
-                    if (err) {
-                        res.status(500).send({
-                            message: err || "Error collection object with id= " + id
-                        });
-                    } else {
-                        document.typeData = doc;
-                        res.json({
-                            data: document
-                        })
-                    }
-                })
+            const typeData = data.typeData
+            let changes = {}
+            if (typeData) {
+                Object.assign(changes, (typeData.sizes) ? {sizes: typeData.sizes} : null,
+                                        (typeData.prices) ? {prices: typeData.prices} : null,
+                                        (typeData.images) ? {images: typeData.images} : null)
             }
-        })
+
+            //due to the nature of method, mongo document changes it's original id
+            // > we need to change  corresponding typeTable object's productId as well
+            changes.productId = document._id;
+
+            //remove undefined properties
+            //Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
+
+            collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) =>
+            {
+                if (err) {
+                    res.status(500).send({
+                        message: err || "Error collection object with id= " + id
+                    });
+                } else {
+                    document.typeData = doc;
+                    res.json({
+                        data: document
+                    })
+                }
+            })
+        }
+    })
 
         // res.json({ filename: firstFileName });
-    });
     
 };
 

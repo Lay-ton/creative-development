@@ -4,8 +4,7 @@ import session from 'express-session';
 import redis from 'redis';
 const redisClient = redis.createClient();
 import store from "connect-redis";
-const redisStore = store(session)
-
+const redisStore = store(session);
 
 import mongoose from 'mongoose'
 //My files
@@ -41,7 +40,7 @@ let corsOptions = {
 
 
 app.use(cors(corsOptions));
-
+app.use(express.static('storage'));
 app.use(express.json());
 /** ---------------ALL THIS IS MIDDLEWARE---------------*/
 

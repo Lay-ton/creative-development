@@ -39,7 +39,8 @@ function UpdateProduct(props) {
             setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
             setImageName(result.image)
             setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
-            setRender(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            //setRender(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setRender('http://localhost:5000/products/0000809_0000809-R1-018-7A_1625100465495.jpg');
             setTypeData(result.typeData);
             setLoaded(true);
         });
