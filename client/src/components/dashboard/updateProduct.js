@@ -36,11 +36,11 @@ function UpdateProduct(props) {
             setData(result);
             setType(result.typeTable);
             setOrgImageName(result.image);
-            setOrgImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setOrgImage(`http://localhost:5000/products/${result._id}/${result.image}.jpg`)
             setImageName(result.image)
-            setImage(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
+            setImage(`http://localhost:5000/products/${result._id}/${result.image}.jpg`)
             //setRender(`/imgs/${result.typeTable}/${result.image}/${result.image}.jpg`)
-            setRender('http://localhost:5000/products/0000809_0000809-R1-018-7A_1625100465495.jpg');
+            setRender(`http://localhost:5000/products/${result._id}/${result.image}.jpg`);
             setTypeData(result.typeData);
             setLoaded(true);
         });
@@ -97,8 +97,8 @@ function UpdateProduct(props) {
         }
 
         let formData = new FormData();
-        formData.append('image', image);
         formData.append('data', JSON.stringify(newData));
+        formData.append('image', image);
 
         for (var pair of formData.entries()) {
             console.log(pair[0]+ ', ' + pair[1]); 

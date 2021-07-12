@@ -1,24 +1,32 @@
 import db from '../models/index.js';
 import formidable from 'formidable';
 import Multer from 'multer';
+import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 
 const Product = db.product;
 
-const uploadDir = process.env.ROOT_DIR +'/storage/products';
+const rootDir = process.env.ROOT_DIR;
+const uploadDir = rootDir +'/storage/products';
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
 let imageStorage = Multer.diskStorage({
     destination: function (req, file, cb) {
-       cb(null, uploadDir)
-   },
-   filename: function (req, file, cb) {
-       console.log(file)
-        cb(null, file.originalname.split('.').slice(0, -1).join('.')+ "_" + Date.now() + path.extname(file.originalname));
-   }
+        const productId = JSON.parse(req.body.data)._id;
+
+        const saveDir = uploadDir + `/${productId}`
+        if (!fs.existsSync(saveDir)) {
+            fs.mkdirSync(saveDir);
+        }
+        cb(null, saveDir)
+    },
+    filename: function (req, file, cb) {
+        //console.log(file)
+        cb(null, file.originalname);
+    }
 })
 
 export const singleFileUpload = () => {
@@ -262,13 +270,30 @@ export const findOne = (req, res) => {
  */
 export const update = async (req, res) => {
     const id = req.params.id
-    const form = new formidable.IncomingForm();
 
-    console.log(req.file);
-    console.log(req.body);
-
+    // console.log(req.file);
+    // console.log(req.body);
+    
     const data = JSON.parse(req.body.data)
-    console.log(data)
+    // console.log(data)
+
+    const productId = data._id;
+    const saveDir = uploadDir + `/${productId}`;
+    const saveSrc = saveDir + `/${req.file.filename}`;
+    console.log(saveDir)
+    let scriptFinish = spawn('python3', [`${rootDir}/resizer.py`, `${saveSrc}`, `${saveDir}`]);
+    scriptFinish.stdout.on('data', function(data) {
+        console.log(data.toString());
+    });
+
+    scriptFinish.stderr.on('data', function (data) {
+        //throw errors
+        console.log('stderr: ' + data);
+    });
+
+    scriptFinish.on('exit', code => {
+        console.log(`Exit code is: ${code}`);
+    });
 
     Product.findOneAndUpdate({_id: id}, data, { new: true },).lean().exec((err, document) => {
 
@@ -276,7 +301,7 @@ export const update = async (req, res) => {
             res.status(500).send({
                 message: err || "Error retrieving Product with id=" + id
             });
-        }else {
+        } else {
             const collectionObject = getCollectionModel(document.typeTable)
 
             const typeData = data.typeData
@@ -294,8 +319,7 @@ export const update = async (req, res) => {
             //remove undefined properties
             //Object.keys(changes).forEach(key => changes[key] === undefined && delete changes[key])
 
-            collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) =>
-            {
+            collectionObject.findOneAndUpdate({productId: document._id}, changes).lean().exec((err, doc) => {
                 if (err) {
                     res.status(500).send({
                         message: err || "Error collection object with id= " + id
@@ -309,9 +333,6 @@ export const update = async (req, res) => {
             })
         }
     })
-
-        // res.json({ filename: firstFileName });
-    
 };
 
 
